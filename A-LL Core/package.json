@@ -14,5 +14,13 @@
     "email": "support@a-ll.tech",
     "url": "https://a-ll.tech/"
   },
-  "type": "library"
+  "type": "library",
+  "dependencies": {
+    "com.google.firebase.analytics": "6.15.2",
+    "com.google.firebase.messaging": "6.15.2",
+    "com.unity.localization": "0.9.0-preview",
+    "com.unity.mobile.notifications": "1.3.2",
+    "com.unity.textmeshpro": "2.1.1",
+    "com.unity.uiextensions": "2.2.4"
+  }
 }
