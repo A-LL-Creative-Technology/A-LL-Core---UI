@@ -49,4 +49,4 @@ To use this package in a unity project :
 }
 ```
 3. In Unity, open Window->Package Manager and "Add Package from disk ...".
-4. Open the directory in which you cloned the repository, and select package.json file.
+4. Open the directory in which you cloned the repository, and select A-LL Core/package.json file.
