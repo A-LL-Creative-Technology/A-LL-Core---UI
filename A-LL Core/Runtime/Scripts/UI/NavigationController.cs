@@ -222,15 +222,6 @@ public class NavigationController : MonoBehaviour
 
         isNavigationInitializationInProgress = false;
 
-        //////////
-        //////////
-        ////////// DIRTY - TO BE REMOVED!!!!!!
-        ///
-        OnCacheLoadedCallback(null, null);
-        /// 
-        //////////
-        //////////
-
     }
 
     private void InitOverlayCanvas()
