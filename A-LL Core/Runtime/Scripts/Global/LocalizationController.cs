@@ -13,7 +13,7 @@ public class LocalizationController : MonoBehaviour
     /// Build in Addressables Menus (Window -> Asset Management -> Addressables -> Groups. Then Build -> New Build -> Default Build Script from the top bar), and it worked in Run-Time.
     /// Ref: https://forum.unity.com/threads/addressables-and-code-stripping-il2cpp.700883/
     /// </summary>
-    private static readonly string MAIN_TABLE = "Main Localization Table";
+    private static readonly string MAIN_TABLE = "Main";
 
     private void Awake()
     {

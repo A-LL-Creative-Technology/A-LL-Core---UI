@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using MoreMountains.NiceVibrations;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
@@ -14,6 +11,7 @@ public class UIController : MonoBehaviour
     {
         return instance;
     }
+
 #pragma warning disable 0649
     //readonly private float ANIMATION_NOTIFICATION_DURATION = 0.4f;
 
@@ -27,15 +25,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject footerContainer;
     [SerializeField] private GameObject viewport;
 
-    [SerializeField] private OnlineMaps map;
-
     public Texture2D imagePlaceholder;
     
     [SerializeField] private GameObject overCanvas;
-    //[SerializeField] private GameObject overScrollView;
-    //public GameObject overScrollViewContainer; // container for the Over Canvas
-
-    
 
     [SerializeField] private CanvasGroup updateLoaderCanvasGroup;
     [SerializeField] private Animator updateLoaderAnimator;
@@ -50,12 +42,6 @@ public class UIController : MonoBehaviour
     private RectTransform scrollViewContainerRectTransform;
 
     [NonSerialized] public RectTransform overCanvasRectTransform;
-    //[NonSerialized] public ScrollRectFaster overScrollViewScrollRect;
-
-    private OnlineMapsMarker marker;
-
-    private RectTransform mapRectTransform;
-    private OnlineMapsUIRawImageControl mapControl;
 
     private Rect safeArea;
 
@@ -65,18 +51,9 @@ public class UIController : MonoBehaviour
     {
         instance = this;
 
-        //Set the status bar visible for Android
-        //ApplicationChrome.statusBarState = ApplicationChrome.States.Visible;
-
         updateLoaderCanvasGroup.gameObject.SetActive(false);
 
-        mapRectTransform = map.transform.GetComponent<RectTransform>();
-        mapControl = map.GetComponent<OnlineMapsUIRawImageControl>();
-
-        // get scroll view rect
-        //overScrollViewScrollRect = overScrollView.GetComponent<ScrollRectFaster>();
         overCanvasRectTransform = overCanvas.GetComponent<RectTransform>();
-
        
         // make sure loader is hidden
         updateLoaderCanvasGroup.alpha = 0;
@@ -89,7 +66,6 @@ public class UIController : MonoBehaviour
         AdjustSafeArea();
 
         scrollRect = NavigationController.GetInstance().scrollView.GetComponent<ScrollRect>();
-        marker = OnlineMapsMarkerManager.CreateItem(0, 0);
 
         scrollViewContainerRectTransform = NavigationController.GetInstance().scrollViewContainer.GetComponent<RectTransform>();
 
@@ -171,9 +147,6 @@ public class UIController : MonoBehaviour
             //Debug.Log("Exiting both");
             ExitingBothScroll();
         }
-
-        
-        
     }
 
     private void AroundUpdateScroll(float scrollLocalYPosition, bool isEntering)
@@ -190,8 +163,6 @@ public class UIController : MonoBehaviour
             updateLoaderAnimator.Play("Playing", -1, ratioToLoading);
         }
     }
-
-    
 
     private void StartUpdateScroll(Action callbackUpdate)
     {
@@ -268,44 +239,6 @@ public class UIController : MonoBehaviour
         // we reload the cache to trigger the initial setup of the app
         CacheController.ClearAllCache();
 
-    }
-
-    public void InitMap(GameObject mapContainer, double longitude, double latitude, bool is_localization_set = true)
-    {
-        //Set parent
-        mapContainer.transform.parent.gameObject.SetActive(is_localization_set);
-        map.transform.SetParent(mapContainer.transform);
-        map.transform.SetAsFirstSibling();
-
-        //Change position to match parent
-        mapRectTransform.offsetMin = Vector2.zero;
-        mapRectTransform.offsetMax = Vector2.zero;
-
-        //Change Map center and marker position
-        marker?.SetPosition(longitude, latitude);
-        map.SetPosition(longitude, latitude);
-        map.Redraw();
-
-        //Init button
-        GameObject callToAction = mapContainer.transform.Find("Call To Action")?.gameObject;
-        Button directions = callToAction?.GetComponent<Button>();
-        directions?.onClick.AddListener(delegate () { Application.OpenURL("https://www.google.com/maps/dir//" + latitude + "," + longitude); });
-
-    }
-
-    public void ActivateMap()
-    {
-        if (Input.touchCount == 2)
-        {
-            mapControl.allowUserControl = true;
-            scrollRect.vertical = false;
-        }
-        else
-        {
-            mapControl.allowUserControl = false;
-            scrollRect.vertical = true;
-
-        }
     }
 
 }

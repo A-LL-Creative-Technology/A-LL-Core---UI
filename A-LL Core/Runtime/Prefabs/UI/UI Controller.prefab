@@ -166,7 +166,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &729317299695557102
 RectTransform:
   m_ObjectHideFlags: 0
@@ -315,10 +315,10 @@ RectTransform:
   m_Father: {fileID: 1640373830730545741}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 562.5, y: -160.38}
+  m_SizeDelta: {x: 945, y: 60.76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1640373829479110254
 CanvasRenderer:
@@ -845,10 +845,10 @@ RectTransform:
   m_Father: {fileID: 1640373830730545741}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 562.5, y: -260.075}
+  m_SizeDelta: {x: 945, y: 138.63}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1640373829672592858
 CanvasRenderer:
@@ -1047,8 +1047,8 @@ MonoBehaviour:
   m_text: "Il semblerait qu'aucun contenu ne soit disponible sur cette page, rechargez-la
     ou r\xE9essayez plus tard."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 0}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1128,9 +1128,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:4236d3e968fe24d1fbae8b857aab21c4
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 511678865438
+      m_KeyId: 0
       m_Key: 
   m_FormatArguments: []
   m_UpdateString:
@@ -1376,7 +1376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1640373829985184800
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1531,10 +1531,10 @@ RectTransform:
   m_Father: {fileID: 1640373830730545741}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 562.5, y: -384.5}
+  m_SizeDelta: {x: 945, y: 110.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1640373830120665199
 CanvasRenderer:
@@ -1889,7 +1889,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1640373830469307471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2012,8 +2012,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Recharger la page
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 0}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2147,9 +2147,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:4236d3e968fe24d1fbae8b857aab21c4
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 511678865439
+      m_KeyId: 0
       m_Key: 
   m_FormatArguments: []
   m_UpdateString:
@@ -2503,7 +2503,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1640373830623347764
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2671,7 +2671,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1640373830730545741
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2693,7 +2693,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1125, y: 0}
+  m_SizeDelta: {x: 1125, y: 469.61002}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1640373830730545731
 CanvasRenderer:
@@ -3413,7 +3413,6 @@ MonoBehaviour:
   headerContainer: {fileID: 1640373830239620222}
   footerContainer: {fileID: 4698008671962428752}
   viewport: {fileID: 4000784615239566219}
-  map: {fileID: 0}
   imagePlaceholder: {fileID: 0}
   overCanvas: {fileID: 1640373829513892396}
   updateLoaderCanvasGroup: {fileID: 1640373830623347785}
@@ -4083,9 +4082,9 @@ MonoBehaviour:
   popUpGeneral: {fileID: 0}
   notificationContainer: {fileID: 1640373830730545742}
   notificationBackground: {fileID: 1640373830730545740}
-  notificationTitle: {fileID: 0}
-  notificationBody: {fileID: 0}
-  notificationCTA: {fileID: 0}
+  notificationTitle: {fileID: 2181338691397807177}
+  notificationBody: {fileID: 2120737642430383282}
+  notificationCTA: {fileID: 9040313116808702370}
   globalLoaderContainer: {fileID: 1640373830469307464}
   creaTechContainer: {fileID: 729317299695557103}
   emptyPage: {fileID: 1640373829535976103}

@@ -221,6 +221,16 @@ public class NavigationController : MonoBehaviour
         navigationBarTitle = headerTitle.GetComponent<TextMeshProUGUI>();
 
         isNavigationInitializationInProgress = false;
+
+        //////////
+        //////////
+        ////////// DIRTY - TO BE REMOVED!!!!!!
+        ///
+        OnCacheLoadedCallback(null, null);
+        /// 
+        //////////
+        //////////
+
     }
 
     private void InitOverlayCanvas()
@@ -274,6 +284,9 @@ public class NavigationController : MonoBehaviour
 
     private IEnumerator InitOverViews() {
 
+        if (overCanvas.transform.childCount == 0) // make sure we have at least one child
+            yield break;
+
         overCanvas.SetActive(true);
 
         overViewsInitialYPosition = overCanvas.transform.GetChild(0).localPosition.y;
@@ -297,7 +310,7 @@ public class NavigationController : MonoBehaviour
     {
 
         //Log page in Analytics
-        AnalyticsController.GetInstance().Log(AnalyticsController.LOGS.VISIT_PAGE, routingStr);
+        AnalyticsController.GetInstance()?.Log(AnalyticsController.LOGS.VISIT_PAGE, routingStr);
 
         // parse routing string
         string nextViewStr = ParseRoute(routingStr);

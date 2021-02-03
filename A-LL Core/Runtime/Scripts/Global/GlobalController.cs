@@ -36,7 +36,7 @@ public class GlobalController: MonoBehaviour
 
         Application.targetFrameRate = 90;
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     static public void LogMe(string message)
