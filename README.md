@@ -9,10 +9,46 @@ To set up the project structure for A-LL in a new project :
 4. Move **Scenes** folder into **A-LL**.
 5. Adapt Project Settings.
 6. Add Localization package (see "Add Localization").
-7. 
+7. Switch plateform to IOS or Android
+
+## Project Settings
+
+Open **Edit > Project Setting** and make the following changes
+
+### Android
+
+#### Resolution and Presentation
+**Default Orientation** to Portrait.
+
+#### Splash Image
+Uncheck **Show Splash Screen**.
+
+#### Other Settings
+Uncheck **Dynamic Batching**.
+Replace **Package Name** with your package name.
+Check **Use Increment GC**.
 
 
-n. switch plateform to IOS/Android
+### iOS
+
+#### Resolution and Presentation
+**Default Orientation** to Portrait.
+
+#### Splash Image
+Uncheck **Show Splash Screen**.
+
+#### Other Settings
+Replace **Package Name** with your package name.
+Check **Automatically Sign**.
+Check **Use Increment GC**.
+Set **Target Device** to iPhone Only.
+Set **Target minimum iOS Version** to 13.0.
+Set **Architecture** to **ARM64**.
+
+
+
+
+
 
 ## Add Localization
 
@@ -26,7 +62,9 @@ To add the [Localization Unity Package](https://docs.unity3d.com/Packages/com.un
 6. Select your application languages and save them in **A-LL/Config/Localization**
 7. Add the default locale in **Locale Selectors > Element 2 > Locale Id**.
 8. Open **Window > Asset Management > Localization Tables**.
-9. In the Asset Tables window, select the **New Table** tab. Select which Locales you want to generate tables for, give the table a name and select the **Asset Table** table type.
+9. In the Asset Tables window, select the **New Table** tab. Select which Locales you want to generate tables for, name the table **Main Localizationi Table** and **Create String Table Collection**.
+10. Save the table under **A-LL/Config/Localization/**.
+
 
 
 
@@ -36,7 +74,7 @@ To add the [Localization Unity Package](https://docs.unity3d.com/Packages/com.un
 To use this package in a unity project :
 
 1. clone repository in local drive.
-2. Edit the manifest.json file located at <your unity project>/Packages and add the following lines after the dependecies :
+2. Edit the manifest.json file located at **<your unity project>/Packages** and add the following lines after the dependecies :
 ```json
 "scopedRegistries": [
   {
@@ -55,11 +93,11 @@ To use this package in a unity project :
   }
 ]
 ```
-	Your manifest.json should look like this :
+  Your manifest.json should look like this :
 ```json
 {
   "dependencies": {
-    	...
+      ...
   },
   "scopedRegistries": [
     {
@@ -79,5 +117,5 @@ To use this package in a unity project :
   ]
 }
 ```
-3. In Unity, open Window > Package Manager and "Add Package from disk ...".
-4. Open the directory in which you cloned the repository, and select package.json file.
+3. In Unity, open **Window > Package Manager** and **Add Package from disk ...**.
+4. Open the directory in which you cloned the repository, and select **package.json** file.
