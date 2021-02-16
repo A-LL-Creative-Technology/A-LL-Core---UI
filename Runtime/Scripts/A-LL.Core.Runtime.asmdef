@@ -1,0 +1,28 @@
+{
+    "name": "A-LL.Core.Runtime.asmdef",
+    "references": [
+        "GUID:865b414a121ed594e91db2e09f65d38c",
+        "GUID:041029188fa88c54f9efffc039b6a1c9",
+        "GUID:1d7f6a5fba4b040dc904e78dc94b502c",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
+        "GUID:84651a3751eca9349aac36a66bba901b",
+        "GUID:1e8e55397bd004beaba78a667566665f",
+        "GUID:ac145e6b8c6034cdbadc8c6e26aedbcf"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "Select...",
+            "expression": "",
+            "define": ""
+        }
+    ],
+    "noEngineReferences": false
+}
