@@ -77,7 +77,7 @@ public class UIController : MonoBehaviour
     {
         safeArea = Screen.safeArea;
 
-        safeArea = new Rect(50, 100, 1000, 2000);
+        //safeArea = new Rect(50, 100, 1000, 2000);
 
         // adjust header
         RectTransform headerContainerRectTransform = headerContainer.GetComponent<RectTransform>();
