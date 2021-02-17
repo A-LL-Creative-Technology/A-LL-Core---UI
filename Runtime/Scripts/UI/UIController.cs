@@ -21,7 +21,9 @@ public class UIController : MonoBehaviour
 
     private ScrollRect scrollRect;
 
+    [SerializeField] private GameObject headerSafeAreaBackground; // necessary for adjusting background when safe area is applied
     [SerializeField] private GameObject headerContainer;
+    [SerializeField] private GameObject footerSafeAreaBackground; // necessary for adjusting background when safe area is applied
     [SerializeField] private GameObject footerContainer;
     [SerializeField] private GameObject viewport;
 
@@ -75,17 +77,35 @@ public class UIController : MonoBehaviour
     {
         safeArea = Screen.safeArea;
 
+        safeArea = new Rect(50, 100, 1000, 2000);
+
         // adjust header
         RectTransform headerContainerRectTransform = headerContainer.GetComponent<RectTransform>();
-        AdjustSafeAreaHeader(headerContainerRectTransform);
+        headerContainerRectTransform.anchorMin = new Vector2(headerContainerRectTransform.anchorMin.x, headerContainerRectTransform.anchorMin.y - (Screen.height - safeArea.position.y - safeArea.size.y) / Screen.height);
+        headerContainerRectTransform.anchorMax = new Vector2(headerContainerRectTransform.anchorMax.x, (safeArea.position.y + safeArea.size.y) / Screen.height);
+
+        RectTransform headerSafeAreaBackgroundRectTransform = headerSafeAreaBackground.GetComponent<RectTransform>();
+        headerSafeAreaBackgroundRectTransform.anchorMin = headerContainerRectTransform.anchorMin;
+
+        headerContainerRectTransform.offsetMin = Vector2.zero;
+        headerContainerRectTransform.offsetMax = Vector2.zero;
+
+        headerSafeAreaBackgroundRectTransform.offsetMin = Vector2.zero;
+        headerSafeAreaBackgroundRectTransform.offsetMax = Vector2.zero;
 
         // adjust footer
         RectTransform footerContainerRectTransform = footerContainer.GetComponent<RectTransform>();
         footerContainerRectTransform.anchorMin = new Vector2(footerContainerRectTransform.anchorMin.x, safeArea.position.y / Screen.height);
         footerContainerRectTransform.anchorMax = new Vector2(footerContainerRectTransform.anchorMax.x, (footerContainerRectTransform.anchorMax.y + (safeArea.position.y / Screen.height)));
 
+        RectTransform footerSafeAreaBackgroundRectTransform = footerSafeAreaBackground.GetComponent<RectTransform>();
+        footerSafeAreaBackgroundRectTransform.anchorMax = headerContainerRectTransform.anchorMax;
+
         footerContainerRectTransform.offsetMin = Vector2.zero;
         footerContainerRectTransform.offsetMax = Vector2.zero;
+
+        footerSafeAreaBackgroundRectTransform.offsetMin = Vector2.zero;
+        footerSafeAreaBackgroundRectTransform.offsetMax = Vector2.zero;
 
         // adjust viewport
         RectTransform viewportRectTransform = viewport.GetComponent<RectTransform>();
@@ -95,15 +115,6 @@ public class UIController : MonoBehaviour
         viewportRectTransform.offsetMin = Vector2.zero;
         viewportRectTransform.offsetMax = Vector2.zero;
 
-    }
-
-    public void AdjustSafeAreaHeader(RectTransform gameObjectToAdjustRectTransform)
-    {
-        gameObjectToAdjustRectTransform.anchorMin = new Vector2(gameObjectToAdjustRectTransform.anchorMin.x, gameObjectToAdjustRectTransform.anchorMin.y - (Screen.height - safeArea.position.y - safeArea.size.y) / Screen.height);
-        gameObjectToAdjustRectTransform.anchorMax = new Vector2(gameObjectToAdjustRectTransform.anchorMax.x, (safeArea.position.y + safeArea.size.y) / Screen.height);
-
-        gameObjectToAdjustRectTransform.offsetMin = Vector2.zero;
-        gameObjectToAdjustRectTransform.offsetMax = Vector2.zero;
     }
 
     public void StartLoader(Action callbackUpdate, Action callbackInfiniteScroll)
