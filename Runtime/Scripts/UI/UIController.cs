@@ -99,7 +99,7 @@ public class UIController : MonoBehaviour
         footerContainerRectTransform.anchorMax = new Vector2(footerContainerRectTransform.anchorMax.x, (footerContainerRectTransform.anchorMax.y + (safeArea.position.y / Screen.height)));
 
         RectTransform footerSafeAreaBackgroundRectTransform = footerSafeAreaBackground.GetComponent<RectTransform>();
-        footerSafeAreaBackgroundRectTransform.anchorMax = headerContainerRectTransform.anchorMax;
+        footerSafeAreaBackgroundRectTransform.anchorMax = footerContainerRectTransform.anchorMax;
 
         footerContainerRectTransform.offsetMin = Vector2.zero;
         footerContainerRectTransform.offsetMax = Vector2.zero;
