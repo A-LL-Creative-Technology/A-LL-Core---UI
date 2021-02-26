@@ -56,6 +56,7 @@ Your manifest.json should look like this :
         - Nice Vibrations | Haptic Feedback for Mobile & Gamepads
             1. Rename file "Newtonsoft.Json.dll" to "Dupplicate - Newtonsoft.Json.dll" in "ThirdParty/Newtonsoft"
         - Lean Touch
+            1. Open the file "Assets/Lean/Touch/Extras/LeanScreenDepth.cs" and comment line 221 "Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);"
         - Rest Client for Unity 
             1. Additionnaly, create an Assembly Definition Reference named "Main Proyecto26" in "RestClient/Packages"
             2. Link it to Assembly A-LL.Core.Runtime.asmdef
