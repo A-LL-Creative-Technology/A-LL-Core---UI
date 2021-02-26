@@ -50,18 +50,26 @@ Your manifest.json should look like this :
 ```
 3. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL https://laurent-all@bitbucket.org/a-lltech/a-ll-core.git.
 4. Add the following third-party packages from the Package Manager
-    1. Connect using the lab@a-ll.tech accoutn in Unity
+    1. Connect using the lab@a-ll.tech account in Unity
     2. Select "My Assets" in the Package Manager to display paid Packages from the Asset Store
     3. Select and import all these packages
         - Nice Vibrations | Haptic Feedback for Mobile & Gamepads
             1. Rename file "Newtonsoft.Json.dll" to "Dupplicate - Newtonsoft.Json.dll" in "ThirdParty/Newtonsoft"
         - Lean Touch
         - Rest Client for Unity 
-            1. Additionnaly, create an Assembly Definition Reference in "RestClient/Packages"
+            1. Additionnaly, create an Assembly Definition Reference named "Main Proyecto26" in "RestClient/Packages"
             2. Link it to Assembly A-LL.Core.Runtime.asmdef
         - Online Maps
 5. Copy/Paste files in "A-LL Core/Assets To Copy/A-LL/Config/Firebase/" and paste them to "Assets/A-LL/Config/Firebase/" and rename by removing the prefix "Sandbox - "
 6. In Unity, go to "Window -> Asset Management -> Adressables -> Groups" and then select "Build -> New Build -> Default Build Script" to build the Localization file
+7. Open Unity > Preferences > External Tools and tick the boxes for the items below.
+    1. Registry packages
+    2. Git packages
+    3. Built-in packages
+    4. Local tarball
+    5. Packages from unknown sources
+    6. Player projects
+    Then click on "Regenerate project files" button right below. 
 
 ## A-LL Project Setup
 
