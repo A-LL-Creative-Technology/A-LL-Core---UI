@@ -72,8 +72,22 @@ public class APIController : MonoBehaviour
            });
     }
 
-    
 
+    //Get a SINGLE element of type R. Returns the request Exception in errorcallback.
+    public static void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
+    {
+        //Send the request
+        RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL))
+           .Then(res =>
+           {
+               successCallback?.Invoke(res);
+           })
+           .Catch(err =>
+           {
+               HandleError((RequestException)err, endpoint);
+               errorCallback?.Invoke((RequestException)err);
+           });
+    }
 
 
     //POST a request with no particular types
