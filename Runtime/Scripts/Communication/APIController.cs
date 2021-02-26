@@ -29,7 +29,7 @@ public class APIController : MonoBehaviour
         instance = this;
     }
 
-    private static void HandleError(RequestException requestException, string endpoint, Action errorCallback = null)
+    private static void HandleError(RequestException requestException, string endpoint, Action<RequestException> errorCallback = null)
     {
         GlobalController.LogMe("Error in the API call: " + endpoint + " - " + requestException.Message + " - " + requestException.Response);
 
@@ -54,11 +54,11 @@ public class APIController : MonoBehaviour
                 break;
         }
 
-        errorCallback?.Invoke();
+        errorCallback?.Invoke(requestException);
     }
 
     //GET a SINGLE element of type R
-    public static void Get<R>(string endpoint, Dictionary<string,string> parameters, Action<R> successCallback, Action errorCallback = null, string customServerURL = null)
+    public static void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
         //Send the request
         RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL))
@@ -72,26 +72,8 @@ public class APIController : MonoBehaviour
            });
     }
 
-
-    //Get a SINGLE element of type R. Returns the request Exception in errorcallback.
-    public static void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
-    {
-        //Send the request
-        RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL))
-           .Then(res =>
-           {
-               successCallback?.Invoke(res);
-           })
-           .Catch(err =>
-           {
-               HandleError((RequestException)err, endpoint);
-               errorCallback?.Invoke((RequestException)err);
-           });
-    }
-
-
     //POST a request with no particular types
-    public static void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action errorCallback = null, string customServerURL = null)
+    public static void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
         RestClient.Post(BuildRequest(endpoint, parameters, customServerURL))
         .Then(res =>
@@ -106,7 +88,7 @@ public class APIController : MonoBehaviour
     }
 
     //POST a request with an object of type S to the servers and expects an element of type R from the server
-    public static void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action errorCallback = null, string customServerURL = null)
+    public static void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
         RestClient.Post<R>(BuildRequest(endpoint, parameters, customServerURL))
         .Then(res =>
@@ -120,7 +102,7 @@ public class APIController : MonoBehaviour
     }
 
     //POST a file to the server
-    public static void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action errorCallback = null, string customServerURL = null)
+    public static void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
         RestClient.Post<R>(BuildRequest(requestObject, endpoint, parameters, files, customServerURL))
         .Then(res =>
@@ -133,7 +115,7 @@ public class APIController : MonoBehaviour
         });
     }
 
-    public static void GetImage(string imageUri, Action<Texture2D> callback, Action errorCallback = null)
+    public static void GetImage(string imageUri, Action<Texture2D> callback, Action<RequestException> errorCallback = null)
     {
 
         RestClient.Get(new RequestHelper
@@ -150,7 +132,7 @@ public class APIController : MonoBehaviour
             // if no network, we do not display the error but simply call the errorCallback
             if (requestException.IsNetworkError)
             {
-                errorCallback?.Invoke();
+                errorCallback?.Invoke(requestException);
             }
             else
             {
@@ -177,7 +159,7 @@ public class APIController : MonoBehaviour
 
         }
 
-        string uri = (customeServerURL == null) ? serverURL : customeServerURL; 
+        string uri = (customeServerURL == null) ? serverURL : customeServerURL;
         return new RequestHelper
         {
             Uri = SecureURL(uri) + "/" + endpoint,
@@ -206,11 +188,11 @@ public class APIController : MonoBehaviour
     {
         if (CacheController.authCompanyConfig.token == null)
             return;
-                
+
         RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + CacheController.authCompanyConfig.token.access_token;
     }
 
-   
+
 
     //Generates a form data for file upload.
     private static List<IMultipartFormSection> GenerateFormData<B>(B body, List<File> files)
