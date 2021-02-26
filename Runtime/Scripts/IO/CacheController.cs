@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using static CacheModel;
 using System.Collections;
+using Proyecto26;
 
 public class CacheController : MonoBehaviour
 {
@@ -173,7 +174,7 @@ public class CacheController : MonoBehaviour
 
                 callback?.Invoke(texture);
 
-            }, ()=> {
+            }, (RequestException requestException)=> {
 
                 // we return the placeholder if there is an error
                 callback?.Invoke(UIController.GetInstance().imagePlaceholder);
