@@ -1,0 +1,15 @@
+{
+    "name": "A-LL.Core.Editor.asmdef",
+    "references": [
+        "GUID:3ddc281cbfcae419795a99d406d20cb1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
