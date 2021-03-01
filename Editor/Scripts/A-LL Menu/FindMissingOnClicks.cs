@@ -1,18 +1,21 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MissingOnClickDetector : MonoBehaviour
+public class FindMissingOnClicksEditor : EditorWindow
 {
-    void Awake()
+    [MenuItem("A-LL/Find Missing.../Find Missing OnClicks")]
+    public static void FindMissingOnClicks()
     {
         //Debug.Log("Class exist? " + classExist("ok.ButtonCallBackTest"));
         searchForMissingOnClickFunctions();
     }
 
-    void searchForMissingOnClickFunctions()
+    static void searchForMissingOnClickFunctions()
     {
         //Find all Buttons in the scene including hiding ones
         Button[] allButtonScriptsInScene = Resources.FindObjectsOfTypeAll<Button>() as Button[];
@@ -23,7 +26,7 @@ public class MissingOnClickDetector : MonoBehaviour
     }
 
     //Searches each registered onClick function in each class
-    void detectButtonError(Button button)
+    static void detectButtonError(Button button)
     {
         // go through all persistent listeners
         for (int i = 0; i < button.onClick.GetPersistentEventCount(); i++)
@@ -82,14 +85,14 @@ public class MissingOnClickDetector : MonoBehaviour
     }
 
     //Checks if class exit or has been renamed
-    bool classExist(string className)
+    static bool classExist(string className)
     {
         Type myType = Type.GetType(className);
         return myType != null;
     }
 
     //Checks if functions exist as public function
-    bool functionExistAsPublicInTarget(UnityEngine.Object target, string functionName)
+    static bool functionExistAsPublicInTarget(UnityEngine.Object target, string functionName)
     {
         Type type = target.GetType();
         MethodInfo targetinfo = type.GetMethod(functionName);
@@ -97,10 +100,11 @@ public class MissingOnClickDetector : MonoBehaviour
     }
 
     //Checks if functions exist as private function
-    bool functionExistAsPrivateInTarget(UnityEngine.Object target, string functionName)
+    static bool functionExistAsPrivateInTarget(UnityEngine.Object target, string functionName)
     {
         Type type = target.GetType();
         MethodInfo targetinfo = type.GetMethod(functionName, BindingFlags.Instance | BindingFlags.NonPublic);
         return targetinfo != null;
     }
+
 }

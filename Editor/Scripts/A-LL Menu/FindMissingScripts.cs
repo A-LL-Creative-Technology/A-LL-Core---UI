@@ -6,17 +6,17 @@ using System;
 
 public class FindMissingScriptsEditor : EditorWindow
 {
-    [MenuItem("Window/Utilities/Find Missing Scripts")]
+    [MenuItem("A-LL/Find Missing.../Find Missing Scripts")]
     public static void FindMissingScripts()
     {
         EditorWindow.GetWindow(typeof(FindMissingScriptsEditor));
     }
 
-    [MenuItem("Window/Utilities/Clear Progressbar")]
-    public static void ClearProgressbar()
-    {
-        EditorUtility.ClearProgressBar();
-    }
+    //[MenuItem("A-LL/Find Missing.../Clear Progressbar")]
+    //public static void ClearProgressbar()
+    //{
+    //    EditorUtility.ClearProgressBar();
+    //}
 
     static int missingCount = -1;
     void OnGUI()
