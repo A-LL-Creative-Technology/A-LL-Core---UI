@@ -3,11 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization.Components;
 using UnityEngine.UI;
-using static CacheModel;
+//using static CacheModel;
 
 public class NavigationController : MonoBehaviour
 {
@@ -25,6 +24,8 @@ public class NavigationController : MonoBehaviour
     readonly private float ANIMATION_NOTIFICATION_DURATION = 0.4f;
 
     readonly private float ANIMATION_RESET_SCROLL_TOP_DURATION = 0.4f;
+
+    public static event EventHandler OnALLCoreReady;
 
     public delegate void OnSinglePageContentLoaded(object sender, EventArgs e);
     public static OnSinglePageContentLoaded singlePageContentLoadedDelegate;
@@ -106,7 +107,7 @@ public class NavigationController : MonoBehaviour
     private GameObject oldView;
     private GameObject nextView;
 
-    private enum NavigationMode
+    public enum NavigationMode
     {
         DisplayOpen,
         StackOpen,
@@ -114,8 +115,8 @@ public class NavigationController : MonoBehaviour
         OverOpen,
         OverClose
     }
-    
-    private NavigationMode currentNavigationMode;
+
+    public NavigationMode currentNavigationMode;
 
     private Dictionary<string, GameObject> viewsDict = new Dictionary<string, GameObject>();
 
@@ -127,6 +128,8 @@ public class NavigationController : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Awake");
+
         instance = this;
 
         CacheController.OnCacheLoaded += OnCacheLoadedCallback;
@@ -155,26 +158,10 @@ public class NavigationController : MonoBehaviour
 
         firstCacheLoad = false;
 
-        //display the first view
-        if (!UserController.IsConnected()) // user is not connected
-        {
-            if (!CacheController.authCompanyConfig.isOnboardingAlreadySeen) // first launch of the app
-            {
-                currentNavigationMode = NavigationMode.OverOpen;
-                StartCoroutine(QueueToNavigate(() => Navigate("Welcome")));
-            }
-            else // not first launch, we go straight to the app content
-            {
-                currentNavigationMode = NavigationMode.DisplayOpen;
-                StartCoroutine(QueueToNavigate(() => Navigate(currentView.name)));
-            }
-        }
-        else // user is connected
-        {
-            currentNavigationMode = NavigationMode.DisplayOpen;
-            StartCoroutine(QueueToNavigate(() => Navigate(currentView.name)));
-        }
 
+        // A-LL CORE IS READY, we fire an event to tell the app controllers that they can start
+        if (OnALLCoreReady != null)
+            OnALLCoreReady(this, EventArgs.Empty);
     }
 
     private IEnumerator InitNavigation()
@@ -204,7 +191,7 @@ public class NavigationController : MonoBehaviour
 
         // canvas rect transform
         overCanvasRectTransform = overCanvas.GetComponent<RectTransform>();
-        
+
         viewsCanvasRectTransform = viewsCanvas.GetComponent<RectTransform>();
 
         // disable notification panel by default
@@ -213,7 +200,7 @@ public class NavigationController : MonoBehaviour
         notificationContainerInitialYPosition = notificationContainer.transform.localPosition.y;
 
         // setup back button
-        headerStackAmount = overCanvasRectTransform.rect.width/10.9f;
+        headerStackAmount = overCanvasRectTransform.rect.width / 10.9f;
         headerBackButton.SetActive(false);
         headerBackButton.GetComponent<Button>().onClick.AddListener(OnStackClose);
 
@@ -273,7 +260,8 @@ public class NavigationController : MonoBehaviour
         footerCanvas.SetActive(false);
     }
 
-    private IEnumerator InitOverViews() {
+    private IEnumerator InitOverViews()
+    {
 
         if (overCanvas.transform.childCount == 0) // make sure we have at least one child
             yield break;
@@ -297,7 +285,7 @@ public class NavigationController : MonoBehaviour
 
     }
 
-    private void Navigate(string routingStr)
+    public void Navigate(string routingStr)
     {
 
         //Log page in Analytics
@@ -315,7 +303,7 @@ public class NavigationController : MonoBehaviour
         {
             case NavigationMode.DisplayOpen:
 
-                
+
                 // set new view activation
                 DisplayNextView();
 
@@ -332,7 +320,7 @@ public class NavigationController : MonoBehaviour
 
                 // pop from stack
                 PopFromStack();
-                
+
                 break;
 
             case NavigationMode.OverOpen:
@@ -363,7 +351,7 @@ public class NavigationController : MonoBehaviour
     private string ParseRoute(string routingStr)
     {
         // detects if '/' in string
-        string [] routeElements = routingStr.Split('/');
+        string[] routeElements = routingStr.Split('/');
 
         switch (routeElements.Length)
         {
@@ -484,7 +472,7 @@ public class NavigationController : MonoBehaviour
         if (!currentActivePopUp)
             return;
 
-        LeanTween.scale(currentActivePopUp, Vector3.zero, ANIMATION_POP_UP_DURATION).setEaseInBack().setOnComplete(()=> {
+        LeanTween.scale(currentActivePopUp, Vector3.zero, ANIMATION_POP_UP_DURATION).setEaseInBack().setOnComplete(() => {
 
             popUpContainer.SetActive(false);
 
@@ -552,7 +540,7 @@ public class NavigationController : MonoBehaviour
 
     public void OnNotificationClose()
     {
-       
+
         LeanTween.moveLocalY(notificationContainer, notificationContainerInitialYPosition + notificationContainerRectTransform.rect.height, ANIMATION_NOTIFICATION_DURATION).setEaseInOutExpo().setOnComplete(() =>
         {
             notificationContainer.SetActive(false);
@@ -597,12 +585,12 @@ public class NavigationController : MonoBehaviour
     private void ExtractNextView(string nextViewStr)
     {
         // in the case it is called by FromOver or PopFromStack
-        if(nextViewStr == "-1")
+        if (nextViewStr == "-1")
         {
-            nextView =  null;
+            nextView = null;
             return;
         }
-            
+
 
         if (viewsDict.TryGetValue(nextViewStr, out GameObject nextViewGameObject))
         {
@@ -694,7 +682,7 @@ public class NavigationController : MonoBehaviour
         });
     }
 
-    
+
 
     private void PopFromStack()
     {
@@ -770,7 +758,7 @@ public class NavigationController : MonoBehaviour
         currentView = nextView;
 
         currentViewBackupOver = oldView;
-        viewsStackBackupOver = new List<NavigationConfig> (viewsStack);
+        viewsStackBackupOver = new List<NavigationConfig>(viewsStack);
 
         viewsStack.Clear();
 
@@ -789,25 +777,25 @@ public class NavigationController : MonoBehaviour
 
         //we do the animation
         LeanTween.moveLocalY(currentView, overViewsInitialYPosition, ANIMATION_OVER_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
-       {
+        {
 
-           // hide views below
-           headerCanvas.SetActive(false);
-           viewsCanvas.SetActive(false);
-           footerCanvas.SetActive(false);
+            // hide views below
+            headerCanvas.SetActive(false);
+            viewsCanvas.SetActive(false);
+            footerCanvas.SetActive(false);
 
-           oldView.SetActive(false);
+            oldView.SetActive(false);
 
-           // make sure the end position is precise (not precise with animation)
-           currentView.transform.localPosition = new Vector3(currentView.transform.localPosition.x, overViewsInitialYPosition, currentView.transform.localPosition.z);
+            // make sure the end position is precise (not precise with animation)
+            currentView.transform.localPosition = new Vector3(currentView.transform.localPosition.x, overViewsInitialYPosition, currentView.transform.localPosition.z);
 
-           oldView = null;
-           nextView = null;
+            oldView = null;
+            nextView = null;
 
-           // end of the animation
-           NavigationCallback();
+            // end of the animation
+            NavigationCallback();
 
-       });
+        });
 
     }
 
@@ -932,7 +920,7 @@ public class NavigationController : MonoBehaviour
             HideBackButton();
         else
             ResetNavigationBooleans();
-            
+
     }
 
     private void ResetNavigationBooleans()
@@ -1015,6 +1003,6 @@ public class NavigationController : MonoBehaviour
         }
     }
 
-    
+
 
 }

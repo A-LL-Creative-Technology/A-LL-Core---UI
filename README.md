@@ -76,14 +76,13 @@ Your manifest.json should look like this :
 10. Update Project Settings for iOS + Android based on another recent working project.
 11. Add Localization package
     Ref: To add the [Localization Unity Package](https://docs.unity3d.com/Packages/com.unity.localization@0.9/manual/Installation.html) :
-    1. Open the **Window > Package Manager** and **Add package from git URL ...**
-    2. Type in **com.unity.localization**.
-    3. Go to **Edit > Project Settings > Localization** and click **Create**.
-    4. Create **Main Localization** asset file in **A-LL/Config/Localization**.
-    5. In **Localization Settings** click **Locale Generator**.
-    6. Select your application languages and save them in **A-LL/Config/Localization**
-    7. Add the default locale in **Locale Selectors > Element 2 > Locale Id**.
-    8. Open **Window > Asset Management > Localization Tables**.
-    9. In the Asset Tables window, select the **New Table** tab. Select which Locales you want to generate tables for, give the table a name and select the **Asset Table** table type.
-12. In Unity, go to "Window -> Asset Management -> Adressables -> Groups" and then select "Build -> New Build -> Default Build Script" to build the Localization file
+    1. Go to **Edit > Project Settings > Localization** and click **Create**.
+    2. Create **Main Localization** asset file in **A-LL/Config/Localization**.
+    3. In **Edit > Project Settings > Localization**, click **Locale Generator**.
+    4. Select your application languages and save them in **A-LL/Config/Localization**
+    5. Add the default locale in **Locale Selectors > Element 2 > Locale Id**.
+    6. Open **Window > Asset Management > Localization Tables**.
+    7. In the Asset Tables window, select the **New Table Collection** tab. Select which Locales you want to generate tables for, give the table the name "Main Table" and create the corresponding Asset Table Collection. Save it to **A-LL/Config/Localization**.
+    8. In Unity, go to "Window -> Asset Management -> Adressables -> Groups" and then select "Build -> New Build -> Default Build Script" to build the Localization file
 13. Switch platform to iOS/Android in build setttings
+14. Got to "File -> Build & Run" to to test the installation.
