@@ -128,8 +128,6 @@ public class NavigationController : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Awake");
-
         instance = this;
 
         CacheController.OnCacheLoaded += OnCacheLoadedCallback;
