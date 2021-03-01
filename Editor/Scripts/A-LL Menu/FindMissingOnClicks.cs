@@ -11,6 +11,8 @@ public class FindMissingOnClicksEditor : EditorWindow
     [MenuItem("A-LL/Find Missing.../Find Missing OnClicks")]
     public static void FindMissingOnClicks()
     {
+        ClearLog();
+
         //Debug.Log("Class exist? " + classExist("ok.ButtonCallBackTest"));
         searchForMissingOnClickFunctions();
     }
@@ -21,6 +23,9 @@ public class FindMissingOnClicksEditor : EditorWindow
         Button[] allButtonScriptsInScene = Resources.FindObjectsOfTypeAll<Button>() as Button[];
         for (int i = 0; i < allButtonScriptsInScene.Length; i++)
         {
+            if (!allButtonScriptsInScene[i].gameObject.scene.IsValid()) // we make sure it is in the scene and not prefab
+                continue;
+
             detectButtonError(allButtonScriptsInScene[i]);
         }
     }
@@ -105,6 +110,14 @@ public class FindMissingOnClicksEditor : EditorWindow
         Type type = target.GetType();
         MethodInfo targetinfo = type.GetMethod(functionName, BindingFlags.Instance | BindingFlags.NonPublic);
         return targetinfo != null;
+    }
+
+    static public void ClearLog() //you can copy/paste this code to the bottom of your script
+    {
+        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
+        var type = assembly.GetType("UnityEditor.LogEntries");
+        var method = type.GetMethod("Clear");
+        method.Invoke(new object(), null);
     }
 
 }
