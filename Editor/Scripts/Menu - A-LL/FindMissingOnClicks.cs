@@ -11,13 +11,13 @@ public class FindMissingOnClicksEditor : EditorWindow
     [MenuItem("A-LL/Find Missing.../Find Missing OnClicks")]
     public static void FindMissingOnClicks()
     {
-        ClearLog();
+        GlobalController.ClearLog();
 
         //Debug.Log("Class exist? " + classExist("ok.ButtonCallBackTest"));
-        searchForMissingOnClickFunctions();
+        SearchForMissingOnClickFunctions();
     }
 
-    static void searchForMissingOnClickFunctions()
+    static void SearchForMissingOnClickFunctions()
     {
         //Find all Buttons in the scene including hiding ones
         Button[] allButtonScriptsInScene = Resources.FindObjectsOfTypeAll<Button>() as Button[];
@@ -26,12 +26,12 @@ public class FindMissingOnClicksEditor : EditorWindow
             if (!allButtonScriptsInScene[i].gameObject.scene.IsValid()) // we make sure it is in the scene and not prefab
                 continue;
 
-            detectButtonError(allButtonScriptsInScene[i]);
+            DetectButtonError(allButtonScriptsInScene[i]);
         }
     }
 
     //Searches each registered onClick function in each class
-    static void detectButtonError(Button button)
+    static void DetectButtonError(Button button)
     {
         // go through all persistent listeners
         for (int i = 0; i < button.onClick.GetPersistentEventCount(); i++)
@@ -57,7 +57,7 @@ public class FindMissingOnClicksEditor : EditorWindow
             string objectFullNameWithNamespace = objectName.GetType().FullName;
 
             //Check if the class that holds the function exist then exit if it does not
-            if (!classExist(objectFullNameWithNamespace))
+            if (!ClassExist(objectFullNameWithNamespace))
             {
                 Debug.Log("<color=green>Button \"" + button.gameObject.name +
                      "\" is missing the script that has the supposed button callback function. " +
@@ -68,14 +68,14 @@ public class FindMissingOnClicksEditor : EditorWindow
             //////////////////////////////////////////////////////CHECK FUNCTION EXISTANCE/////////////////////////////////////////
 
             //Check if function Exist as public (the registered onClick function is ok if this returns true)
-            if (functionExistAsPublicInTarget(objectName, methodName))
+            if (FunctionExistAsPublicInTarget(objectName, methodName))
             {
                 //No Need to Log if function exist
                 //Debug.Log("<color=green>Function Exist</color>");
             }
 
             //Check if function Exist as private 
-            else if (functionExistAsPrivateInTarget(objectName, methodName))
+            else if (FunctionExistAsPrivateInTarget(objectName, methodName))
             {
                 Debug.Log("<color=yellow>The registered Function \"" + methodName + "\" Exist as a private function. Please change \"" + methodName +
                     "\" function from the \"" + objectFullNameWithNamespace + "\" script to a public Access Modifier</color>", button.gameObject);
@@ -90,14 +90,14 @@ public class FindMissingOnClicksEditor : EditorWindow
     }
 
     //Checks if class exit or has been renamed
-    static bool classExist(string className)
+    static bool ClassExist(string className)
     {
         Type myType = Type.GetType(className);
         return myType != null;
     }
 
     //Checks if functions exist as public function
-    static bool functionExistAsPublicInTarget(UnityEngine.Object target, string functionName)
+    static bool FunctionExistAsPublicInTarget(UnityEngine.Object target, string functionName)
     {
         Type type = target.GetType();
         MethodInfo targetinfo = type.GetMethod(functionName);
@@ -105,19 +105,11 @@ public class FindMissingOnClicksEditor : EditorWindow
     }
 
     //Checks if functions exist as private function
-    static bool functionExistAsPrivateInTarget(UnityEngine.Object target, string functionName)
+    static bool FunctionExistAsPrivateInTarget(UnityEngine.Object target, string functionName)
     {
         Type type = target.GetType();
         MethodInfo targetinfo = type.GetMethod(functionName, BindingFlags.Instance | BindingFlags.NonPublic);
         return targetinfo != null;
-    }
-
-    static public void ClearLog() //you can copy/paste this code to the bottom of your script
-    {
-        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
-        var type = assembly.GetType("UnityEditor.LogEntries");
-        var method = type.GetMethod("Clear");
-        method.Invoke(new object(), null);
     }
 
 }

@@ -116,7 +116,7 @@ public class NavigationController : MonoBehaviour
         OverClose
     }
 
-    public NavigationMode currentNavigationMode;
+    [NonSerialized] public NavigationMode currentNavigationMode;
 
     private Dictionary<string, GameObject> viewsDict = new Dictionary<string, GameObject>();
 

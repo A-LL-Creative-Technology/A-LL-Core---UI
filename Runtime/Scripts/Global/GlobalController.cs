@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEditor;
@@ -38,6 +39,15 @@ public class GlobalController: MonoBehaviour
 
         //DontDestroyOnLoad(gameObject);
     }
+
+    static public void ClearLog() //you can copy/paste this code to the bottom of your script
+    {
+        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
+        var type = assembly.GetType("UnityEditor.LogEntries");
+        var method = type.GetMethod("Clear");
+        method.Invoke(new object(), null);
+    }
+
 
     static public void LogMe(string message)
     {

@@ -9,7 +9,9 @@ public class FindMissingScriptsEditor : EditorWindow
     [MenuItem("A-LL/Find Missing.../Find Missing Scripts")]
     public static void FindMissingScripts()
     {
-        EditorWindow.GetWindow(typeof(FindMissingScriptsEditor));
+        GlobalController.ClearLog();
+
+        GetWindow(typeof(FindMissingScriptsEditor));
     }
 
     //[MenuItem("A-LL/Find Missing.../Clear Progressbar")]
