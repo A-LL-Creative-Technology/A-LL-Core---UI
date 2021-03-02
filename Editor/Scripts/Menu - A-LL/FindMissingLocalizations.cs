@@ -11,7 +11,7 @@ public class FindMissingLocalizationsEditor : EditorWindow
     [MenuItem("A-LL/Find Missing.../Find Missing Localizations")]
     public static void FindMissingLocalizations()
     {
-        GlobalController.ClearLog();
+        GlobalEditor.ClearLog();
 
         //Find all gameobjects in the scene including hiding ones
         GameObject[] allGameObjectsInScene = Resources.FindObjectsOfTypeAll<GameObject>();

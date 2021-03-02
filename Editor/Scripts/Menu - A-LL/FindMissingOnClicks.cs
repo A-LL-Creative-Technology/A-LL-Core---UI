@@ -11,7 +11,7 @@ public class FindMissingOnClicksEditor : EditorWindow
     [MenuItem("A-LL/Find Missing.../Find Missing OnClicks")]
     public static void FindMissingOnClicks()
     {
-        GlobalController.ClearLog();
+        GlobalEditor.ClearLog();
 
         //Debug.Log("Class exist? " + classExist("ok.ButtonCallBackTest"));
         SearchForMissingOnClickFunctions();

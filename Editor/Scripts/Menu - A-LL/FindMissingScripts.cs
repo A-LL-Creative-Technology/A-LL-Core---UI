@@ -9,7 +9,7 @@ public class FindMissingScriptsEditor : EditorWindow
     [MenuItem("A-LL/Find Missing.../Find Missing Scripts")]
     public static void FindMissingScripts()
     {
-        GlobalController.ClearLog();
+        GlobalEditor.ClearLog();
 
         GetWindow(typeof(FindMissingScriptsEditor));
     }

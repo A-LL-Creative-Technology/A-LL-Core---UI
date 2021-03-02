@@ -40,15 +40,6 @@ public class GlobalController: MonoBehaviour
         //DontDestroyOnLoad(gameObject);
     }
 
-    static public void ClearLog() //you can copy/paste this code to the bottom of your script
-    {
-        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
-        var type = assembly.GetType("UnityEditor.LogEntries");
-        var method = type.GetMethod("Clear");
-        method.Invoke(new object(), null);
-    }
-
-
     static public void LogMe(string message)
     {
         Debug.Log(message);
