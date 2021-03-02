@@ -22,7 +22,7 @@ public class FindMissingLocalizationsRuntime : MonoBehaviour
 
         }
 
-        Debug.Log("<color=orange>Finish running FindMissingLocalizationsRuntime. The application will quit when compiled. Please remove this script from the scene.</color>");
+        Debug.Log("<color=orange>Finished running FindMissingLocalizationsRuntime. The application will quit when compiled. Please remove this script from the scene.</color>", gameObject);
         Application.Quit();
     }
 }
