@@ -13,12 +13,6 @@ public class FindMissingLocalizationsEditor : EditorWindow
     {
         GlobalController.ClearLog();
 
-        //Debug.Log("Class exist? " + classExist("ok.ButtonCallBackTest"));
-        SearchForMissingOnClickFunctions();
-    }
-
-    static void SearchForMissingOnClickFunctions()
-    {
         //Find all gameobjects in the scene including hiding ones
         GameObject[] allGameObjectsInScene = Resources.FindObjectsOfTypeAll<GameObject>();
         foreach(GameObject currentGameObject in allGameObjectsInScene)
@@ -49,10 +43,10 @@ public class FindMissingLocalizationsEditor : EditorWindow
                 Debug.Log("<color=red>This gameobject has a TextMeshPro component bur no Localize component. Is it missing Localization? " + currentGameObject.name + "</color>", currentGameObject);
             }
 
-            if(hasTMPComponent && hasLocalizeComponent)
-            {
-                Debug.Log("<color=green>This gameobject has a Localize component to be checked: " + currentGameObject.name + "</color>", currentGameObject);
-            }
+            //if(hasTMPComponent && hasLocalizeComponent)
+            //{
+            //    Debug.Log("<color=green>This gameobject has a Localize component to be checked: " + currentGameObject.name + "</color>", currentGameObject);
+            //}
         }
     }
 
