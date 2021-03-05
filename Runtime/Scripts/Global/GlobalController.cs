@@ -116,52 +116,6 @@ public class GlobalController: MonoBehaviour
 
     }
 
-    public static bool DoesSceneExists(string sceneName)
-    {
-
-        int sceneCount = SceneManager.sceneCountInBuildSettings;
-
-        for (int i = 0; i < sceneCount; i++)
-        {
-            string currentSceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
-
-            if (currentSceneName == sceneName)
-                return true;
-        }
-
-        return false;
-    }
-
-    public static bool LoadNextSceneAsync(string sceneName)
-    {
-        if (DoesSceneExists(sceneName))
-        {
-            NavigationController.GetInstance().OnGlobalLoaderOpen(); // no need to cancel it as GO is destroyed with new scene
-
-            GetInstance().StartCoroutine(LoadSceneAsync(sceneName));
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    private static IEnumerator LoadSceneAsync(string sceneName)
-    {
-        // TO DO: manage error when scene cannot be found/loaded
-
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-
-        // Wait until the asynchronous scene fully loads
-        while (!asyncOperation.isDone)
-        {
-            yield return null;
-        }
-
-    }
-
     public static string RemoveSpaceInString(string str)
     {
         return Regex.Replace(str, @"\s+", "");

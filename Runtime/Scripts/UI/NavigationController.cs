@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization.Components;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 //using static CacheModel;
 
@@ -952,6 +954,52 @@ public class NavigationController : MonoBehaviour
         {
             ResetNavigationBooleans();
         });
+    }
+
+    public bool DoesSceneExists(string sceneName)
+    {
+
+        int sceneCount = SceneManager.sceneCountInBuildSettings;
+
+        for (int i = 0; i < sceneCount; i++)
+        {
+            string currentSceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
+
+            if (currentSceneName == sceneName)
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool LoadNextSceneAsync(string sceneName)
+    {
+        if (DoesSceneExists(sceneName))
+        {
+            OnGlobalLoaderOpen(); // no need to cancel it as GO is destroyed with new scene
+
+            StartCoroutine(LoadSceneAsync(sceneName));
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private IEnumerator LoadSceneAsync(string sceneName)
+    {
+        // TO DO: manage error when scene cannot be found/loaded
+
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncOperation.isDone)
+        {
+            yield return null;
+        }
+
     }
 
     // adjust the over view height to minimum fill the screen
