@@ -66,6 +66,11 @@ public class NotificationController : MonoBehaviour
         });       
     }
 
+    private void OnDestroy()
+    {
+        Firebase.Messaging.FirebaseMessaging.TokenReceived -= OnPushNotificationTokenReceived;
+        Firebase.Messaging.FirebaseMessaging.MessageReceived -= OnPushNotificationReceived;
+    }
 
     private void OnApplicationPause(bool isPaused)
     {

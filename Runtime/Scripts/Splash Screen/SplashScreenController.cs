@@ -33,6 +33,13 @@ public class SplashScreenController : MonoBehaviour
         videoPlayer.Prepare();
     }
 
+    private void OnDestroy()
+    {
+        asyncOperation.completed -= SceneIsReady;
+        videoPlayer.loopPointReached -= VideoReachedEndCallback;
+        videoPlayer.started -= VideoStartedCallback;
+    }
+
     private void SceneIsReady(AsyncOperation obj)
     {
         videoPlayer.Play();

@@ -138,6 +138,12 @@ public class NavigationController : MonoBehaviour
         StartCoroutine(InitNavigation());
     }
 
+    private void OnDestroy()
+    {
+        CacheController.OnCacheLoaded -= OnCacheLoadedCallback;
+        singlePageContentLoadedDelegate -= OnSinglePageContentLoadedContinuePushToStackCallback;
+    }
+
     private void Update()
     {
 
@@ -970,6 +976,11 @@ public class NavigationController : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void OnLoadNextSceneAsync(string sceneName) // necessary to make it accessible to buttons
+    {
+        LoadNextSceneAsync(sceneName);
     }
 
     public bool LoadNextSceneAsync(string sceneName)
