@@ -87,7 +87,7 @@ public class CacheModel
     }
 
     [Serializable]
-    public class AuthCompanyConfig : BaseConfig
+    public class UserConfig : BaseConfig
     {
         // Serialized fields for Json
         public string name;
@@ -96,9 +96,9 @@ public class CacheModel
         public bool isOnboardingAlreadySeen = false;
         public Token token = null;
 
-        public AuthCompanyConfig()
+        public UserConfig()
         {
-            filePath = "AuthCompanyConfig.json";
+            filePath = "UserConfig.json";
             is_permanent = true;
         }
     }

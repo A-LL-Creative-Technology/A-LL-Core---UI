@@ -186,10 +186,10 @@ public class APIController : MonoBehaviour
     //Add access_token and token_type to the Authorization header.
     private static void AddAuthorizationHeader()
     {
-        if (CacheController.authCompanyConfig.token == null)
+        if (CacheController.userConfig.token == null)
             return;
 
-        RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + CacheController.authCompanyConfig.token.access_token;
+        RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + CacheController.userConfig.token.access_token;
     }
 
 

@@ -4,6 +4,7 @@ using System;
 using static CacheModel;
 using System.Collections;
 using Proyecto26;
+using UnityEngine.SceneManagement;
 
 public class CacheController : MonoBehaviour
 {
@@ -21,7 +22,8 @@ public class CacheController : MonoBehaviour
     // 2. Add the loading in LoadAllCaches()
     // 3. Add the type as a child of Cache
     public static GlobalConfig globalConfig = new GlobalConfig();
-    public static AuthCompanyConfig authCompanyConfig = new AuthCompanyConfig();
+    public static UserConfig userConfig = new UserConfig();
+
     public static NewsConfig newsConfig = new NewsConfig();
     public static InnovationsConfig innovationsConfig = new InnovationsConfig();
     public static EventsConfig eventsConfig = new EventsConfig();
@@ -53,8 +55,6 @@ public class CacheController : MonoBehaviour
 
         // define root cache location
         InitDirectories();
-        
-
 
     }
 
@@ -67,15 +67,19 @@ public class CacheController : MonoBehaviour
 
     private static void InitDirectories()
     {
-        rootCacheLocation = Path.Combine(Application.persistentDataPath, "Cache");
-        permanentCacheLocation = Path.Combine(Application.persistentDataPath, "Permanent Cache");
+        string sceneCacheLocation = Path.Combine(Application.persistentDataPath, SceneManager.GetActiveScene().name);
+
+        rootCacheLocation = Path.Combine(sceneCacheLocation, "Cache");
+        permanentCacheLocation = Path.Combine(sceneCacheLocation, "Permanent Cache");
 
         configCacheLocation = Path.Combine(rootCacheLocation, "Config");
         rootImagesCacheLocation = Path.Combine(rootCacheLocation, "Images");
+
         imagesNewsCacheLocation = Path.Combine(rootImagesCacheLocation, "News");
         imagesInnovationsCacheLocation = Path.Combine(rootImagesCacheLocation, "Innovations");
         imagesEventsCacheLocation = Path.Combine(rootImagesCacheLocation, "Events");
 
+        CreateDirectory(sceneCacheLocation);
         CreateDirectory(rootCacheLocation);
         CreateDirectory(permanentCacheLocation);
 
@@ -131,8 +135,8 @@ public class CacheController : MonoBehaviour
         LoadConfigFromDisk(globalConfig);
         LoadConfigFromDisk(myEventsIDsConfig);
         LoadConfigFromDisk(creaTechsConfig);
-        LoadConfigFromDisk(authCompanyConfig, () => {
-            authCompanyConfig.Save(BaseConfig.SaveType.NoEvent); // we create a default config, so that state of the app always starts as if guest mode
+        LoadConfigFromDisk(userConfig, () => {
+            userConfig.Save(BaseConfig.SaveType.NoEvent); // we create a default config, so that state of the app always starts as if guest mode
         });
     }
 
@@ -151,11 +155,11 @@ public class CacheController : MonoBehaviour
     }
 
     // load the cache image from disk
-    public static void LoadImageFromDisk(string imageID, string imageURL, string imageCacheLocation, bool isSmall, Action <Texture2D> callback)
+    public static void LoadImageFromDisk(string imageID, string imageURL, string imageCacheLocation, bool isSmall, Action<Texture2D> callback)
     {
         string prefix = isSmall ? "_small_" : "";
         string imagePath = Path.Combine(imageCacheLocation, imageID + prefix + ".png");
-        
+
         // first verify if available in the cache
         if (File.Exists(imagePath))
         {
@@ -174,7 +178,7 @@ public class CacheController : MonoBehaviour
 
                 callback?.Invoke(texture);
 
-            }, (RequestException requestException)=> {
+            }, (RequestException requestException) => {
 
                 // we return the placeholder if there is an error
                 callback?.Invoke(UIController.GetInstance().imagePlaceholder);
@@ -228,9 +232,9 @@ public class CacheController : MonoBehaviour
         string cacheJSON = JsonUtility.ToJson(baseConfig);
 
         File.WriteAllText(baseConfigCast.GetFullFilePath(), cacheJSON);
-                
+
     }
-    
+
     private static void CreateDirectory(string directoryPath)
     {
 
@@ -246,7 +250,7 @@ public class CacheController : MonoBehaviour
 
         if (Directory.Exists(Path.GetDirectoryName(directoryPath)))
         {
-            Directory.Delete(directoryPath,true);
+            Directory.Delete(directoryPath, true);
 
         }
     }
