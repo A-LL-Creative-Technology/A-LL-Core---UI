@@ -126,12 +126,22 @@ public class InputFieldController : MonoBehaviour
         // get parent of the input field which is a canvas
         GameObject parentView = inputField.GetComponentInParent<Canvas>().gameObject;
 
-        // compute y position of the input field with respect to parent (with respect to top)
-        int inputFieldPositionFromTop = (int)-parentView.transform.InverseTransformPoint(inputField.transform.position).y;
+        Debug.Log(parentView.name);
 
-        // move the input field in the middle of the visible area
+        // visible area height
         int visibleAreaHeight = Screen.height;
+        Debug.Log(visibleAreaHeight);
+
+        // compute y position of the input field with respect to parent (with respect to the pivot y: 1=top, 0.5=middle, etc)
+        float inputFieldPositionFromTopBeforePivotCorrection = -parentView.transform.InverseTransformPoint(inputField.transform.position).y;
+        Debug.Log(inputFieldPositionFromTopBeforePivotCorrection);
+        // correction for the pivot
+        int inputFieldPositionFromTop = (int)( inputFieldPositionFromTopBeforePivotCorrection + (1 - parentView.GetComponent<RectTransform>().pivot.y) * visibleAreaHeight);
+        Debug.Log(inputFieldPositionFromTop);
+
+        // move the input field to its final location in the visible area
         int inputFieldFinalPosition = (int)(inputFieldPositionFromTop - visibleAreaHeight * inputFieldScreenRatio);
+        Debug.Log(inputFieldFinalPosition);
 
         LeanTween.moveLocalY(NavigationController.GetInstance().currentView, NavigationController.GetInstance().overViewsInitialYPosition + inputFieldFinalPosition, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
             FormController.GetInstance().isSelectionInProgress = false;

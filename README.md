@@ -61,6 +61,8 @@ Your manifest.json should look like this :
             1. Additionnaly, create an Assembly Definition Reference named "Main Proyecto26" in "RestClient/Packages"
             2. Link it to Assembly A-LL.Core.Runtime.asmdef
         - Online Maps
+        - Native Gallery for Android & iOS
+        - Advanced Input Field 2
 5. Copy/Paste files in "A-LL Core/Assets To Copy/A-LL/Config/Firebase/" and paste them to "Assets/A-LL/Config/Firebase/" and rename by removing the prefix "Sandbox - "
 6. Open Unity > Preferences > External Tools and tick the boxes for the items below.
     1. Registry packages
