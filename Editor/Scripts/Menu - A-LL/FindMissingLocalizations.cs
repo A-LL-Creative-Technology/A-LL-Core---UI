@@ -40,7 +40,7 @@ public class FindMissingLocalizationsEditor : EditorWindow
 
             if(hasTMPComponent && !hasLocalizeComponent)
             {
-                Debug.Log("<color=red>This gameobject has a TextMeshPro component bur no Localize component. Is it missing Localization? " + currentGameObject.name + "</color>", currentGameObject);
+                Debug.Log("<color=red>This gameobject has a TextMeshPro component but no Localize component. Is it missing Localization? " + currentGameObject.name + "</color>", currentGameObject);
             }
 
             //if(hasTMPComponent && hasLocalizeComponent)
