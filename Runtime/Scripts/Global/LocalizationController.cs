@@ -18,8 +18,6 @@ public class LocalizationController : MonoBehaviour
     private void Awake()
     {
         CacheController.OnCacheLoaded += OnCacheLoadedCallback;
-
-        StartCoroutine(InitLocalization());
     }
 
     private void OnDestroy()
@@ -33,16 +31,12 @@ public class LocalizationController : MonoBehaviour
         {
             StartCoroutine(UpdateLocale());
         }
+        else
+        {
+            CacheController.appConfig.lang = LocalizationSettings.SelectedLocale.Identifier.Code;
+            CacheController.appConfig.Save();
+        }
     }
-
-    private IEnumerator InitLocalization()
-    {
-        yield return LocalizationSettings.InitializationOperation;
-
-        CacheController.appConfig.lang = LocalizationSettings.SelectedLocale.Identifier.Code;
-        CacheController.appConfig.Save();
-    }
-
 
     public static IEnumerator UpdateLocale()
     {

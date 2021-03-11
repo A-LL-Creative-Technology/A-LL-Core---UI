@@ -121,6 +121,7 @@ public class CacheController : MonoBehaviour
 
     private void LoadAllCaches()
     {
+        LoadAppCaches();
         LoadPermanentCaches();
         LoadNormalCaches();
 
@@ -140,6 +141,11 @@ public class CacheController : MonoBehaviour
 
         isCacheLoaded = true;
 
+    }
+
+    private static void LoadAppCaches()
+    {
+        LoadConfigFromDisk(appConfig);
     }
 
     private static void LoadPermanentCaches()
