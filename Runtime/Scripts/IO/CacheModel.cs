@@ -16,8 +16,8 @@ public class CacheModel
     {
         public string last_update = ""; // to be used to verify the validity of the cache and last update time
 
-        public static event EventHandler OnCacheConfigUpdated; // when we replaced the cache with updated content
-        public static event EventHandler OnCacheConfigExtended; // when we add new content to the existing cache (but don't update the rest)
+        public event EventHandler OnCacheConfigUpdated; // when we replaced the cache with updated content
+        public event EventHandler OnCacheConfigExtended; // when we add new content to the existing cache (but don't update the rest)
 
         protected string filePath;
 
