@@ -148,14 +148,14 @@ public class APIController : MonoBehaviour
         AddHeaders();
 
         // add localization to header
-        if (CacheController.globalConfig.lang != "")
+        if (CacheController.appConfig.lang != "")
         {
             if (parameters == null)
             {
                 parameters = new Dictionary<string, string>();
             }
 
-            parameters.Add("lang", CacheController.globalConfig.lang);
+            parameters.Add("lang", CacheController.appConfig.lang);
 
         }
 

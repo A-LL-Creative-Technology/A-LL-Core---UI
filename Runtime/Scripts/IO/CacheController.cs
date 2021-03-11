@@ -21,7 +21,9 @@ public class CacheController : MonoBehaviour
     // 1. Add field static variable in CacheController
     // 2. Add the loading in LoadAllCaches()
     // 3. Add the type as a child of Cache
-    public static GlobalConfig globalConfig = new GlobalConfig();
+    public static AppConfig appConfig = new AppConfig();
+
+    public static SceneConfig sceneConfig = new SceneConfig();
     public static UserConfig userConfig = new UserConfig();
 
     public static NewsConfig newsConfig = new NewsConfig();
@@ -36,12 +38,13 @@ public class CacheController : MonoBehaviour
     public static ServicesConfig servicesConfig = new ServicesConfig();
     public static CreaTechsConfig creaTechsConfig = new CreaTechsConfig();
 
-    private static string rootCacheLocation;
+    public static string appCacheLocation;
 
-    public static string permanentCacheLocation;
-    public static string configCacheLocation;
+    private static string standardSceneCacheLocation;
+    public static string permanentSceneCacheLocation;
 
-    private static string rootImagesCacheLocation;
+    public static string standardConfigCacheLocation;
+    private static string standardImagesCacheLocation;
 
     public static string imagesNewsCacheLocation;
     public static string imagesInnovationsCacheLocation;
@@ -67,25 +70,34 @@ public class CacheController : MonoBehaviour
 
     private static void InitDirectories()
     {
-        string sceneCacheLocation = Path.Combine(Application.persistentDataPath, SceneManager.GetActiveScene().name);
+        string rootCacheLocation = Path.Combine(Application.persistentDataPath, "Cache");
 
-        rootCacheLocation = Path.Combine(sceneCacheLocation, "Cache");
-        permanentCacheLocation = Path.Combine(sceneCacheLocation, "Permanent Cache");
+        appCacheLocation = Path.Combine(rootCacheLocation, "App");
 
-        configCacheLocation = Path.Combine(rootCacheLocation, "Config");
-        rootImagesCacheLocation = Path.Combine(rootCacheLocation, "Images");
+        string scenesCacheLocation = Path.Combine(rootCacheLocation, "Scenes");
+        string sceneCacheLocation = Path.Combine(scenesCacheLocation, SceneManager.GetActiveScene().name);
 
-        imagesNewsCacheLocation = Path.Combine(rootImagesCacheLocation, "News");
-        imagesInnovationsCacheLocation = Path.Combine(rootImagesCacheLocation, "Innovations");
-        imagesEventsCacheLocation = Path.Combine(rootImagesCacheLocation, "Events");
+        standardSceneCacheLocation = Path.Combine(sceneCacheLocation, "Standard");
+        permanentSceneCacheLocation = Path.Combine(sceneCacheLocation, "Permanent");
+
+        standardConfigCacheLocation = Path.Combine(standardSceneCacheLocation, "Config");
+        standardImagesCacheLocation = Path.Combine(standardSceneCacheLocation, "Images");
+
+        imagesNewsCacheLocation = Path.Combine(standardImagesCacheLocation, "News");
+        imagesInnovationsCacheLocation = Path.Combine(standardImagesCacheLocation, "Innovations");
+        imagesEventsCacheLocation = Path.Combine(standardImagesCacheLocation, "Events");
+
+        CreateDirectory(rootCacheLocation);
+        CreateDirectory(appCacheLocation);
+        CreateDirectory(scenesCacheLocation);
 
         CreateDirectory(sceneCacheLocation);
-        CreateDirectory(rootCacheLocation);
-        CreateDirectory(permanentCacheLocation);
+        CreateDirectory(standardSceneCacheLocation);
+        CreateDirectory(permanentSceneCacheLocation);
 
-        CreateDirectory(configCacheLocation);
+        CreateDirectory(standardConfigCacheLocation);
 
-        CreateDirectory(rootImagesCacheLocation);
+        CreateDirectory(standardImagesCacheLocation);
         CreateDirectory(imagesNewsCacheLocation);
         CreateDirectory(imagesInnovationsCacheLocation);
         CreateDirectory(imagesEventsCacheLocation);
@@ -94,7 +106,7 @@ public class CacheController : MonoBehaviour
 
     public static void ClearAllCache()
     {
-        RemoveDirectory(rootCacheLocation);
+        RemoveDirectory(standardSceneCacheLocation);
 
         // recreate the empty Cache Directory
         InitDirectories();
@@ -132,7 +144,7 @@ public class CacheController : MonoBehaviour
 
     private static void LoadPermanentCaches()
     {
-        LoadConfigFromDisk(globalConfig);
+        LoadConfigFromDisk(sceneConfig);
         LoadConfigFromDisk(myEventsIDsConfig);
         LoadConfigFromDisk(creaTechsConfig);
         LoadConfigFromDisk(userConfig, () => {

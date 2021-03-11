@@ -20,7 +20,15 @@ public class CacheModel
         public event EventHandler OnCacheConfigExtended; // when we add new content to the existing cache (but don't update the rest)
 
         protected string filePath;
-        protected bool is_permanent = false;
+
+        protected enum CacheType
+        {
+            App,
+            Permanent,
+            Standard
+        }
+
+        protected CacheType cacheType = CacheType.Standard;
 
         public enum SaveType
         {
@@ -65,24 +73,48 @@ public class CacheModel
 
         public string GetFullFilePath()
         {
-            if (is_permanent)
-                return Path.Combine(CacheController.permanentCacheLocation, filePath);
-            else
-                return Path.Combine(CacheController.configCacheLocation, filePath);
+
+            switch (cacheType)
+            {
+                case CacheType.App:
+
+                    return Path.Combine(CacheController.appCacheLocation, filePath);
+
+                case CacheType.Permanent:
+
+                    return Path.Combine(CacheController.permanentSceneCacheLocation, filePath);
+
+                default: // Standard
+
+                    return Path.Combine(CacheController.standardConfigCacheLocation, filePath);
+
+            }
         }
     }
 
     [Serializable]
-    public class GlobalConfig : BaseConfig
+    public class AppConfig : BaseConfig
     {
         // Serialized fields for Json
         public string lang = "";
+        
+        public AppConfig()
+        {
+            filePath = "AppConfig.json";
+            cacheType = CacheType.App;
+        }
+    }
+
+    [Serializable]
+    public class SceneConfig : BaseConfig
+    {
+        // Serialized fields for Json
         public bool isCompanyPasswordAlreadyGenerated = false;
 
-        public GlobalConfig()
+        public SceneConfig()
         {
-            filePath = "GlobalConfig.json";
-            is_permanent = true;
+            filePath = "SceneConfig.json";
+            cacheType = CacheType.Permanent;
         }
     }
 
@@ -99,7 +131,7 @@ public class CacheModel
         public UserConfig()
         {
             filePath = "UserConfig.json";
-            is_permanent = true;
+            cacheType = CacheType.Permanent;
         }
     }
 
@@ -173,7 +205,7 @@ public class CacheModel
         public MyEventsIDsConfig()
         {
             filePath = "MyEventsIDsConfig.json";
-            is_permanent = true;
+            cacheType = CacheType.Permanent;
         }
 
     }
@@ -256,7 +288,7 @@ public class CacheModel
         public CreaTechsConfig()
         {
             filePath = "CreaTechsConfig.json";
-            is_permanent = true;
+            cacheType = CacheType.Permanent;
         }
 
     }
