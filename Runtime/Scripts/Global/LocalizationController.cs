@@ -27,14 +27,14 @@ public class LocalizationController : MonoBehaviour
 
     private void OnCacheLoadedCallback(object sender, EventArgs e)
     {
-        if(CacheController.appConfig.lang != "")
+        if(CacheController.GetInstance().appConfig.lang != "")
         {
             StartCoroutine(UpdateLocale());
         }
         else
         {
-            CacheController.appConfig.lang = LocalizationSettings.SelectedLocale.Identifier.Code;
-            CacheController.appConfig.Save();
+            CacheController.GetInstance().appConfig.lang = LocalizationSettings.SelectedLocale.Identifier.Code;
+            CacheController.GetInstance().appConfig.Save();
         }
     }
 
@@ -42,7 +42,7 @@ public class LocalizationController : MonoBehaviour
     {
         yield return LocalizationSettings.InitializationOperation;
          
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(CacheController.appConfig.lang);
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.GetLocale(CacheController.GetInstance().appConfig.lang);
         
     }
 

@@ -148,14 +148,14 @@ public class APIController : MonoBehaviour
         AddHeaders();
 
         // add localization to header
-        if (CacheController.appConfig.lang != "")
+        if (CacheController.GetInstance().appConfig.lang != "")
         {
             if (parameters == null)
             {
                 parameters = new Dictionary<string, string>();
             }
 
-            parameters.Add("lang", CacheController.appConfig.lang);
+            parameters.Add("lang", CacheController.GetInstance().appConfig.lang);
 
         }
 
@@ -186,10 +186,10 @@ public class APIController : MonoBehaviour
     //Add access_token and token_type to the Authorization header.
     private static void AddAuthorizationHeader()
     {
-        if (CacheController.userConfig.token == null)
+        if (CacheController.GetInstance().userConfig.token == null)
             return;
 
-        RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + CacheController.userConfig.token.access_token;
+        RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + CacheController.GetInstance().userConfig.token.access_token;
     }
 
 

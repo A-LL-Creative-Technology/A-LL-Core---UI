@@ -101,7 +101,7 @@ public class GlobalController: MonoBehaviour
     {
         // set the date
         DateTime dateDT = DateTime.Parse(dateTimeStr);
-        string monthTranslated = new CultureInfo(CacheController.appConfig.lang).DateTimeFormat.GetMonthName(dateDT.Month);
+        string monthTranslated = new CultureInfo(CacheController.GetInstance().appConfig.lang).DateTimeFormat.GetMonthName(dateDT.Month);
 
         return monthTranslated;
 

@@ -8,6 +8,6 @@ public class UserController : MonoBehaviour
 
     public static bool IsConnected()
     {
-        return (!String.IsNullOrEmpty(CacheController.userConfig.last_update) && CacheController.userConfig.token != null && CacheController.userConfig.token.access_token != "");
+        return (!String.IsNullOrEmpty(CacheController.GetInstance().userConfig.last_update) && CacheController.GetInstance().userConfig.token != null && CacheController.GetInstance().userConfig.token.access_token != "");
     }
 }

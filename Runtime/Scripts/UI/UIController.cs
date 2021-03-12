@@ -239,7 +239,7 @@ public class UIController : MonoBehaviour
     {
         string url = "https://www.ccif.ch/la-ccif/demande-d-adhesion-fr.html";
 
-        if (CacheController.appConfig.lang == "de-DE")
+        if (CacheController.GetInstance().appConfig.lang == "de-DE")
             url = "https://www.hikf.ch/die-hikf/beitrittsgesuch.html";
 
         OnOpenLink(url);

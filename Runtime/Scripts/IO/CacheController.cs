@@ -21,22 +21,22 @@ public class CacheController : MonoBehaviour
     // 1. Add field static variable in CacheController
     // 2. Add the loading in LoadAllCaches()
     // 3. Add the type as a child of Cache
-    public static AppConfig appConfig = new AppConfig();
+    public AppConfig appConfig = new AppConfig();
 
-    public static SceneConfig sceneConfig = new SceneConfig();
-    public static UserConfig userConfig = new UserConfig();
+    public SceneConfig sceneConfig = new SceneConfig();
+    public UserConfig userConfig = new UserConfig();
 
-    public static NewsConfig newsConfig = new NewsConfig();
-    public static InnovationsConfig innovationsConfig = new InnovationsConfig();
-    public static EventsConfig eventsConfig = new EventsConfig();
-    public static FilteredEventsConfig filteredEventsConfig = new FilteredEventsConfig(); // no need to load it at startup
-    public static MyEventsIDsConfig myEventsIDsConfig = new MyEventsIDsConfig();
-    public static TagsConfig tagsConfig = new TagsConfig();
-    public static SurveyRelationalsConfig surveyRelationalsConfig = new SurveyRelationalsConfig();
-    public static ContactsConfig contactsConfig = new ContactsConfig();
-    public static ProvidersConfig providersConfig = new ProvidersConfig();
-    public static ServicesConfig servicesConfig = new ServicesConfig();
-    public static CreaTechsConfig creaTechsConfig = new CreaTechsConfig();
+    public NewsConfig newsConfig = new NewsConfig();
+    public InnovationsConfig innovationsConfig = new InnovationsConfig();
+    public EventsConfig eventsConfig = new EventsConfig();
+    public FilteredEventsConfig filteredEventsConfig = new FilteredEventsConfig(); // no need to load it at startup
+    public MyEventsIDsConfig myEventsIDsConfig = new MyEventsIDsConfig();
+    public TagsConfig tagsConfig = new TagsConfig();
+    public SurveyRelationalsConfig surveyRelationalsConfig = new SurveyRelationalsConfig();
+    public ContactsConfig contactsConfig = new ContactsConfig();
+    public ProvidersConfig providersConfig = new ProvidersConfig();
+    public ServicesConfig servicesConfig = new ServicesConfig();
+    public CreaTechsConfig creaTechsConfig = new CreaTechsConfig();
 
     public static string appCacheLocation;
 
@@ -145,30 +145,30 @@ public class CacheController : MonoBehaviour
 
     private static void LoadAppCaches()
     {
-        LoadConfigFromDisk(appConfig);
+        LoadConfigFromDisk(GetInstance().appConfig);
     }
 
     private static void LoadPermanentCaches()
     {
-        LoadConfigFromDisk(sceneConfig);
-        LoadConfigFromDisk(myEventsIDsConfig);
-        LoadConfigFromDisk(creaTechsConfig);
-        LoadConfigFromDisk(userConfig, () => {
-            userConfig.Save(BaseConfig.SaveType.NoEvent); // we create a default config, so that state of the app always starts as if guest mode
+        LoadConfigFromDisk(GetInstance().sceneConfig);
+        LoadConfigFromDisk(GetInstance().myEventsIDsConfig);
+        LoadConfigFromDisk(GetInstance().creaTechsConfig);
+        LoadConfigFromDisk(GetInstance().userConfig, () => {
+            GetInstance().userConfig.Save(BaseConfig.SaveType.NoEvent); // we create a default config, so that state of the app always starts as if guest mode
         });
     }
 
     private static void LoadNormalCaches()
     {
         // load all caches        
-        LoadConfigFromDisk(newsConfig);
-        LoadConfigFromDisk(innovationsConfig);
-        LoadConfigFromDisk(eventsConfig);
-        LoadConfigFromDisk(servicesConfig);
-        LoadConfigFromDisk(tagsConfig);
-        LoadConfigFromDisk(surveyRelationalsConfig);
-        LoadConfigFromDisk(contactsConfig);
-        LoadConfigFromDisk(providersConfig);
+        LoadConfigFromDisk(GetInstance().newsConfig);
+        LoadConfigFromDisk(GetInstance().innovationsConfig);
+        LoadConfigFromDisk(GetInstance().eventsConfig);
+        LoadConfigFromDisk(GetInstance().servicesConfig);
+        LoadConfigFromDisk(GetInstance().tagsConfig);
+        LoadConfigFromDisk(GetInstance().surveyRelationalsConfig);
+        LoadConfigFromDisk(GetInstance().contactsConfig);
+        LoadConfigFromDisk(GetInstance().providersConfig);
 
     }
 
