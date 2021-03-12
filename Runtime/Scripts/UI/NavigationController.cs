@@ -487,11 +487,27 @@ public class NavigationController : MonoBehaviour
         });
     }
 
+    private IEnumerator QueueNotification(bool isSuccess, bool isAutoHide, string titleKey, string bodyKey, string ctaKey, NotificationActionLink ctaLink)
+    {
+        while (isNotificationInProgress)
+            yield return null;
+
+        OnNotificationOpen(isSuccess, isAutoHide, titleKey, bodyKey, ctaKey, ctaLink);
+    }
 
     public void OnNotificationOpen(bool isSuccess, bool isAutoHide, string titleKey = "", string bodyKey = "", string ctaKey = "", NotificationActionLink ctaLink = NotificationActionLink.None)
     {
-        if (isNotificationInProgress) // we allow only one notification at a time
+        if (isNotificationInProgress)
+        {
+            // if it is a success notification, we close the current notification and make the success notification in the queue
+            if (isSuccess)
+            {
+                OnNotificationClose();
+                StartCoroutine(QueueNotification(isSuccess, isAutoHide, titleKey, bodyKey, ctaKey, ctaLink));
+            }
+
             return;
+        }
 
         isNotificationInProgress = true;
 
