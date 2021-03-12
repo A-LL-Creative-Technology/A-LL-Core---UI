@@ -155,8 +155,10 @@ public class APIController : MonoBehaviour
                 parameters = new Dictionary<string, string>();
             }
 
-            parameters.Add("lang", CacheController.GetInstance().appConfig.lang);
-
+            if (!parameters.ContainsKey("lang")) // make sure we are not enforcing lang parameter from API caller
+            {
+                parameters.Add("lang", CacheController.GetInstance().appConfig.lang);
+            }
         }
 
         string uri = (customeServerURL == null) ? serverURL : customeServerURL;
@@ -164,7 +166,7 @@ public class APIController : MonoBehaviour
         {
             Uri = SecureURL(uri) + "/" + endpoint,
             Params = parameters,
-            EnableDebug = false,
+            EnableDebug = true,
         };
 
     }
