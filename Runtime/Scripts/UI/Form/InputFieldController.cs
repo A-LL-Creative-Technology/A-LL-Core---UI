@@ -210,4 +210,9 @@ public class InputFieldController : MonoBehaviour
         formController.OnInputFieldValueChangedCheck();
 
     }
+
+    public void SetInputFieldValue(string value)
+    {
+        inputFieldTMP.text = value;
+    }
 }
