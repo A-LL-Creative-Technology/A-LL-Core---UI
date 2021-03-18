@@ -38,7 +38,7 @@ public class InputFieldController : MonoBehaviour
         {
             currentTransform = currentTransform.transform.parent;
         }
-        
+
         formController = currentTransform.GetComponent<FormController>();
 
         inputField = transform.Find("Input Field").gameObject;
@@ -46,7 +46,8 @@ public class InputFieldController : MonoBehaviour
         inputFieldTMP = inputField.GetComponent<TMP_InputField>();
         label = transform.Find("Label").gameObject;
 
-        if (isPassword) {
+        if (isPassword)
+        {
 
             togglePasswordButton = transform.Find("Hit Zone - Eye").GetComponent<Button>();
 
@@ -62,7 +63,7 @@ public class InputFieldController : MonoBehaviour
 
     private void OnEnable()
     {
-      
+
         inputFieldTMP.onValueChanged.AddListener(OnValueChangedCheck);
         inputFieldTMP.onDeselect.AddListener(OnInputFieldHide);
 
@@ -120,7 +121,7 @@ public class InputFieldController : MonoBehaviour
         }
     }
 
-    private void MoveUpLabel(Action callback)
+    private void MoveUpLabel(Action callback = null)
     {
         LeanTween.moveLocalY(label, label.transform.localPosition.y + INPUT_FIELD_LABEL_MOVEMENT_DISTANCE, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo();
         LeanTween.scale(label, INPUT_FIELD_LABEL_MOVEMENT_SCALE * Vector3.one, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo().setOnComplete(() =>
@@ -146,7 +147,7 @@ public class InputFieldController : MonoBehaviour
         float inputFieldPositionFromTopBeforePivotCorrection = -parentView.transform.InverseTransformPoint(inputField.transform.position).y;
 
         // correction for the pivot
-        int inputFieldPositionFromTop = (int)( inputFieldPositionFromTopBeforePivotCorrection + (1 - parentView.GetComponent<RectTransform>().pivot.y) * visibleAreaHeight);
+        int inputFieldPositionFromTop = (int)(inputFieldPositionFromTopBeforePivotCorrection + (1 - parentView.GetComponent<RectTransform>().pivot.y) * visibleAreaHeight);
 
         // move the input field to its final location in the visible area
         int inputFieldFinalPosition = (int)(inputFieldPositionFromTop - visibleAreaHeight * inputFieldScreenRatio);
@@ -180,7 +181,7 @@ public class InputFieldController : MonoBehaviour
                 MoveDownInputFieldUI();
             });
 
-            
+
         }
         else
         {
@@ -188,7 +189,7 @@ public class InputFieldController : MonoBehaviour
         }
     }
 
-    private void MoveDownLabel(Action callback)
+    private void MoveDownLabel(Action callback = null)
     {
         LeanTween.moveLocalY(label, label.transform.localPosition.y - INPUT_FIELD_LABEL_MOVEMENT_DISTANCE, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo();
         LeanTween.scale(label, Vector3.one, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo().setOnComplete(() =>
@@ -199,7 +200,7 @@ public class InputFieldController : MonoBehaviour
 
     private void MoveDownInputFieldUI()
     {
-        
+
         // reset the scroll view
         LeanTween.moveLocalY(NavigationController.GetInstance().currentView, NavigationController.GetInstance().overViewsInitialYPosition, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
 
@@ -231,12 +232,14 @@ public class InputFieldController : MonoBehaviour
 
     public void SetInputFieldValue(string value)
     {
-        MoveUpLabel(() => {
+        if (inputFieldTMP.text == "") // only move up the label if previously the field was empty
+        {
+            MoveUpLabel();
+        }
 
-            inputField.SetActive(true);
+        inputField.SetActive(true);
 
-            inputFieldTMP.text = value;
-        });
+        inputFieldTMP.text = value;
 
     }
 }
