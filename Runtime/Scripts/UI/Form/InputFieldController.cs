@@ -81,6 +81,9 @@ public class InputFieldController : MonoBehaviour
 
         if (isPassword)
             togglePasswordButton.onClick.RemoveListener(OnTogglePasswordVisibility);
+
+        // make sure UI is down
+        NavigationController.GetInstance().currentView.transform.localPosition = new Vector3(NavigationController.GetInstance().currentView.transform.localPosition.x, NavigationController.GetInstance().overViewsInitialYPosition, NavigationController.GetInstance().currentView.transform.localPosition.z);
     }
 
     private void OnInputFieldTouched()
