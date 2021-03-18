@@ -99,9 +99,9 @@ public class InputFieldController : MonoBehaviour
         // if there is text in the input field, we don't hide it anymore
         if (inputFieldTMP.text == "")
         {
-            LeanTween.moveLocalY(label, label.transform.localPosition.y + INPUT_FIELD_LABEL_MOVEMENT_DISTANCE, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo();
-            LeanTween.scale(label, INPUT_FIELD_LABEL_MOVEMENT_SCALE * Vector3.one, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo().setOnComplete(() =>
+            MoveUpLabel(() =>
             {
+
                 inputField.SetActive(true);
 
                 inputFieldTMP.ActivateInputField();
@@ -117,6 +117,16 @@ public class InputFieldController : MonoBehaviour
         }
     }
 
+    private void MoveUpLabel(Action callback)
+    {
+        LeanTween.moveLocalY(label, label.transform.localPosition.y + INPUT_FIELD_LABEL_MOVEMENT_DISTANCE, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo();
+        LeanTween.scale(label, INPUT_FIELD_LABEL_MOVEMENT_SCALE * Vector3.one, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo().setOnComplete(() =>
+        {
+            callback?.Invoke();
+
+        });
+    }
+
     private void MoveUpInputFieldUI()
     {
 
@@ -126,22 +136,17 @@ public class InputFieldController : MonoBehaviour
         // get parent of the input field which is a canvas
         GameObject parentView = inputField.GetComponentInParent<Canvas>().gameObject;
 
-        Debug.Log(parentView.name);
-
         // visible area height
         int visibleAreaHeight = Screen.height;
-        Debug.Log(visibleAreaHeight);
 
         // compute y position of the input field with respect to parent (with respect to the pivot y: 1=top, 0.5=middle, etc)
         float inputFieldPositionFromTopBeforePivotCorrection = -parentView.transform.InverseTransformPoint(inputField.transform.position).y;
-        Debug.Log(inputFieldPositionFromTopBeforePivotCorrection);
+
         // correction for the pivot
         int inputFieldPositionFromTop = (int)( inputFieldPositionFromTopBeforePivotCorrection + (1 - parentView.GetComponent<RectTransform>().pivot.y) * visibleAreaHeight);
-        Debug.Log(inputFieldPositionFromTop);
 
         // move the input field to its final location in the visible area
         int inputFieldFinalPosition = (int)(inputFieldPositionFromTop - visibleAreaHeight * inputFieldScreenRatio);
-        Debug.Log(inputFieldFinalPosition);
 
         LeanTween.moveLocalY(NavigationController.GetInstance().currentView, NavigationController.GetInstance().overViewsInitialYPosition + inputFieldFinalPosition, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
             FormController.GetInstance().isSelectionInProgress = false;
@@ -167,16 +172,26 @@ public class InputFieldController : MonoBehaviour
 
             inputField.SetActive(false);
 
-            LeanTween.moveLocalY(label, label.transform.localPosition.y - INPUT_FIELD_LABEL_MOVEMENT_DISTANCE, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo();
-            LeanTween.scale(label, Vector3.one, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo().setOnComplete(() =>
-            {
+            MoveDownLabel(() => {
+
                 MoveDownInputFieldUI();
             });
+
+            
         }
         else
         {
             MoveDownInputFieldUI();
         }
+    }
+
+    private void MoveDownLabel(Action callback)
+    {
+        LeanTween.moveLocalY(label, label.transform.localPosition.y - INPUT_FIELD_LABEL_MOVEMENT_DISTANCE, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo();
+        LeanTween.scale(label, Vector3.one, INPUT_FIELD_ANIMATION_DURATION).setEaseInOutExpo().setOnComplete(() =>
+        {
+            callback?.Invoke();
+        });
     }
 
     private void MoveDownInputFieldUI()
@@ -213,6 +228,12 @@ public class InputFieldController : MonoBehaviour
 
     public void SetInputFieldValue(string value)
     {
-        inputFieldTMP.text = value;
+        MoveUpLabel(() => {
+
+            inputField.SetActive(true);
+
+            inputFieldTMP.text = value;
+        });
+
     }
 }
