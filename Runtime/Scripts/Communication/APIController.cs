@@ -166,7 +166,7 @@ public class APIController : MonoBehaviour
         {
             Uri = SecureURL(uri) + "/" + endpoint,
             Params = parameters,
-            EnableDebug = true,
+            EnableDebug = false,
         };
 
     }
