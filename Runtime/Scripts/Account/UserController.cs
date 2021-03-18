@@ -8,6 +8,10 @@ public class UserController : MonoBehaviour
 
     public static bool IsConnected()
     {
-        return (!String.IsNullOrEmpty(CacheController.GetInstance().userConfig.last_update) && CacheController.GetInstance().userConfig.token != null && CacheController.GetInstance().userConfig.token.access_token != "");
+        bool hasLastUpdate = !String.IsNullOrEmpty(CacheController.GetInstance().userConfig.last_update);
+
+        bool hasValidToken = CacheController.GetInstance().userConfig.token != null && CacheController.GetInstance().userConfig.token.access_token != "" && DateTime.Parse(CacheController.GetInstance().userConfig.token.expiration_date) > DateTime.Now;
+
+        return hasLastUpdate && hasValidToken;
     }
 }
