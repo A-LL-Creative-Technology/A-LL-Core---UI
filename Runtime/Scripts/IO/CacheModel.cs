@@ -67,7 +67,7 @@ public class CacheModel
         {
             last_update = "";
 
-            File.Delete(GetFullFilePath());            
+            File.Delete(GetFullFilePath());
 
         }
 
@@ -97,7 +97,7 @@ public class CacheModel
     {
         // Serialized fields for Json
         public string lang = "";
-        
+
         public AppConfig()
         {
             filePath = "AppConfig.json";
@@ -123,6 +123,7 @@ public class CacheModel
     {
         // Serialized fields for Json
         public string name;
+        public string email;
         public string activity;
         public int privilege_level;
         public bool isOnboardingAlreadySeen = false;
@@ -153,7 +154,7 @@ public class CacheModel
     [Serializable]
     public class NewsConfig : FullPageConfig<NewsItem>
     {
-      
+
         public NewsConfig()
         {
             filePath = "NewsConfig.json";
@@ -163,7 +164,7 @@ public class CacheModel
     [Serializable]
     public class InnovationsConfig : FullPageConfig<InnovationItem>
     {
-        
+
 
         public InnovationsConfig()
         {
@@ -175,7 +176,7 @@ public class CacheModel
     [Serializable]
     public class EventsConfig : FullPageConfig<EventItem>
     {
-        
+
         public EventsConfig()
         {
             filePath = "EventsConfig.json";
@@ -305,7 +306,7 @@ public class CacheModel
         public string created_at;
         public string updated_at;
 
-        
+
 
         // for Find, Sort, and other methods on a list
         public override bool Equals(object obj)
@@ -354,8 +355,8 @@ public class CacheModel
         public int tag;
         public bool highlighted;
         public string content;
-        
-        public int [] contacts;
+
+        public int[] contacts;
     }
 
     [Serializable]
@@ -367,7 +368,7 @@ public class CacheModel
     [Serializable]
     public class EventItem : SingleItem, IComparable<EventItem>
     {
-        
+
         public string title;
         public string begin_date;
         public string end_date;
@@ -447,7 +448,7 @@ public class CacheModel
     }
 
     [Serializable]
-    public class SurveyItem: BaseItem
+    public class SurveyItem : BaseItem
     {
         public string title;
     }
