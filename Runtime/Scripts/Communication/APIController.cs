@@ -213,7 +213,8 @@ public class APIController : MonoBehaviour
         //Add sections
         foreach (KeyValuePair<string, object> entry in bodyDictionary)
         {
-            formData.Add(new MultipartFormDataSection(entry.Key, entry.Value.ToString()));
+            if (entry.Value != null)
+                formData.Add(new MultipartFormDataSection(entry.Key, entry.Value.ToString()));
         }
 
         //Add files
