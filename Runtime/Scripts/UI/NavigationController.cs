@@ -1022,7 +1022,7 @@ public class NavigationController : MonoBehaviour
     {
         if (DoesSceneExists(sceneName))
         {
-            OnGlobalSceneLoaderOpen(); // no need to cancel it as GO is destroyed with new scene
+            OnGlobalAppLoaderOpen(); // no need to cancel it as GO is destroyed with new scene
 
             StartCoroutine(LoadSceneAsync(sceneName));
 
