@@ -133,6 +133,9 @@ public class NavigationController : MonoBehaviour
     {
         instance = this;
 
+        // start the app loader
+        OnGlobalAppLoaderOpen();
+
         CacheController.OnCacheLoaded += OnCacheLoadedCallback;
         singlePageContentLoadedDelegate += OnSinglePageContentLoadedContinuePushToStackCallback;
 
@@ -165,10 +168,12 @@ public class NavigationController : MonoBehaviour
 
         firstCacheLoad = false;
 
-
         // A-LL CORE IS READY, we fire an event to tell the app controllers that they can start
         if (OnALLCoreReady != null)
             OnALLCoreReady(this, EventArgs.Empty);
+
+        // start the app loader
+        OnGlobalAppLoaderClose();
     }
 
     private IEnumerator InitNavigation()
@@ -178,8 +183,7 @@ public class NavigationController : MonoBehaviour
         // get scroll view rect
         scrollViewRect = scrollView.GetComponent<ScrollRectFaster>();
 
-        // disable global loaders by default
-        globalAppLoaderContainer.SetActive(false);
+        // disable global loader by default
         globalSceneLoaderContainer.SetActive(false);
 
         // disable crea tech by default
