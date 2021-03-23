@@ -4133,8 +4133,8 @@ MonoBehaviour:
   notificationTitle: {fileID: 2181338691397807177}
   notificationBody: {fileID: 2120737642430383282}
   notificationCTA: {fileID: 9040313116808702370}
-  globalAppLoaderContainer: {fileID: 0}
-  globalSceneLoaderContainer: {fileID: 0}
+  globalAppLoaderContainer: {fileID: 5312494617820295872}
+  globalSceneLoaderContainer: {fileID: 1640373830469307464}
   creaTechContainer: {fileID: 729317299695557103}
   emptyPage: {fileID: 1640373829535976103}
 --- !u!1 &4698008671602287844
