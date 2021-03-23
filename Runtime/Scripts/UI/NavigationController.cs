@@ -67,7 +67,8 @@ public class NavigationController : MonoBehaviour
     private float notificationContainerInitialYPosition;
     private bool isNotificationInProgress = false;
 
-    [SerializeField] private GameObject globalLoaderContainer;
+    [SerializeField] private GameObject globalAppLoaderContainer;
+    [SerializeField] private GameObject globalSceneLoaderContainer;
 
     [SerializeField] private GameObject creaTechContainer;
 
@@ -177,8 +178,9 @@ public class NavigationController : MonoBehaviour
         // get scroll view rect
         scrollViewRect = scrollView.GetComponent<ScrollRectFaster>();
 
-        // disable global loader by default
-        globalLoaderContainer.SetActive(false);
+        // disable global loaders by default
+        globalAppLoaderContainer.SetActive(false);
+        globalSceneLoaderContainer.SetActive(false);
 
         // disable crea tech by default
         creaTechContainer.SetActive(false);
@@ -572,16 +574,29 @@ public class NavigationController : MonoBehaviour
         });
     }
 
-    public void OnGlobalLoaderOpen()
+    public void OnGlobalAppLoaderOpen()
     {
         // toggle global loader
-        globalLoaderContainer.SetActive(true);
+        globalAppLoaderContainer.SetActive(true);
     }
 
-    public void OnGlobalLoaderClose()
+    public void OnGlobalAppLoaderClose()
     {
         // toggle global loader
-        globalLoaderContainer.SetActive(false);
+        globalAppLoaderContainer.SetActive(false);
+    }
+
+
+    public void OnGlobalSceneLoaderOpen()
+    {
+        // toggle global loader
+        globalSceneLoaderContainer.SetActive(true);
+    }
+
+    public void OnGlobalSceneLoaderClose()
+    {
+        // toggle global loader
+        globalSceneLoaderContainer.SetActive(false);
     }
 
     public void OnCreaTechOpen()
@@ -1003,7 +1018,7 @@ public class NavigationController : MonoBehaviour
     {
         if (DoesSceneExists(sceneName))
         {
-            OnGlobalLoaderOpen(); // no need to cancel it as GO is destroyed with new scene
+            OnGlobalSceneLoaderOpen(); // no need to cancel it as GO is destroyed with new scene
 
             StartCoroutine(LoadSceneAsync(sceneName));
 
