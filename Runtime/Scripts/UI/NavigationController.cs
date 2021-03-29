@@ -56,6 +56,7 @@ public class NavigationController : MonoBehaviour
     private GameObject currentActivePopUp = null;
     [SerializeField] GameObject popUpGeneral;
 
+    public string notificationStringPrefix = "string:"; // prefix "string:" to be added at the beginning of the variable to use Localization as a string and not key
 
     [SerializeField] private GameObject notificationContainer;
     [SerializeField] private RawImage notificationBackground;
@@ -518,8 +519,6 @@ public class NavigationController : MonoBehaviour
 
         isNotificationInProgress = true;
 
-        string stringPrefix = "string:";
-
         // toggle notification
         notificationContainer.SetActive(true);
 
@@ -543,12 +542,12 @@ public class NavigationController : MonoBehaviour
         {
             notificationTitle.gameObject.SetActive(true);
 
-            string titleStringValue = title.Substring(0, stringPrefix.Length);
-            if (titleStringValue == stringPrefix)
+            string titleStringValue = title.Substring(0, notificationStringPrefix.Length);
+            if (titleStringValue == notificationStringPrefix)
             {
                 notificationTitle.enabled = false;
 
-                notificationTitle.gameObject.GetComponent<TextMeshProUGUI>().text = title.Substring(stringPrefix.Length);
+                notificationTitle.gameObject.GetComponent<TextMeshProUGUI>().text = title.Substring(notificationStringPrefix.Length);
             }
             else
             {
@@ -567,12 +566,12 @@ public class NavigationController : MonoBehaviour
         {
             notificationBody.gameObject.SetActive(true);
 
-            string bodyStringValue = body.Substring(0, stringPrefix.Length);
-            if (bodyStringValue == stringPrefix)
+            string bodyStringValue = body.Substring(0, notificationStringPrefix.Length);
+            if (bodyStringValue == notificationStringPrefix)
             {
                 notificationBody.enabled = false;
 
-                notificationBody.gameObject.GetComponent<TextMeshProUGUI>().text = title.Substring(stringPrefix.Length);
+                notificationBody.gameObject.GetComponent<TextMeshProUGUI>().text = title.Substring(notificationStringPrefix.Length);
             }
             else
             {
