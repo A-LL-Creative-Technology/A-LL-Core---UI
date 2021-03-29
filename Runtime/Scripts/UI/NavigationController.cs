@@ -493,15 +493,16 @@ public class NavigationController : MonoBehaviour
         });
     }
 
-    private IEnumerator QueueNotification(bool isSuccess, bool isAutoHide, string titleKey, string bodyKey, string ctaKey, NotificationActionLink ctaLink)
+    private IEnumerator QueueNotification(bool isSuccess, bool isAutoHide, string title, string body, string cta, NotificationActionLink ctaLink)
     {
         while (isNotificationInProgress)
             yield return null;
 
-        OnNotificationOpen(isSuccess, isAutoHide, titleKey, bodyKey, ctaKey, ctaLink);
+        OnNotificationOpen(isSuccess, isAutoHide, title, body, cta, ctaLink);
     }
 
-    public void OnNotificationOpen(bool isSuccess, bool isAutoHide, string titleKey = "", string bodyKey = "", string ctaKey = "", NotificationActionLink ctaLink = NotificationActionLink.None)
+    // for title and body, use the prefix "string:" at the beginning of the variable to use the string as is without using it as a Localization key
+    public void OnNotificationOpen(bool isSuccess, bool isAutoHide, string title = "", string body = "", string cta = "", NotificationActionLink ctaLink = NotificationActionLink.None)
     {
         if (isNotificationInProgress)
         {
@@ -509,13 +510,15 @@ public class NavigationController : MonoBehaviour
             if (isSuccess)
             {
                 OnNotificationClose();
-                StartCoroutine(QueueNotification(isSuccess, isAutoHide, titleKey, bodyKey, ctaKey, ctaLink));
+                StartCoroutine(QueueNotification(isSuccess, isAutoHide, title, body, cta, ctaLink));
             }
 
             return;
         }
 
         isNotificationInProgress = true;
+
+        string stringPrefix = "string:";
 
         // toggle notification
         notificationContainer.SetActive(true);
@@ -534,11 +537,25 @@ public class NavigationController : MonoBehaviour
             CancelInvoke();
             Invoke("OnNotificationClose", 5f);
         }
+
         // toggle title
-        if (!String.IsNullOrEmpty(titleKey))
+        if (!String.IsNullOrEmpty(title))
         {
             notificationTitle.gameObject.SetActive(true);
-            notificationTitle.StringReference.TableEntryReference = titleKey;
+
+            string titleStringValue = title.Substring(0, stringPrefix.Length);
+            if (titleStringValue == stringPrefix)
+            {
+                notificationTitle.enabled = false;
+
+                notificationTitle.gameObject.GetComponent<TextMeshProUGUI>().text = title.Substring(stringPrefix.Length);
+            }
+            else
+            {
+                notificationTitle.enabled = true;
+
+                notificationTitle.StringReference.TableEntryReference = title;
+            }
         }
         else
         {
@@ -546,10 +563,23 @@ public class NavigationController : MonoBehaviour
         }
 
         // toggle body
-        if (!String.IsNullOrEmpty(bodyKey))
+        if (!String.IsNullOrEmpty(body))
         {
             notificationBody.gameObject.SetActive(true);
-            notificationBody.StringReference.TableEntryReference = bodyKey;
+
+            string bodyStringValue = body.Substring(0, stringPrefix.Length);
+            if (bodyStringValue == stringPrefix)
+            {
+                notificationBody.enabled = false;
+
+                notificationBody.gameObject.GetComponent<TextMeshProUGUI>().text = title.Substring(stringPrefix.Length);
+            }
+            else
+            {
+                notificationBody.enabled = true;
+
+                notificationBody.StringReference.TableEntryReference = body;
+            }
         }
         else
         {
