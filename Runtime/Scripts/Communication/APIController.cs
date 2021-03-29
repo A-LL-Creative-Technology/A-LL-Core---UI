@@ -5,7 +5,9 @@ using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Proyecto26; // Rest Client
+using SimpleJSON;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 //using UnityEngine.Localization.Settings;
 using UnityEngine.Networking;
 
@@ -33,25 +35,31 @@ public class APIController : MonoBehaviour
     {
         GlobalController.LogMe("Error in the API call: " + endpoint + " - " + requestException.Message + " - " + requestException.Response);
 
-        switch (requestException.StatusCode)
+        JSONNode data = JSON.Parse(requestException.Response);
+
+        if (data != null)
         {
-            case 401: // bad credentials, the server is sending the error message key
+            if (data.HasKey("errors"))
+            {
+                //Get the first error
+                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["errors"][0][0]);
 
+            }
+            else if (data.HasKey("message"))
+            {
+                //Fallback on the message
+                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["message"]);
+            }
+            else
+            {
+                //Fallback
                 NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", requestException.Response);
-
-                break;
-
-            case 422: // bad syntax in input values
-
-                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", "CODE_Invalid_Email");
-
-                break;
-
-            default:
-
-                NavigationController.GetInstance().OnNotificationOpen(false, true, "Erreur de connexion", "CODE_General_Connection_Error");
-
-                break;
+            }
+        }
+        else
+        {
+            //Fallback
+            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", requestException.Response);
         }
 
         errorCallback?.Invoke(requestException);
