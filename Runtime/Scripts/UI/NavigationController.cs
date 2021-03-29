@@ -571,7 +571,7 @@ public class NavigationController : MonoBehaviour
             {
                 notificationBody.enabled = false;
 
-                notificationBody.gameObject.GetComponent<TextMeshProUGUI>().text = title.Substring(notificationStringPrefix.Length);
+                notificationBody.gameObject.GetComponent<TextMeshProUGUI>().text = body.Substring(notificationStringPrefix.Length);
             }
             else
             {
