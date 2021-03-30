@@ -75,7 +75,7 @@ public class CacheController : MonoBehaviour
         appCacheLocation = Path.Combine(rootCacheLocation, "App");
 
         string scenesCacheLocation = Path.Combine(rootCacheLocation, "Scenes");
-        string sceneCacheLocation = Path.Combine(scenesCacheLocation, SceneManager.GetActiveScene().name);
+        string sceneCacheLocation = Path.Combine(scenesCacheLocation, GetInstance().gameObject.scene.name);
 
         standardSceneCacheLocation = Path.Combine(sceneCacheLocation, "Standard");
         permanentSceneCacheLocation = Path.Combine(sceneCacheLocation, "Permanent");
@@ -154,7 +154,7 @@ public class CacheController : MonoBehaviour
         LoadConfigFromDisk(GetInstance().myEventsIDsConfig);
         LoadConfigFromDisk(GetInstance().creaTechsConfig);
         LoadConfigFromDisk(GetInstance().userConfig, () => {
-            GetInstance().userConfig.Save(BaseConfig.SaveType.NoEvent); // we create a default config, so that state of the app always starts as if guest mode
+            GetInstance().userConfig.Save(BaseConfig.SaveType.NoEvent); // if no cache found, we create a default config, so that state of the app always starts as if guest mode
         });
     }
 
@@ -220,7 +220,7 @@ public class CacheController : MonoBehaviour
 
         if (File.Exists(filePath))
         {
-            //GlobalController.LogMe("Cache is beeing loaded from: " + filePath);
+            GlobalController.LogMe("Cache is beeing loaded from: " + filePath);
 
             // read the json from the file into a string
             string cacheJson = File.ReadAllText(filePath);
