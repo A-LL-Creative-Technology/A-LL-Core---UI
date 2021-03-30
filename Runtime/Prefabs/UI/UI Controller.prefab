@@ -3614,6 +3614,7 @@ MonoBehaviour:
   eventSystem: {fileID: 0}
   popUpContainer: {fileID: 1640373829985184801}
   popUpGeneral: {fileID: 0}
+  notificationStringPrefix: 'string:'
   notificationContainer: {fileID: 1640373830730545742}
   notificationBackground: {fileID: 1640373830730545740}
   notificationTitle: {fileID: 2181338691397807177}
@@ -3851,7 +3852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.21960784, b: 0.39215687, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4000,7 +4001,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4452133191197653183, guid: f9e83a9a815f74497b649eddbe2b1fe6,
+  m_Sprite: {fileID: -2183871700283612158, guid: fdb688f39671f452bb7c2c72ad79c535,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 1
@@ -4021,7 +4022,7 @@ Animator:
   m_GameObject: {fileID: 7885781030017162466}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f0431356f78f44b4f95273aec0d7ef98, type: 2}
+  m_Controller: {fileID: 9100000, guid: aba51f32ca4fb4131979cb3f1b7d1ffe, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
