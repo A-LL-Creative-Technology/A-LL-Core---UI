@@ -56,7 +56,7 @@ public class NavigationController : MonoBehaviour
     private GameObject currentActivePopUp = null;
     [SerializeField] GameObject popUpGeneral;
 
-    public string notificationStringPrefix = "string:"; // prefix "string:" to be added at the beginning of the variable to use Localization as a string and not key
+    [HideInInspector] public string notificationStringPrefix = "string:"; // prefix "string:" to be added at the beginning of the variable to use Localization as a string and not key
 
     [SerializeField] private GameObject notificationContainer;
     [SerializeField] private RawImage notificationBackground;
@@ -81,8 +81,6 @@ public class NavigationController : MonoBehaviour
     }
 
     [NonSerialized] public float overViewsInitialYPosition;
-
-    public GameObject emptyPage;
 
     [NonSerialized] public int currentSinglePageID = -1;
 
