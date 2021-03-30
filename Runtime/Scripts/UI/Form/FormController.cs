@@ -37,7 +37,7 @@ public class FormController : MonoBehaviour
         bool areAllEntriesValid = true;
         foreach (InputFieldController currentInputField in inputFields)
         {
-            if (currentInputField.inputFieldTMP.text == "")
+            if (!currentInputField.canPasswordBeEmptyForSubmission && currentInputField.inputFieldTMP.text == "")
                 areAllEntriesValid = false;
         }
 
