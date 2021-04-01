@@ -492,16 +492,16 @@ public class NavigationController : MonoBehaviour
         });
     }
 
-    private IEnumerator QueueNotification(bool isSuccess, bool isAutoHide, string title, string body, string cta, NotificationActionLink ctaLink)
+    private IEnumerator QueueNotification(bool isSuccess, bool isAutoHide, string title, string body, string localizationTable, string cta, NotificationActionLink ctaLink)
     {
         while (isNotificationInProgress)
             yield return null;
 
-        OnNotificationOpen(isSuccess, isAutoHide, title, body, cta, ctaLink);
+        OnNotificationOpen(isSuccess, isAutoHide, title, body, localizationTable, cta, ctaLink);
     }
 
     // for title and body, use the prefix "string:" at the beginning of the variable to use the string as is without using it as a Localization key
-    public void OnNotificationOpen(bool isSuccess, bool isAutoHide, string title = "", string body = "", string cta = "", NotificationActionLink ctaLink = NotificationActionLink.None)
+    public void OnNotificationOpen(bool isSuccess, bool isAutoHide, string title = "", string body = "", string localizationTable = "Main", string cta = "", NotificationActionLink ctaLink = NotificationActionLink.None)
     {
         if (isNotificationInProgress)
         {
@@ -509,7 +509,7 @@ public class NavigationController : MonoBehaviour
             if (isSuccess)
             {
                 OnNotificationClose();
-                StartCoroutine(QueueNotification(isSuccess, isAutoHide, title, body, cta, ctaLink));
+                StartCoroutine(QueueNotification(isSuccess, isAutoHide, title, body, localizationTable, cta, ctaLink));
             }
 
             return;
@@ -551,6 +551,7 @@ public class NavigationController : MonoBehaviour
             {
                 notificationTitle.enabled = true;
 
+                notificationBody.StringReference.TableReference = localizationTable;
                 notificationTitle.StringReference.TableEntryReference = title;
             }
         }
@@ -575,6 +576,7 @@ public class NavigationController : MonoBehaviour
             {
                 notificationBody.enabled = true;
 
+                notificationBody.StringReference.TableReference = localizationTable;
                 notificationBody.StringReference.TableEntryReference = body;
             }
         }
