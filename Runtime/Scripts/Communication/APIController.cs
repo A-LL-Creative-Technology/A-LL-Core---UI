@@ -23,7 +23,7 @@ public class APIController : MonoBehaviour
     }
 
     // Parameters
-    public static readonly string serverURL = "https://staging.api.ccif-hikf.ch";          //address of the API to call
+    public static readonly string serverURL = "https://api.ccif-hikf.ch";          //address of the API to call
     //public Token token;     //Datas related to OAuth token.
 
     private void Awake()
