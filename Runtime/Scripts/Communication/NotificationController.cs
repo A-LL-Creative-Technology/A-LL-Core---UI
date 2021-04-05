@@ -31,7 +31,7 @@ public class NotificationController : MonoBehaviour
     }
 
     private bool isCurrentlyPaused = false;
-    private Firebase.FirebaseApp app; //Used by Firebase
+    private Firebase.FirebaseApp app; //Used by Firebase.
 
     public delegate void OnNotificationReceived(Firebase.Messaging.MessageReceivedEventArgs pushNotificationMessage);
     public static event OnNotificationReceived notificationReceivedDelegate;
