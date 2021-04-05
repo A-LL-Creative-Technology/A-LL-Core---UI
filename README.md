@@ -79,7 +79,7 @@ Your manifest.json should look like this :
 11. Add Localization package
     Ref: To add the [Localization Unity Package](https://docs.unity3d.com/Packages/com.unity.localization@0.9/manual/Installation.html) :
     1. Go to **Edit > Project Settings > Localization** and click **Create**.
-    2. Create **Main Localization** asset file in **A-LL/Config/Localization**.
+    2. Create **Main** asset file in **A-LL/Config/Localization**.
     3. In **Edit > Project Settings > Localization**, click **Locale Generator**.
     4. Select your application languages and save them in **A-LL/Config/Localization**
     5. Add the default locale in **Locale Selectors > Element 2 > Locale Id**.
