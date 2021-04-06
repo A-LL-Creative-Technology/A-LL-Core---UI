@@ -156,6 +156,18 @@ public class InputFieldController : MonoBehaviour
         LeanTween.moveLocalY(NavigationController.GetInstance().currentView, NavigationController.GetInstance().overViewsInitialYPosition + inputFieldFinalPosition, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
             FormController.GetInstance().isSelectionInProgress = false;
         });
+
+        // search for the parent ViewPort
+        Transform currentTransform = transform;
+        while (currentTransform.name != "Viewport")
+        {
+            currentTransform = currentTransform.transform.parent;
+            if (currentTransform == null)
+                return;
+        }
+
+        //Move the viewport bottom position to show content
+        ((RectTransform)currentTransform).offsetMin = new Vector2(((RectTransform)currentTransform).offsetMin.x, -inputFieldFinalPosition);
     }
 
     private void OnInputFieldHide(string text)
@@ -208,6 +220,18 @@ public class InputFieldController : MonoBehaviour
             //UIController.GetInstance().overScrollViewScrollRect.movementType = ScrollRectFaster.MovementType.Elastic;
 
             FormController.GetInstance().isDeselectionInProgress = false;
+
+            // search for the parent ViewPort
+            Transform currentTransform = transform;
+            while (currentTransform.name != "Viewport")
+            {
+                currentTransform = currentTransform.transform.parent;
+                if (currentTransform == null)
+                    return;
+            }
+
+            //Reset the bottom of Viewport at position 0
+            ((RectTransform)currentTransform).offsetMin = new Vector2(((RectTransform)currentTransform).offsetMin.x, 0);
 
         });
     }
