@@ -10,7 +10,7 @@ public class UserController : MonoBehaviour
     {
         bool hasLastUpdate = !String.IsNullOrEmpty(CacheController.GetInstance().userConfig.last_update);
 
-        bool hasValidToken = CacheController.GetInstance().userConfig.token != null && CacheController.GetInstance().userConfig.token.access_token != "" && DateTime.Parse(CacheController.GetInstance().userConfig.token.expiration_date) > DateTime.Now;
+        bool hasValidToken = CacheController.GetInstance().userConfig.api_token != null && CacheController.GetInstance().userConfig.api_token != "" && DateTime.Parse(CacheController.GetInstance().userConfig.api_token_expires_at) > DateTime.Now;
 
         return hasLastUpdate && hasValidToken;
     }

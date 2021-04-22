@@ -127,7 +127,8 @@ public class CacheModel
         public string activity;
         public int privilege_level;
         public bool isOnboardingAlreadySeen = false;
-        public Token token = null;
+        public string api_token = null;
+        public string api_token_expires_at = null;
 
         public UserConfig()
         {
@@ -480,18 +481,14 @@ public class CacheModel
     }
 
     [Serializable]
-    public class Token
-    {
-        public string access_token;
-        public string expiration_date;
-    }
-
-    [Serializable]
     public class Company
     {
         public string name;
         public string activity;
         public int privilege_level;
+        public string api_token;
+        public string api_token_expires_at;
+
     }
 
     /// 
@@ -564,7 +561,6 @@ public class CacheModel
     [Serializable]
     public class LoginAPI
     {
-        public Token token;
         public Company auth_company;
     }
 

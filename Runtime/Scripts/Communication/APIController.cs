@@ -23,8 +23,9 @@ public class APIController : MonoBehaviour
     }
 
     // Parameters
+    readonly static private bool ENABLE_DEBUG = false;
+
     public static readonly string serverURL = "https://api.ccif-hikf.ch";          //address of the API to call
-    //public Token token;     //Datas related to OAuth token.
 
     private void Awake()
     {
@@ -174,7 +175,7 @@ public class APIController : MonoBehaviour
         {
             Uri = SecureURL(uri) + "/" + endpoint,
             Params = parameters,
-            EnableDebug = false,
+            EnableDebug = ENABLE_DEBUG,
         };
 
     }
@@ -196,10 +197,10 @@ public class APIController : MonoBehaviour
     //Add access_token and token_type to the Authorization header.
     private static void AddAuthorizationHeader()
     {
-        if (CacheController.GetInstance().userConfig.token == null)
+        if (CacheController.GetInstance().userConfig.api_token == null)
             return;
 
-        RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + CacheController.GetInstance().userConfig.token.access_token;
+        RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + CacheController.GetInstance().userConfig.api_token;
     }
 
 
