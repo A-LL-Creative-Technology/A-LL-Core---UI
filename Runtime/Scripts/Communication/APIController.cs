@@ -22,10 +22,12 @@ public class APIController : MonoBehaviour
         return instance;
     }
 
+    public static event EventHandler OnLogout;
+
     // Parameters
     readonly static private bool ENABLE_DEBUG = false;
 
-    public static readonly string serverURL = "https://api.ccif-hikf.ch";          //address of the API to call
+    public static readonly string serverURL = "https://staging.api.ccif-hikf.ch";          //address of the API to call
 
     private void Awake()
     {
@@ -36,31 +38,32 @@ public class APIController : MonoBehaviour
     {
         GlobalController.LogMe("Error in the API call: " + endpoint + " - " + requestException.Message + " - " + requestException.Response);
 
-        JSONNode data = JSON.Parse(requestException.Response);
-
-        if (data != null)
+        // we first verify if the error has a specific error code
+        if (requestException.StatusCode == 401)
         {
-            if (data.HasKey("errors"))
+            // user is not authenticated, we need to send the event to log him out
+            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", "CODE_General_Connection_Error");
+
+            // fires the event to notify that cache has been loaded
+            if (OnLogout != null)
+                OnLogout(GetInstance(), EventArgs.Empty);
+
+        }
+        else
+        {
+            JSONNode data = JSON.Parse(requestException.Response);
+
+            if (data != null && data.HasKey("errors"))
             {
                 //Get the first error
                 NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["errors"][0][0]);
 
             }
-            else if (data.HasKey("message"))
-            {
-                //Fallback on the message
-                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["message"]);
-            }
             else
             {
                 //Fallback
-                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", requestException.Response);
+                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", "CODE_General_Connection_Error");
             }
-        }
-        else
-        {
-            //Fallback
-            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", requestException.Response);
         }
 
         errorCallback?.Invoke(requestException);
