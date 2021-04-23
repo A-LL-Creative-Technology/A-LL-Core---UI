@@ -101,6 +101,8 @@ public class NavigationController : MonoBehaviour
     [NonSerialized] public bool isNavigationInitializationInProgress = false;
     private bool isNavigationInProgress = false;
 
+    private bool isPushToStackInProgress = false;
+
     private bool firstCacheLoad = true; // to prevent reexecuting the cache callback for the navigation when it is not the initial launch of the app
 
     [NonSerialized] public ScrollRectFaster scrollViewRect;
@@ -674,6 +676,8 @@ public class NavigationController : MonoBehaviour
 
     private void PushToStack()
     {
+        isPushToStackInProgress = true;
+
         // if stack is currently empty, we fill it with parent and child
         if (viewsStack.Count == 0)
         {
@@ -711,6 +715,10 @@ public class NavigationController : MonoBehaviour
     // this function is triggered by the callback when the content is loaded on the Single Page Script. This makes sure the layout is computed BEFORE showing the page
     private void OnSinglePageContentLoadedContinuePushToStackCallback(object sender, EventArgs e)
     {
+        //we make sure this function is called only after PushToStack() function.
+        if (!isPushToStackInProgress)
+            return;
+        
         // we make sure the event on loaded single page is called here only after push to stack and nowhere else (like for instance after a OnOverClose)
         if (currentNavigationMode != NavigationMode.StackOpen)
             return;
@@ -746,6 +754,8 @@ public class NavigationController : MonoBehaviour
 
             oldView = null;
             nextView = null;
+
+            isPushToStackInProgress = false;
 
             // end of the animation
             NavigationCallback();
