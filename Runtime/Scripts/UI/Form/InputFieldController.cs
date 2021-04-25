@@ -165,14 +165,14 @@ public class InputFieldController : MonoBehaviour
         {
             viewportTransform = viewportTransform.parent;
 
-            if (viewportTransform.name == "Content")
-                contentTransform = viewportTransform;
-
             if (viewportTransform == null)
             {
                 isInScrollView = false;
                 break;
             }
+
+            if (viewportTransform.name == "Content")
+                contentTransform = viewportTransform;
         }
 
 
@@ -258,14 +258,14 @@ public class InputFieldController : MonoBehaviour
             {
                 viewportTransform = viewportTransform.parent;
 
-                if (viewportTransform.name == "Content")
-                    contentTransform = viewportTransform;
-
                 if (viewportTransform == null)
                 {
                     isInScrollView = false;
                     break;
                 }
+
+                if (viewportTransform.name == "Content")
+                    contentTransform = viewportTransform;
             }
 
             if (isInScrollView)
