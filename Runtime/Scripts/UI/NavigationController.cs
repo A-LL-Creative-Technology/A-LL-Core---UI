@@ -51,6 +51,7 @@ public class NavigationController : MonoBehaviour
     private RectTransform viewsCanvasRectTransform;
 
     private RectTransform overCanvasRectTransform;
+    private RawImage overCanvasRawImage;
 
     [SerializeField] private GameObject popUpContainer;
     private GameObject currentActivePopUp = null;
@@ -195,6 +196,9 @@ public class NavigationController : MonoBehaviour
         // get scroll view rect
         scrollViewRect = scrollView.GetComponent<ScrollRectFaster>();
 
+        // get over canvas raw image
+        overCanvasRawImage = overCanvas.GetComponent<RawImage>();
+
         // disable global loader by default
         globalSceneLoaderContainer.SetActive(false);
 
@@ -291,6 +295,9 @@ public class NavigationController : MonoBehaviour
             yield break;
 
         overCanvas.SetActive(true);
+
+        // make sure the over canvas raw image is deactivated by default
+        overCanvasRawImage.enabled = false;
 
         overViewsInitialYPosition = overCanvas.transform.GetChild(0).localPosition.y;
 
@@ -859,6 +866,8 @@ public class NavigationController : MonoBehaviour
         footerCanvas.SetActive(true);
         overCanvas.SetActive(true);
 
+        overCanvasRawImage.enabled = false;
+
         // prepare the over view (needs to be first so that automatic layout can compute its space)
         currentView.SetActive(true);
 
@@ -879,6 +888,9 @@ public class NavigationController : MonoBehaviour
 
             // make sure the end position is precise (not precise with animation)
             currentView.transform.localPosition = new Vector3(currentView.transform.localPosition.x, overViewsInitialYPosition, currentView.transform.localPosition.z);
+
+            // reactivate the background image (necessary if input fields moves up the over view)
+            overCanvasRawImage.enabled = true; 
 
             oldView = null;
             nextView = null;
@@ -911,6 +923,8 @@ public class NavigationController : MonoBehaviour
         viewsCanvas.SetActive(true);
         footerCanvas.SetActive(true);
         overCanvas.SetActive(true);
+
+        overCanvasRawImage.enabled = false;
 
         // we do the animation
         float screenHeight = overCanvasRectTransform.rect.height; // !!!! sometimes Screen.height does not give same value as full screen views canvas height. Weird!! So don't trust Screen.height from Unity
