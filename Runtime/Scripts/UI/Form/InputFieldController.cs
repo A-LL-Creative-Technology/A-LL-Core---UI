@@ -99,6 +99,9 @@ public class InputFieldController : MonoBehaviour
         while (FormController.GetInstance().isDeselectionInProgress)
             yield return null;
 
+        if (FormController.GetInstance().isSelectionInProgress) // to prevent double-click on the label
+            yield break;
+
         FormController.GetInstance().isSelectionInProgress = true;
 
         // if there is text in the input field, we don't hide it anymore
@@ -180,6 +183,8 @@ public class InputFieldController : MonoBehaviour
         while (FormController.GetInstance().isSelectionInProgress)
             yield return null;
 
+        if (FormController.GetInstance().isDeselectionInProgress) // to prevent double-click on the label
+            yield break;
 
         FormController.GetInstance().isDeselectionInProgress = true;
 
