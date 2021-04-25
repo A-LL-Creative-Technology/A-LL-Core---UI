@@ -126,7 +126,8 @@ public class NavigationController : MonoBehaviour
 
     private List<NavigationConfig> viewsStack = new List<NavigationConfig>();
 
-    //private bool areViewsStacked = false;
+    // to define when script is loaded for the first time
+    private bool isOnEnableCalledFirstTime = true;
 
 #pragma warning restore 0649
 
@@ -137,10 +138,20 @@ public class NavigationController : MonoBehaviour
         // start the app loader
         OnGlobalAppLoaderOpen();
 
-        CacheController.OnCacheLoaded += OnCacheLoadedCallback;
-        singlePageContentLoadedDelegate += OnSinglePageContentLoadedContinuePushToStackCallback;
+        
 
         StartCoroutine(InitNavigation());
+    }
+
+    private void OnEnable()
+    {
+        if (isOnEnableCalledFirstTime)
+        {
+            isOnEnableCalledFirstTime = false;
+
+            CacheController.OnCacheLoaded += OnCacheLoadedCallback;
+            singlePageContentLoadedDelegate += OnSinglePageContentLoadedContinuePushToStackCallback;
+        }
     }
 
     private void OnDestroy()

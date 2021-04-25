@@ -15,9 +15,16 @@ public class LocalizationController : MonoBehaviour
     /// </summary>
     private static readonly string MAIN_TABLE = "Main";
 
-    private void Awake()
+    // to define when script is loaded for the first time
+    private bool isOnEnableCalledFirstTime = true;
+
+    private void OnEnable()
     {
-        CacheController.OnCacheLoaded += OnCacheLoadedCallback;
+        if (isOnEnableCalledFirstTime)
+        {
+            isOnEnableCalledFirstTime = false;
+            CacheController.OnCacheLoaded += OnCacheLoadedCallback;
+        }
     }
 
     private void OnDestroy()
