@@ -139,8 +139,6 @@ public class NavigationController : MonoBehaviour
         // start the app loader
         OnGlobalAppLoaderOpen();
 
-        
-
         StartCoroutine(InitNavigation());
     }
 

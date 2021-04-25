@@ -10,7 +10,7 @@ public class InputFieldController : MonoBehaviour
 {
 #pragma warning disable 0649
 
-    private readonly float INPUT_FIELD_ANIMATION_DURATION = .4f;
+    private readonly float INPUT_FIELD_ANIMATION_DURATION = 0.4f;
     private readonly float INPUT_FIELD_LABEL_MOVEMENT_DISTANCE = 80f;
     private readonly float INPUT_FIELD_LABEL_MOVEMENT_SCALE = 0.7f;
 
@@ -156,21 +156,47 @@ public class InputFieldController : MonoBehaviour
         // move the input field to its final location in the visible area
         int inputFieldFinalPosition = (int)(inputFieldPositionFromTop - visibleAreaHeight * inputFieldScreenRatio);
 
+        // if input field is in scroll view, we adjust the viewport
+        bool isInScrollView = true;
+
+        Transform viewportTransform = transform;
+        Transform contentTransform = transform;
+        while (viewportTransform.name != "Viewport")
+        {
+            viewportTransform = viewportTransform.parent;
+
+            if (viewportTransform.name == "Content")
+                contentTransform = viewportTransform;
+
+            if (viewportTransform == null)
+            {
+                isInScrollView = false;
+                break;
+            }
+        }
+
+
+
+        if (isInScrollView)
+        {
+            Transform scrollRectFaster = viewportTransform.parent;
+            scrollRectFaster.GetComponent<ScrollRectFaster>().movementType = ScrollRectFaster.MovementType.Unrestricted;
+
+            if (inputFieldFinalPosition > 0)
+            {
+                ((RectTransform)viewportTransform).offsetMin = new Vector2(((RectTransform)viewportTransform).offsetMin.x, -inputFieldFinalPosition);
+            }
+            else
+            {
+                ((RectTransform)viewportTransform).offsetMax = new Vector2(((RectTransform)viewportTransform).offsetMax.x, -inputFieldFinalPosition);
+                ((RectTransform)contentTransform).localPosition = new Vector3(((RectTransform)contentTransform).localPosition.x, ((RectTransform)contentTransform).localPosition.y + inputFieldFinalPosition, ((RectTransform)contentTransform).localPosition.z);
+            }
+        }
+
+
         LeanTween.moveLocalY(NavigationController.GetInstance().currentView, NavigationController.GetInstance().overViewsInitialYPosition + inputFieldFinalPosition, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
             FormController.GetInstance().isSelectionInProgress = false;
         });
-
-        // search for the parent ViewPort
-        Transform currentTransform = transform;
-        while (currentTransform.name != "Viewport")
-        {
-            currentTransform = currentTransform.transform.parent;
-            if (currentTransform == null)
-                return;
-        }
-
-        //Move the viewport bottom position to show content
-        ((RectTransform)currentTransform).offsetMin = new Vector2(((RectTransform)currentTransform).offsetMin.x, -inputFieldFinalPosition);
     }
 
     private void OnInputFieldHide(string text)
@@ -222,21 +248,36 @@ public class InputFieldController : MonoBehaviour
         // reset the scroll view
         LeanTween.moveLocalY(NavigationController.GetInstance().currentView, NavigationController.GetInstance().overViewsInitialYPosition, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
 
-            //UIController.GetInstance().overScrollViewScrollRect.movementType = ScrollRectFaster.MovementType.Elastic;
-
             FormController.GetInstance().isDeselectionInProgress = false;
 
-            // search for the parent ViewPort
-            Transform currentTransform = transform;
-            while (currentTransform.name != "Viewport")
+            // if input field is in scroll view, we adjust the viewport
+            bool isInScrollView = true;
+            Transform viewportTransform = transform;
+            Transform contentTransform = transform;
+            while (viewportTransform.name != "Viewport")
             {
-                currentTransform = currentTransform.transform.parent;
-                if (currentTransform == null)
-                    return;
+                viewportTransform = viewportTransform.parent;
+
+                if (viewportTransform.name == "Content")
+                    contentTransform = viewportTransform;
+
+                if (viewportTransform == null)
+                {
+                    isInScrollView = false;
+                    break;
+                }
             }
 
-            //Reset the bottom of Viewport at position 0
-            ((RectTransform)currentTransform).offsetMin = new Vector2(((RectTransform)currentTransform).offsetMin.x, 0);
+            if (isInScrollView)
+            {
+                Transform scrollRectFaster = viewportTransform.parent;
+                scrollRectFaster.GetComponent<ScrollRectFaster>().movementType = ScrollRectFaster.MovementType.Elastic;
+
+                //Reset the bottom of Viewport at position 0
+                ((RectTransform)contentTransform).localPosition = new Vector3(((RectTransform)contentTransform).localPosition.x, ((RectTransform)contentTransform).localPosition.y + ((RectTransform)viewportTransform).offsetMax.y, ((RectTransform)contentTransform).localPosition.z);
+                ((RectTransform)viewportTransform).offsetMax = new Vector2(((RectTransform)viewportTransform).offsetMax.x, 0);
+                ((RectTransform)viewportTransform).offsetMin = new Vector2(((RectTransform)viewportTransform).offsetMin.x, 0);
+            }
 
         });
     }
