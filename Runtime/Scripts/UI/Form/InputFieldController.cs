@@ -121,9 +121,9 @@ public class InputFieldController : MonoBehaviour
         }
         else
         {
-            inputFieldTMP.ActivateInputField();
-
             labelTMP.raycastTarget = false;
+
+            inputFieldTMP.ActivateInputField();
 
             MoveUpInputFieldUI();
         }
@@ -218,6 +218,9 @@ public class InputFieldController : MonoBehaviour
 
         FormController.GetInstance().isDeselectionInProgress = true;
 
+        // reactivate label
+        labelTMP.raycastTarget = true;
+
         // if there is text in the input field, we don't hide it anymore
         if (inputFieldTMP.text == "")
         {
@@ -233,8 +236,6 @@ public class InputFieldController : MonoBehaviour
         }
         else
         {
-            labelTMP.raycastTarget = true;
-
             MoveDownInputFieldUI();
         }
     }
@@ -298,15 +299,17 @@ public class InputFieldController : MonoBehaviour
         string pwd = inputFieldTMP.text;
         inputFieldTMP.text = "dummy";
         inputFieldTMP.text = pwd;
-
     }
 
     private void OnValueChangedCheck(string text)
     {
-        if (inputFieldTMP.text == "")
-            labelTMP.raycastTarget = true;
-        else
-            labelTMP.raycastTarget = false;
+        if (inputFieldTMP.isFocused)
+        {
+            if (inputFieldTMP.text == "")
+                labelTMP.raycastTarget = true;
+            else
+                labelTMP.raycastTarget = false;
+        }
 
         formController.OnInputFieldValueChangedCheck();
 
