@@ -303,6 +303,11 @@ public class InputFieldController : MonoBehaviour
 
     private void OnValueChangedCheck(string text)
     {
+        if (inputFieldTMP.text == "")
+            labelTMP.raycastTarget = true;
+        else
+            labelTMP.raycastTarget = false;
+
         formController.OnInputFieldValueChangedCheck();
 
     }
