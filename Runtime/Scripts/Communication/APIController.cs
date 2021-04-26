@@ -38,38 +38,34 @@ public class APIController : MonoBehaviour
     {
         GlobalController.LogMe("Error in the API call: " + endpoint + " - " + requestException.Message + " - " + requestException.Response);
 
-        // we first verify if the error has a specific error code
+        // we verify if the error has a specific error code
         if (requestException.StatusCode == 401)
         {
-            // user is not authenticated, we need to send the event to log him out
-            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", "CODE_General_Connection_Error");
-
             // fires the event to notify that cache has been loaded
             if (OnLogout != null)
                 OnLogout(GetInstance(), EventArgs.Empty);
 
         }
+
+        JSONNode data = JSON.Parse(requestException.Response);
+
+        if (data != null && data.HasKey("errors"))
+        {
+            //Get the first error
+            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["errors"][0][0]);
+
+        }
+        else if (data.HasKey("message"))
+        {
+            //Fallback on the message
+            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["message"]);
+        }
         else
         {
-            JSONNode data = JSON.Parse(requestException.Response);
-
-            if (data != null && data.HasKey("errors"))
-            {
-                //Get the first error
-                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["errors"][0][0]);
-
-            }
-            else if (data.HasKey("message"))
-            {
-                //Fallback on the message
-                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["message"]);
-            }
-            else
-            {
-                //Fallback
-                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", "CODE_General_Connection_Error");
-            }
+            //Fallback
+            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", "CODE_General_Connection_Error");
         }
+
 
         errorCallback?.Invoke(requestException);
     }
@@ -139,7 +135,8 @@ public class APIController : MonoBehaviour
         {
             Uri = imageUri, // url is insecure as Kentico staging is not in https (an exception for that domain has been added to InfoPlistUpdater.cs in the Editor folder of Unity)
             DownloadHandler = new DownloadHandlerTexture(),
-        }).Then(res => {
+        }).Then(res =>
+        {
             Texture2D texture = ((DownloadHandlerTexture)res.Request.downloadHandler).texture;
             callback?.Invoke(texture);
         }).Catch(err =>
