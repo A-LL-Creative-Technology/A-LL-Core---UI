@@ -59,6 +59,11 @@ public class APIController : MonoBehaviour
                 NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["errors"][0][0]);
 
             }
+            else if (data.HasKey("message"))
+            {
+                //Fallback on the message
+                NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["message"]);
+            }
             else
             {
                 //Fallback
