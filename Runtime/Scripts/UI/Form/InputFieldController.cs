@@ -25,6 +25,7 @@ public class InputFieldController : MonoBehaviour
 
     private GameObject inputField;
     private GameObject label;
+    private TMP_Text labelTMP;
     [NonSerialized] public TMP_InputField inputFieldTMP;
 
     private Button togglePasswordButton;
@@ -43,9 +44,10 @@ public class InputFieldController : MonoBehaviour
         formController = currentTransform.GetComponent<FormController>();
 
         inputField = transform.Find("Input Field").gameObject;
-
         inputFieldTMP = inputField.GetComponent<TMP_InputField>();
+
         label = transform.Find("Label").gameObject;
+        labelTMP = label.GetComponent<TMP_Text>();
 
         if (isPassword)
         {
@@ -120,6 +122,8 @@ public class InputFieldController : MonoBehaviour
         else
         {
             inputFieldTMP.ActivateInputField();
+
+            labelTMP.raycastTarget = false;
 
             MoveUpInputFieldUI();
         }
@@ -229,6 +233,8 @@ public class InputFieldController : MonoBehaviour
         }
         else
         {
+            labelTMP.raycastTarget = true;
+
             MoveDownInputFieldUI();
         }
     }
