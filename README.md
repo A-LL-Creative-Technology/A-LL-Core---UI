@@ -31,6 +31,7 @@ To use this package in a unity project :
     2. Select "My Assets" in the Package Manager to display paid Packages from the Asset Store
     3. Select and import all these packages
         - Native Gallery for Android & iOS
+        - Procedural UI Image
         - Nice Vibrations | Haptic Feedback for Mobile & Gamepads
             1. Rename file "Newtonsoft.Json.dll" to "Dupplicate - Newtonsoft.Json.dll" in "ThirdParty/Newtonsoft"
         - Lean Touch
