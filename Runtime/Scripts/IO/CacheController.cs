@@ -190,7 +190,7 @@ public class CacheController : MonoBehaviour
         else if (imageURL != "") // there is an image on the server
         {
             // it is not yet in the cache, we call the API
-            APIController.GetImage(imageURL, (Texture2D texture) =>
+            APIController.GetInstance().GetImage(imageURL, (Texture2D texture) =>
             {
                 File.WriteAllBytes(imagePath, texture.EncodeToPNG());
 

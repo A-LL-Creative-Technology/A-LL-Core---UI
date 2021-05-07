@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 03.05.2021
 
 ### Added
+
 - Config script on the A-LL Core prefab to activate/deactivate computation on the safe area
 - Splash screen prefabs
 
@@ -17,3 +18,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for UI Rounded Corners using masks. It is replaced by Procedural UI Image.
 - Support for SVG and menu controller updated accordingly.
+- Removed static on APIController + server url is editable.

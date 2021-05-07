@@ -29,7 +29,7 @@ public class APIController : MonoBehaviour
     // Parameters
     readonly static private bool ENABLE_DEBUG = false;
 
-    public static readonly string serverURL = "https://api.ccif-hikf.ch";          //address of the API to call
+    public string serverURL = "https://api.ccif-hikf.ch";          //address of the API to call
 
 #pragma warning restore 0649
 
@@ -38,7 +38,7 @@ public class APIController : MonoBehaviour
         instance = this;
     }
 
-    private static void HandleError(RequestException requestException, string endpoint, Action<RequestException> errorCallback = null)
+    private void HandleError(RequestException requestException, string endpoint, Action<RequestException> errorCallback = null)
     {
         GlobalController.LogMe("Error in the API call: " + endpoint + " - " + requestException.Message + " - " + requestException.Response);
 
@@ -75,7 +75,7 @@ public class APIController : MonoBehaviour
     }
 
     //GET a SINGLE element of type R
-    public static void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
+    public void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
         //Send the request
         RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL))
@@ -90,7 +90,7 @@ public class APIController : MonoBehaviour
     }
 
     //POST a request with no particular types
-    public static void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
+    public void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
         RestClient.Post(BuildRequest(endpoint, parameters, customServerURL))
         .Then(res =>
@@ -105,7 +105,7 @@ public class APIController : MonoBehaviour
     }
 
     //POST a request with an object of type S to the servers and expects an element of type R from the server
-    public static void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
+    public void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
         RestClient.Post<R>(BuildRequest(endpoint, parameters, customServerURL))
         .Then(res =>
@@ -119,7 +119,7 @@ public class APIController : MonoBehaviour
     }
 
     //POST a file to the server
-    public static void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
+    public void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
         RestClient.Post<R>(BuildRequest(requestObject, endpoint, parameters, files, customServerURL))
         .Then(res =>
@@ -132,7 +132,7 @@ public class APIController : MonoBehaviour
         });
     }
 
-    public static void GetImage(string imageUri, Action<Texture2D> callback, Action<RequestException> errorCallback = null)
+    public void GetImage(string imageUri, Action<Texture2D> callback, Action<RequestException> errorCallback = null)
     {
 
         RestClient.Get(new RequestHelper
@@ -161,7 +161,7 @@ public class APIController : MonoBehaviour
     }
 
     //Build request header and body
-    private static RequestHelper BuildRequest(string endpoint, Dictionary<string, string> parameters, string customeServerURL = null)
+    private RequestHelper BuildRequest(string endpoint, Dictionary<string, string> parameters, string customeServerURL = null)
     {
         AddHeaders();
 
@@ -189,7 +189,7 @@ public class APIController : MonoBehaviour
 
     }
 
-    private static RequestHelper BuildRequest<B>(B body, string endpoint, Dictionary<string, string> parameters, List<File> files, string customServerURL = null)
+    private RequestHelper BuildRequest<B>(B body, string endpoint, Dictionary<string, string> parameters, List<File> files, string customServerURL = null)
     {
         RequestHelper request = BuildRequest(endpoint, parameters, customServerURL);
         request.FormSections = GenerateFormData(body, files);
@@ -197,14 +197,14 @@ public class APIController : MonoBehaviour
     }
 
     //Add Custom headers to the request
-    private static void AddHeaders()
+    private void AddHeaders()
     {
         RestClient.DefaultRequestHeaders["X-Requested-With"] = "XMLHttpRequest";
         AddAuthorizationHeader();
     }
 
     //Add access_token and token_type to the Authorization header.
-    private static void AddAuthorizationHeader()
+    private void AddAuthorizationHeader()
     {
         if (CacheController.GetInstance().userConfig.api_token == null)
             return;
@@ -215,7 +215,7 @@ public class APIController : MonoBehaviour
 
 
     //Generates a form data for file upload.
-    private static List<IMultipartFormSection> GenerateFormData<B>(B body, List<File> files)
+    private List<IMultipartFormSection> GenerateFormData<B>(B body, List<File> files)
     {
 
 
@@ -245,7 +245,7 @@ public class APIController : MonoBehaviour
     }
 
     // convert HTTP to HTTPS (iOS will crash by default)
-    private static string SecureURL(string url)
+    private string SecureURL(string url)
     {
         int indexOfSlash = url.IndexOf("/");
 
