@@ -262,8 +262,6 @@ public class NavigationController : MonoBehaviour
 
     private IEnumerator InitNormalViews()
     {
-        //while (!UIController.GetInstance().hasFinishedAdjustingSafeArea)
-        //    yield return null;
 
         headerCanvas.SetActive(true);
         viewsCanvas.SetActive(true);

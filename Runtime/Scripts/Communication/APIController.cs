@@ -22,12 +22,16 @@ public class APIController : MonoBehaviour
         return instance;
     }
 
+#pragma warning disable 0649
+
     public static event EventHandler OnLogout;
 
     // Parameters
     readonly static private bool ENABLE_DEBUG = false;
 
     public static readonly string serverURL = "https://api.ccif-hikf.ch";          //address of the API to call
+
+#pragma warning restore 0649
 
     private void Awake()
     {

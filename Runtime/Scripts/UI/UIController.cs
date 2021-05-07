@@ -75,6 +75,9 @@ public class UIController : MonoBehaviour
 
     private void AdjustSafeArea()
     {
+        if (!ALLCoreConfig.GetInstance().activateSafeArea)
+            return;
+
         safeArea = Screen.safeArea;
 
         //safeArea = new Rect(50, 100, 1000, 2000);
