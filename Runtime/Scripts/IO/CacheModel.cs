@@ -340,6 +340,8 @@ public class CacheModel
     public class SingleItem : BaseItem
     {
         public DocumentsItem[] documents;
+
+        public LinksItem[] links;
         public SurveyItem survey;
     }
 
@@ -447,6 +449,14 @@ public class CacheModel
         public string name;
         public string uri;
     }
+
+    [Serializable]
+    public class LinksItem
+    {
+        public string text;
+        public string url;
+    }
+
 
     [Serializable]
     public class SurveyItem : BaseItem
