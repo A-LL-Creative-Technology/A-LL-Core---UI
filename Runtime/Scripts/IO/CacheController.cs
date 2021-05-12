@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using UnityEngine;
 using System;
 using static CacheModel;
@@ -49,6 +49,7 @@ public class CacheController : MonoBehaviour
     public static string imagesNewsCacheLocation;
     public static string imagesInnovationsCacheLocation;
     public static string imagesEventsCacheLocation;
+    public static string imagesServicesCacheLocation;
 
     public static bool isCacheLoaded = false;
 
@@ -86,6 +87,7 @@ public class CacheController : MonoBehaviour
         imagesNewsCacheLocation = Path.Combine(standardImagesCacheLocation, "News");
         imagesInnovationsCacheLocation = Path.Combine(standardImagesCacheLocation, "Innovations");
         imagesEventsCacheLocation = Path.Combine(standardImagesCacheLocation, "Events");
+        imagesServicesCacheLocation = Path.Combine(standardImagesCacheLocation, "Services");
 
         CreateDirectory(rootCacheLocation);
         CreateDirectory(appCacheLocation);

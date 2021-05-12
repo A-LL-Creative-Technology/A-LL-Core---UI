@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -342,6 +342,7 @@ public class CacheModel
         public DocumentsItem[] documents;
 
         public LinksItem[] links;
+        public SponsorsItem [] sponsors;
         public SurveyItem survey;
     }
 
@@ -455,6 +456,14 @@ public class CacheModel
     {
         public string text;
         public string url;
+    }
+
+    [Serializable]
+    public class SponsorsItem
+    {
+        public int id;
+        public string url;
+        public string logo_uri;
     }
 
 
