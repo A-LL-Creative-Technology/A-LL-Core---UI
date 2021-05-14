@@ -6,6 +6,7 @@ using System.Collections;
 using Proyecto26;
 using UnityEngine.SceneManagement;
 
+[DefaultExecutionOrder(-50)]
 public class CacheController : MonoBehaviour
 {
     private static CacheController instance;

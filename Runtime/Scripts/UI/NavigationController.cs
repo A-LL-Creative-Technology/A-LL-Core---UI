@@ -690,8 +690,6 @@ public class NavigationController : MonoBehaviour
         // if stack is currently empty, we fill it with parent and child
         if (viewsStack.Count == 0)
         {
-            Debug.Log("current view 1 " + currentView + " scrollbar " + scrollViewContainer.transform.localPosition.y);
-
             viewsStack.Add(new NavigationConfig(currentView, scrollViewContainer.transform.localPosition.y));
             viewsStack.Add(new NavigationConfig(nextView, 0));
             isNewStack = true;
