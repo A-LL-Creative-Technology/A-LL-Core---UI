@@ -8,8 +8,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.Localization.Components;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-//using static CacheModel;
 
+[DefaultExecutionOrder(50)]
 public class NavigationController : MonoBehaviour
 {
     private static NavigationController instance;
@@ -127,9 +127,6 @@ public class NavigationController : MonoBehaviour
 
     private List<NavigationConfig> viewsStack = new List<NavigationConfig>();
 
-    // to define when script is loaded for the first time
-    private bool isOnEnableCalledFirstTime = true;
-
 #pragma warning restore 0649
 
     private void Awake()
@@ -142,15 +139,11 @@ public class NavigationController : MonoBehaviour
         StartCoroutine(InitNavigation());
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        if (isOnEnableCalledFirstTime)
-        {
-            isOnEnableCalledFirstTime = false;
-
-            CacheController.OnCacheLoaded += OnCacheLoadedCallback;
-            singlePageContentLoadedDelegate += OnSinglePageContentLoadedContinuePushToStackCallback;
-        }
+        CacheController.OnCacheLoaded += OnCacheLoadedCallback;
+        singlePageContentLoadedDelegate += OnSinglePageContentLoadedContinuePushToStackCallback;
+        
     }
 
     private void OnDestroy()
@@ -262,6 +255,8 @@ public class NavigationController : MonoBehaviour
 
     private IEnumerator InitNormalViews()
     {
+        //while (!UIController.GetInstance().hasFinishedAdjustingSafeArea)
+        //    yield return null;
 
         headerCanvas.SetActive(true);
         viewsCanvas.SetActive(true);
@@ -695,6 +690,8 @@ public class NavigationController : MonoBehaviour
         // if stack is currently empty, we fill it with parent and child
         if (viewsStack.Count == 0)
         {
+            Debug.Log("current view 1 " + currentView + " scrollbar " + scrollViewContainer.transform.localPosition.y);
+
             viewsStack.Add(new NavigationConfig(currentView, scrollViewContainer.transform.localPosition.y));
             viewsStack.Add(new NavigationConfig(nextView, 0));
             isNewStack = true;
