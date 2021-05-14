@@ -273,6 +273,7 @@ public class CacheModel
     {
         // Serialized fields for Json
         public ServicesHeader header = null;
+        public ServicesSponsors partners = null;
 
         public ServicesConfig()
         {
@@ -411,6 +412,14 @@ public class CacheModel
 
         public string created_at;
         public string updated_at;
+    }
+
+    [Serializable]
+    public class ServicesSponsors
+    {
+        public List<SponsorsItem> platinum;
+        public List<SponsorsItem>  gold;
+        public List<SponsorsItem>  silver;
     }
 
     [Serializable]
@@ -574,6 +583,8 @@ public class CacheModel
         public ServicesHeader header;
 
         public List<ServiceItem> services;
+
+        public ServicesSponsors partners;
         public int[] existing_ids;
     }
 

@@ -103,6 +103,7 @@ public class CacheController : MonoBehaviour
         CreateDirectory(imagesNewsCacheLocation);
         CreateDirectory(imagesInnovationsCacheLocation);
         CreateDirectory(imagesEventsCacheLocation);
+        CreateDirectory(imagesServicesCacheLocation);
 
     }
 
