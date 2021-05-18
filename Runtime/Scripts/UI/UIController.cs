@@ -127,7 +127,7 @@ public class UIController : MonoBehaviour
         float scrollViewContainerHeight = scrollViewContainerRectTransform.sizeDelta.y;
 
         // it enters the updating zone
-        if (!isInLoadingUpdatesScrollZone && !isInLoadingInfiniteScrollZone)
+        if (!isInLoadingUpdatesScrollZone)
         {
             // safe zone: we make sure everything is back to normal when we quit the update area (due to float imprecise values)
             if (scrollLocalYPosition > 0.9f * LOADER_UPDATE_THRESHOLD_TO_FADE && scrollLocalYPosition < 0)
@@ -145,18 +145,19 @@ public class UIController : MonoBehaviour
                 StartUpdateScroll(callbackUpdate);
 
             }
-            else if (scrollViewContainerHeight - scrollLocalYPosition < LOADER_THRESHOLD_TO_INFINITE_SCROLL && !isLoadingInfiniteScroll) // starting infinite
+            else if (scrollViewContainerHeight - scrollLocalYPosition < LOADER_THRESHOLD_TO_INFINITE_SCROLL && !isLoadingInfiniteScroll && !isInLoadingInfiniteScrollZone) // starting infinite
             {
                 //Debug.Log("Entering Infinite");
                 StartInfiniteScroll(callbackInfiniteScroll);
             }
         }
-        else if (isInLoadingUpdatesScrollZone && !isInLoadingInfiniteScrollZone && (scrollLocalYPosition < 0.9f * LOADER_UPDATE_THRESHOLD_TO_FADE && scrollLocalYPosition >= LOADER_UPDATE_THRESHOLD)) // leaving updates
+        else if (isInLoadingUpdatesScrollZone && (scrollLocalYPosition < 0.9f * LOADER_UPDATE_THRESHOLD_TO_FADE && scrollLocalYPosition >= LOADER_UPDATE_THRESHOLD)) // leaving updates
         {
             //Debug.Log("Leaving Updates");
             AroundUpdateScroll(scrollLocalYPosition, false);
         }
-        else if ((isInLoadingUpdatesScrollZone && !isLoadingUpdatesScroll && scrollLocalYPosition >= 0.9f * LOADER_UPDATE_THRESHOLD_TO_FADE) || (isInLoadingInfiniteScrollZone && !isLoadingInfiniteScroll && scrollViewContainerHeight - scrollLocalYPosition >= LOADER_THRESHOLD_TO_INFINITE_SCROLL)) // exiting scroll triggers
+
+        if ((isInLoadingUpdatesScrollZone && !isLoadingUpdatesScroll && scrollLocalYPosition >= 0.9f * LOADER_UPDATE_THRESHOLD_TO_FADE) || (isInLoadingInfiniteScrollZone && !isLoadingInfiniteScroll && scrollViewContainerHeight - scrollLocalYPosition >= LOADER_THRESHOLD_TO_INFINITE_SCROLL)) // exiting scroll triggers
         {
             //Debug.Log("Exiting both");
             ExitingBothScroll();
