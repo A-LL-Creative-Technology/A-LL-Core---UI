@@ -503,16 +503,16 @@ public class NavigationController : MonoBehaviour
         });
     }
 
-    private IEnumerator QueueNotification(bool isSuccess, bool isAutoHide, string title, string body, string localizationTable, string cta, NotificationActionLink ctaLink)
+    private IEnumerator QueueNotification(bool isSuccess, float secondsBeforeAutoHide, string title, string body, string localizationTable, string cta, NotificationActionLink ctaLink)
     {
         while (isNotificationInProgress)
             yield return null;
 
-        OnNotificationOpen(isSuccess, isAutoHide, title, body, localizationTable, cta, ctaLink);
+        OnNotificationOpen(isSuccess, secondsBeforeAutoHide, title, body, localizationTable, cta, ctaLink);
     }
 
     // for title and body, use the prefix "string:" at the beginning of the variable to use the string as is without using it as a Localization key
-    public void OnNotificationOpen(bool isSuccess, bool isAutoHide, string title = "", string body = "", string localizationTable = "Main", string cta = "", NotificationActionLink ctaLink = NotificationActionLink.None)
+    public void OnNotificationOpen(bool isSuccess, float secondsBeforeAutoHide, string title = "", string body = "", string localizationTable = "Main", string cta = "", NotificationActionLink ctaLink = NotificationActionLink.None)
     {
         if (isNotificationInProgress)
         {
@@ -520,7 +520,7 @@ public class NavigationController : MonoBehaviour
             if (isSuccess)
             {
                 OnNotificationClose();
-                StartCoroutine(QueueNotification(isSuccess, isAutoHide, title, body, localizationTable, cta, ctaLink));
+                StartCoroutine(QueueNotification(isSuccess, secondsBeforeAutoHide, title, body, localizationTable, cta, ctaLink));
             }
 
             return;
@@ -540,10 +540,10 @@ public class NavigationController : MonoBehaviour
             notificationBackground.color = new Color(254 / 255f, 104 / 255f, 78 / 255f);
         }
 
-        if (isAutoHide)
+        if (secondsBeforeAutoHide>0)
         {
             CancelInvoke();
-            Invoke("OnNotificationClose", 5f);
+            Invoke("OnNotificationClose", secondsBeforeAutoHide);
         }
 
         // toggle title

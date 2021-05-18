@@ -19,3 +19,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for UI Rounded Corners using masks. It is replaced by Procedural UI Image.
 - Support for SVG and menu controller updated accordingly.
 - Removed static on APIController + server url is editable.
+- Support for defining number of seconds before autoHide (default was 5 seconds)
