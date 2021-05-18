@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -119,6 +119,35 @@ public class GlobalController: MonoBehaviour
     public static string RemoveSpaceInString(string str)
     {
         return Regex.Replace(str, @"\s+", "");
+    }
+
+    public static string ReplaceMultipleSpaceInString(string str)
+    {
+        return Regex.Replace(str, @"\s+", " ");
+    }
+
+    public static string RemoveTabInString(string str)
+    {
+        return Regex.Replace(str, @"\t+", "");
+    }
+
+    public static string RemoveCarriageReturnInString(string str)
+    {
+        return Regex.Replace(str, @"\r+", "");
+    }
+
+    public static string RemoveNewLineInString(string str)
+    {
+        return Regex.Replace(str, @"\n+", "");
+    }
+
+    public static string FormatGraphQLQuery(string str)
+    {
+        str = ReplaceMultipleSpaceInString(str);
+        str = RemoveTabInString(str);
+        str = RemoveNewLineInString(str);
+        str = RemoveCarriageReturnInString(str);
+        return str;
     }
 
     public static IEnumerator RebuildLayout(RectTransform rootRectTransform, Action callback)
