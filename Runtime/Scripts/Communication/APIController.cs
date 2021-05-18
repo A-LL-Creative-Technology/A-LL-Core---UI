@@ -56,18 +56,18 @@ public class APIController : MonoBehaviour
         if (data != null && data.HasKey("errors"))
         {
             //Get the first error
-            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["errors"][0][0]);
+            NavigationController.GetInstance().OnNotificationOpen(false, -1, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["errors"][0][0]);
 
         }
         else if (data.HasKey("message"))
         {
             //Fallback on the message
-            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["message"]);
+            NavigationController.GetInstance().OnNotificationOpen(false, -1, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["message"]);
         }
         else
         {
             //Fallback
-            NavigationController.GetInstance().OnNotificationOpen(false, false, "Erreur de connexion", "CODE_General_Connection_Error");
+            NavigationController.GetInstance().OnNotificationOpen(false, -1, "Erreur de connexion", "CODE_General_Connection_Error");
         }
 
 
