@@ -234,7 +234,7 @@ public class UIController : MonoBehaviour
         GlobalController.LogMe(url);
 
         //Log open_link in Analytics
-        AnalyticsController.GetInstance().Log(AnalyticsController.LOGS.OPEN_LINK, url);
+        AnalyticsController.GetInstance()?.Log(AnalyticsController.LOGS.OPEN_LINK, url);
 
         Application.OpenURL(url);
     }
