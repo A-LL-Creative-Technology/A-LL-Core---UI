@@ -3823,6 +3823,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: -1997.52
       objectReference: {fileID: 0}
+    - target: {fileID: 5968140714308027486, guid: b91f27c8aa73948f6b235c1de7388c39,
+        type: 3}
+      propertyPath: m_TagString
+      value: Normal Views Container
+      objectReference: {fileID: 0}
     - target: {fileID: 5968140714320590161, guid: b91f27c8aa73948f6b235c1de7388c39,
         type: 3}
       propertyPath: m_LocalPosition.x
