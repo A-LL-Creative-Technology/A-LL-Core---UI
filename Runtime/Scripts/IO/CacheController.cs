@@ -4,7 +4,6 @@ using System;
 using static CacheModel;
 using System.Collections;
 using Proyecto26;
-using UnityEngine.SceneManagement;
 
 public class CacheController : MonoBehaviour
 {
@@ -62,13 +61,6 @@ public class CacheController : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-        LoadAllCaches();
-
-    }
-
     private static void InitDirectories()
     {
         string rootCacheLocation = Path.Combine(Application.persistentDataPath, "Cache");
@@ -122,7 +114,8 @@ public class CacheController : MonoBehaviour
         GlobalController.LogMe("Normal caches successfully loaded from location: " + Application.persistentDataPath);
     }
 
-    private void LoadAllCaches()
+    // triggered from NavigationController
+    public void LoadAllCaches()
     {
         LoadAppCaches();
         LoadPermanentCaches();

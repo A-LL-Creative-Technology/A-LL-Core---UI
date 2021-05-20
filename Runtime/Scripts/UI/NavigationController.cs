@@ -132,17 +132,18 @@ public class NavigationController : MonoBehaviour
     {
         instance = this;
 
+        isNavigationInitializationInProgress = true;
+
         // start the app loader
         OnGlobalAppLoaderOpen();
-
-        StartCoroutine(InitNavigation());
     }
 
     private void Start()
     {
         CacheController.OnCacheLoaded += OnCacheLoadedCallback;
         singlePageContentLoadedDelegate += OnSinglePageContentLoadedContinuePushToStackCallback;
-        
+
+        StartCoroutine(InitNavigation());
     }
 
     private void OnDestroy()
@@ -153,7 +154,6 @@ public class NavigationController : MonoBehaviour
 
     private void Update()
     {
-
 #if UNITY_ANDROID
         // Check if back button on Android OS UI was pressed this frame
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -181,8 +181,6 @@ public class NavigationController : MonoBehaviour
 
     private IEnumerator InitNavigation()
     {
-        isNavigationInitializationInProgress = true;
-
         // get scroll view rect
         scrollViewRect = scrollView.GetComponent<ScrollRectFaster>();
 
@@ -225,8 +223,10 @@ public class NavigationController : MonoBehaviour
         // header title
         navigationBarTitle = headerTitle.GetComponent<TextMeshProUGUI>();
 
-        isNavigationInitializationInProgress = false;
+        // trigger the cache load (but it will wait anyway for isNavigationInitializationInProgress
+        CacheController.GetInstance().LoadAllCaches();
 
+        isNavigationInitializationInProgress = false;
     }
 
     private void InitOverlayCanvas()
@@ -539,7 +539,7 @@ public class NavigationController : MonoBehaviour
             notificationBackground.color = new Color(254 / 255f, 104 / 255f, 78 / 255f);
         }
 
-        if (secondsBeforeAutoHide>0)
+        if (secondsBeforeAutoHide > 0)
         {
             CancelInvoke();
             Invoke("OnNotificationClose", secondsBeforeAutoHide);
@@ -726,7 +726,7 @@ public class NavigationController : MonoBehaviour
         //we make sure this function is called only after PushToStack() function.
         if (!isPushToStackInProgress)
             return;
-        
+
         // we make sure the event on loaded single page is called here only after push to stack and nowhere else (like for instance after a OnOverClose)
         if (currentNavigationMode != NavigationMode.StackOpen)
             return;
@@ -880,7 +880,7 @@ public class NavigationController : MonoBehaviour
             currentView.transform.localPosition = new Vector3(currentView.transform.localPosition.x, overViewsInitialYPosition, currentView.transform.localPosition.z);
 
             // reactivate the background image (necessary if input fields moves up the over view)
-            overCanvasRawImage.enabled = true; 
+            overCanvasRawImage.enabled = true;
 
             oldView = null;
             nextView = null;
