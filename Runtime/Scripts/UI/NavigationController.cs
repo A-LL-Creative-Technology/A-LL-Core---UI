@@ -9,7 +9,6 @@ using UnityEngine.Localization.Components;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-[DefaultExecutionOrder(50)]
 public class NavigationController : MonoBehaviour
 {
     private static NavigationController instance;
