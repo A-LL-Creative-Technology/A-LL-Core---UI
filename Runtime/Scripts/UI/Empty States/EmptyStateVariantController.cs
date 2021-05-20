@@ -11,7 +11,9 @@ public class EmptyStateVariantController : MonoBehaviour
         Scene,
     }
 
+#pragma warning disable 0649
     [SerializeField] private BackType backTo;
+#pragma warning restore 0649
 
     public void OnCallToAction()
     {
