@@ -82,7 +82,7 @@ public class NavigationController : MonoBehaviour
 
     [NonSerialized] public float overViewsInitialYPosition;
 
-    [NonSerialized] public int currentSinglePageID = -1;
+    [NonSerialized] public string currentSinglePageID = "-1";
 
     private string singlePageSuffix = "/{id}";
 
@@ -382,7 +382,7 @@ public class NavigationController : MonoBehaviour
 
             // single page with ID
             case 2:
-                currentSinglePageID = Int32.Parse(routeElements[1]);
+                currentSinglePageID = routeElements[1];
 
                 // add suffix for single page
                 string nextViewStr = routeElements[0] + singlePageSuffix;
