@@ -7,13 +7,14 @@ using System.Linq;
 public static class PlayModeStateChanged
 {
 
-    static Transform viewsContent = Resources.FindObjectsOfTypeAll<GameObject>().FirstOrDefault(g => g.CompareTag("Normal Views Container")).transform;
-    static Transform overViewsContent = Resources.FindObjectsOfTypeAll<GameObject>().FirstOrDefault(g => g.CompareTag("Over Views Container")).transform;
+    static Transform viewsContent;
+    static Transform overViewsContent;
 
     // register an event handler when the class is initialized
     static PlayModeStateChanged()
     {
         EditorApplication.playModeStateChanged += ManageViews;
+
     }
 
     private static void ManageViews(PlayModeStateChange state)
@@ -41,15 +42,34 @@ public static class PlayModeStateChanged
 
     public static void PrepareViewsForPlay()
     {
+        // needs to be done here to make sure objects exist when called from another class
+        viewsContent = Resources.FindObjectsOfTypeAll<GameObject>()?.FirstOrDefault(g => g.CompareTag("Normal Views Container"))?.transform;
+        overViewsContent = Resources.FindObjectsOfTypeAll<GameObject>()?.FirstOrDefault(g => g.CompareTag("Over Views Container"))?.transform;
+
+        if (!viewsContent || !overViewsContent)
+        {
+            Debug.LogWarning("EDITOR SCRIPT: Cannot find the views GameObjects");
+        }
+
         LoopToActivateViews(viewsContent);
         LoopToActivateViews(overViewsContent);
 
     }
 
-    
+
 
     public static void ResetViewsAfterPlay()
     {
+        // needs to be done here to make sure objects exist when called from another class
+        viewsContent = Resources.FindObjectsOfTypeAll<GameObject>()?.FirstOrDefault(g => g.CompareTag("Normal Views Container"))?.transform;
+        overViewsContent = Resources.FindObjectsOfTypeAll<GameObject>()?.FirstOrDefault(g => g.CompareTag("Over Views Container"))?.transform;
+
+        if (!viewsContent || !overViewsContent)
+        {
+            Debug.LogWarning("EDITOR SCRIPT: Cannot find the views GameObjects");
+        }
+
+
         LoopToResetViews(viewsContent);
         LoopToResetViews(overViewsContent);
     }
