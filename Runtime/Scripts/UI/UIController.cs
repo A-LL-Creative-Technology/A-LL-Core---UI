@@ -13,19 +13,9 @@ public class UIController : MonoBehaviour
     }
 
 #pragma warning disable 0649
-    //readonly private float ANIMATION_NOTIFICATION_DURATION = 0.4f;
-
     private readonly float LOADER_UPDATE_THRESHOLD = -300f;
     private readonly float LOADER_UPDATE_THRESHOLD_TO_FADE = -50f;
     private readonly float LOADER_THRESHOLD_TO_INFINITE_SCROLL = 1000f;
-
-    private ScrollRect scrollRect;
-
-    [SerializeField] private GameObject headerSafeAreaBackground; // necessary for adjusting background when safe area is applied
-    [SerializeField] private GameObject headerContainer;
-    [SerializeField] private GameObject footerSafeAreaBackground; // necessary for adjusting background when safe area is applied
-    [SerializeField] private GameObject footerContainer;
-    [SerializeField] private GameObject viewport;
 
     public Texture2D imagePlaceholder;
     
@@ -45,8 +35,6 @@ public class UIController : MonoBehaviour
 
     [NonSerialized] public RectTransform overCanvasRectTransform;
 
-    private Rect safeArea;
-
 #pragma warning restore 0649
 
     private void Awake()
@@ -64,59 +52,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        // adjust wrt Safe Area
-        AdjustSafeArea();
-
-        scrollRect = NavigationController.GetInstance().scrollView.GetComponent<ScrollRect>();
-
         scrollViewContainerRectTransform = NavigationController.GetInstance().scrollViewContainer.GetComponent<RectTransform>();
-
-    }
-
-    private void AdjustSafeArea()
-    {
-        if (!ALLCoreConfig.GetInstance().activateSafeArea)
-            return;
-
-        safeArea = Screen.safeArea;
-
-        //safeArea = new Rect(50, 100, 1000, 2000);
-
-        // adjust header
-        RectTransform headerContainerRectTransform = headerContainer.GetComponent<RectTransform>();
-        headerContainerRectTransform.anchorMin = new Vector2(headerContainerRectTransform.anchorMin.x, headerContainerRectTransform.anchorMin.y - (Screen.height - safeArea.position.y - safeArea.size.y) / Screen.height);
-        headerContainerRectTransform.anchorMax = new Vector2(headerContainerRectTransform.anchorMax.x, (safeArea.position.y + safeArea.size.y) / Screen.height);
-
-        RectTransform headerSafeAreaBackgroundRectTransform = headerSafeAreaBackground.GetComponent<RectTransform>();
-        headerSafeAreaBackgroundRectTransform.anchorMin = headerContainerRectTransform.anchorMin;
-
-        headerContainerRectTransform.offsetMin = Vector2.zero;
-        headerContainerRectTransform.offsetMax = Vector2.zero;
-
-        headerSafeAreaBackgroundRectTransform.offsetMin = Vector2.zero;
-        headerSafeAreaBackgroundRectTransform.offsetMax = Vector2.zero;
-
-        // adjust footer
-        RectTransform footerContainerRectTransform = footerContainer.GetComponent<RectTransform>();
-        footerContainerRectTransform.anchorMin = new Vector2(footerContainerRectTransform.anchorMin.x, safeArea.position.y / Screen.height);
-        footerContainerRectTransform.anchorMax = new Vector2(footerContainerRectTransform.anchorMax.x, (footerContainerRectTransform.anchorMax.y + (safeArea.position.y / Screen.height)));
-
-        RectTransform footerSafeAreaBackgroundRectTransform = footerSafeAreaBackground.GetComponent<RectTransform>();
-        footerSafeAreaBackgroundRectTransform.anchorMax = footerContainerRectTransform.anchorMax;
-
-        footerContainerRectTransform.offsetMin = Vector2.zero;
-        footerContainerRectTransform.offsetMax = Vector2.zero;
-
-        footerSafeAreaBackgroundRectTransform.offsetMin = Vector2.zero;
-        footerSafeAreaBackgroundRectTransform.offsetMax = Vector2.zero;
-
-        // adjust viewport
-        RectTransform viewportRectTransform = viewport.GetComponent<RectTransform>();
-        viewportRectTransform.anchorMin = new Vector2(viewportRectTransform.anchorMin.x, footerContainerRectTransform.anchorMax.y);
-        viewportRectTransform.anchorMax = new Vector2(viewportRectTransform.anchorMax.x, headerContainerRectTransform.anchorMin.y);
-
-        viewportRectTransform.offsetMin = Vector2.zero;
-        viewportRectTransform.offsetMax = Vector2.zero;
 
     }
 

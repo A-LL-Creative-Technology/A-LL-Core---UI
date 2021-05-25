@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Config script on the A-LL Core prefab to activate/deactivate computation on the safe area
 - Splash screen prefabs
 - Added Editor scripts to manage scene views
+- Safe Area supports in over views (needs to use dedicated prefab) and updated in UIController for normal views
 
 ### Changed
 
