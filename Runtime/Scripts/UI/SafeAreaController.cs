@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SafeAreaManager : MonoBehaviour
+public class SafeAreaController : MonoBehaviour
 {
 #pragma warning disable 0649
 
