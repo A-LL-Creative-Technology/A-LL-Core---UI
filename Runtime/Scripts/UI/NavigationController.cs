@@ -938,6 +938,10 @@ public class NavigationController : MonoBehaviour
             // end of the animation
             NavigationCallback();
 
+            // HACK! These 2 lines force Unity Auto Layout to recompute the page as sometimes the page was moving upward weirdly
+            currentView.SetActive(false);
+            currentView.SetActive(true);
+
         });
     }
 
