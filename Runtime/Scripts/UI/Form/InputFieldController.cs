@@ -317,14 +317,37 @@ public class InputFieldController : MonoBehaviour
 
     public void SetInputFieldValue(string value)
     {
-        if (inputFieldTMP.text == "") // only move up the label if previously the field was empty
+        // we set an empty value to an empty input field => we don't do anything
+        if (String.IsNullOrEmpty(inputFieldTMP.text) && String.IsNullOrEmpty(value))
+            return;
+
+        // we set an empty value to a non-empty input field => we reset the input field
+        if (!String.IsNullOrEmpty(inputFieldTMP.text) && String.IsNullOrEmpty(value))
         {
-            MoveUpLabel();
+            MoveDownLabel();
+            inputField.SetActive(false);
+
+            inputFieldTMP.text = value;
+            return;
         }
 
-        inputField.SetActive(true);
+        // we set a non-empty value to a previously empty input field => we init the input field
+        if (String.IsNullOrEmpty(inputFieldTMP.text) && !String.IsNullOrEmpty(value))
+        {
+            MoveUpLabel();
+            inputField.SetActive(true);
 
-        inputFieldTMP.text = value;
+            inputFieldTMP.text = value;
+            return;
+        }
+
+        // we set a non-empty value to a non-empty input field => we update the input field value
+        if (!String.IsNullOrEmpty(inputFieldTMP.text) && !String.IsNullOrEmpty(value))
+        {
+            inputFieldTMP.text = value;
+            return;
+        }
+
 
     }
 }
