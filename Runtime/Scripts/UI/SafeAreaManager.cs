@@ -30,7 +30,7 @@ public class SafeAreaManager : MonoBehaviour
 
         safeArea = Screen.safeArea;
 
-        safeArea = new Rect(0, 100, 1000, 2000);
+        //safeArea = new Rect(0, 100, 1000, 2000);
 
         switch (safeAreaType)
         {
