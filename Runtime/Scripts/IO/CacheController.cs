@@ -15,6 +15,10 @@ public class CacheController : MonoBehaviour
     }
 
     public static event EventHandler OnCacheLoaded;
+    public static event EventHandler OnInitDirectories;
+    public static event EventHandler OnAppCacheToBeLoaded;
+    public static event EventHandler OnPermanentCacheToBeLoaded;
+    public static event EventHandler OnNormalCacheToBeLoaded;
 
     // TO ADD A NEW CACHE ELEMENT
     // 1. Add field static variable in CacheController
@@ -22,20 +26,7 @@ public class CacheController : MonoBehaviour
     // 3. Add the type as a child of Cache
     public AppConfig appConfig = new AppConfig();
 
-    public SceneConfig sceneConfig = new SceneConfig();
     public UserConfig userConfig = new UserConfig();
-
-    public NewsConfig newsConfig = new NewsConfig();
-    public InnovationsConfig innovationsConfig = new InnovationsConfig();
-    public EventsConfig eventsConfig = new EventsConfig();
-    public FilteredEventsConfig filteredEventsConfig = new FilteredEventsConfig(); // no need to load it at startup
-    public MyEventsIDsConfig myEventsIDsConfig = new MyEventsIDsConfig();
-    public TagsConfig tagsConfig = new TagsConfig();
-    public SurveyRelationalsConfig surveyRelationalsConfig = new SurveyRelationalsConfig();
-    public ContactsConfig contactsConfig = new ContactsConfig();
-    public ProvidersConfig providersConfig = new ProvidersConfig();
-    public ServicesConfig servicesConfig = new ServicesConfig();
-    public CreaTechsConfig creaTechsConfig = new CreaTechsConfig();
 
     public static string appCacheLocation;
 
@@ -43,12 +34,8 @@ public class CacheController : MonoBehaviour
     public static string permanentSceneCacheLocation;
 
     public static string standardConfigCacheLocation;
-    private static string standardImagesCacheLocation;
+    public static string standardImagesCacheLocation;
 
-    public static string imagesNewsCacheLocation;
-    public static string imagesInnovationsCacheLocation;
-    public static string imagesEventsCacheLocation;
-    public static string imagesServicesCacheLocation;
 
     public static bool isCacheLoaded = false;
 
@@ -76,10 +63,6 @@ public class CacheController : MonoBehaviour
         standardConfigCacheLocation = Path.Combine(standardSceneCacheLocation, "Config");
         standardImagesCacheLocation = Path.Combine(standardSceneCacheLocation, "Images");
 
-        imagesNewsCacheLocation = Path.Combine(standardImagesCacheLocation, "News");
-        imagesInnovationsCacheLocation = Path.Combine(standardImagesCacheLocation, "Innovations");
-        imagesEventsCacheLocation = Path.Combine(standardImagesCacheLocation, "Events");
-        imagesServicesCacheLocation = Path.Combine(standardImagesCacheLocation, "Services");
 
         CreateDirectory(rootCacheLocation);
         CreateDirectory(appCacheLocation);
@@ -92,10 +75,11 @@ public class CacheController : MonoBehaviour
         CreateDirectory(standardConfigCacheLocation);
 
         CreateDirectory(standardImagesCacheLocation);
-        CreateDirectory(imagesNewsCacheLocation);
-        CreateDirectory(imagesInnovationsCacheLocation);
-        CreateDirectory(imagesEventsCacheLocation);
-        CreateDirectory(imagesServicesCacheLocation);
+
+        if (OnInitDirectories != null)
+        {
+            OnInitDirectories(GetInstance(), EventArgs.Empty);
+        }
 
     }
 
@@ -132,8 +116,10 @@ public class CacheController : MonoBehaviour
             yield return null;
 
         // fires the event to notify that cache has been loaded
-        if (OnCacheLoaded != null)
+        if (OnCacheLoaded != null) { 
             OnCacheLoaded(this, EventArgs.Empty);
+        }
+
 
         isCacheLoaded = true;
 
@@ -142,29 +128,33 @@ public class CacheController : MonoBehaviour
     private static void LoadAppCaches()
     {
         LoadConfigFromDisk(GetInstance().appConfig);
+
+        // fires the event to notify that cache can be loaded
+        if (OnAppCacheToBeLoaded != null) { 
+            OnAppCacheToBeLoaded(GetInstance(), EventArgs.Empty);
+        }
+
     }
 
     private static void LoadPermanentCaches()
     {
-        LoadConfigFromDisk(GetInstance().sceneConfig);
-        LoadConfigFromDisk(GetInstance().myEventsIDsConfig);
-        LoadConfigFromDisk(GetInstance().creaTechsConfig);
         LoadConfigFromDisk(GetInstance().userConfig, () => {
             GetInstance().userConfig.Save(BaseConfig.SaveType.NoEvent); // if no cache found, we create a default config, so that state of the app always starts as if guest mode
         });
+
+        // fires the event to notify that cache can be loaded
+        if (OnPermanentCacheToBeLoaded != null) { 
+            OnPermanentCacheToBeLoaded(GetInstance(), EventArgs.Empty);
+        }
+
     }
 
     private static void LoadNormalCaches()
     {
-        // load all caches        
-        LoadConfigFromDisk(GetInstance().newsConfig);
-        LoadConfigFromDisk(GetInstance().innovationsConfig);
-        LoadConfigFromDisk(GetInstance().eventsConfig);
-        LoadConfigFromDisk(GetInstance().servicesConfig);
-        LoadConfigFromDisk(GetInstance().tagsConfig);
-        LoadConfigFromDisk(GetInstance().surveyRelationalsConfig);
-        LoadConfigFromDisk(GetInstance().contactsConfig);
-        LoadConfigFromDisk(GetInstance().providersConfig);
+        // fires the event to notify that cache can be loaded
+        if (OnNormalCacheToBeLoaded != null) { 
+            OnNormalCacheToBeLoaded(GetInstance(), EventArgs.Empty);
+        }
 
     }
 
@@ -249,7 +239,7 @@ public class CacheController : MonoBehaviour
 
     }
 
-    private static void CreateDirectory(string directoryPath)
+    public static void CreateDirectory(string directoryPath)
     {
 
         if (Directory.Exists(Path.GetDirectoryName(directoryPath)))
@@ -259,7 +249,7 @@ public class CacheController : MonoBehaviour
         }
     }
 
-    private static void RemoveDirectory(string directoryPath)
+    public static void RemoveDirectory(string directoryPath)
     {
 
         if (Directory.Exists(Path.GetDirectoryName(directoryPath)))
