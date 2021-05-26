@@ -23,3 +23,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed static on APIController + server url is editable.
 - Support for defining number of seconds before autoHide (default was 5 seconds)
 - Refactor the cache in Core Cache and App Cache. See the integration example for CCIF in A-LL Core Integration.
+- Changed loader spritesheet color (needs to be tinted)
