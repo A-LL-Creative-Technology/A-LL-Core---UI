@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using System.Text;
 using MoreMountains.NiceVibrations;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
@@ -167,12 +168,14 @@ public class UIController : MonoBehaviour
 
     public void OnOpenLink(string url)
     {
-        GlobalController.LogMe(url);
+        string encodedURL = GlobalController.RemoveAccents(url);
+
+        GlobalController.LogMe(encodedURL);
 
         //Log open_link in Analytics
         AnalyticsController.GetInstance()?.Log(AnalyticsController.LOGS.OPEN_LINK, url);
 
-        Application.OpenURL(url);
+        Application.OpenURL(encodedURL);
     }
 
     public void OnOpenBecomeMemberLink()

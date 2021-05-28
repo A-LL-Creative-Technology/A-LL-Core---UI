@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEditor;
@@ -148,6 +149,18 @@ public class GlobalController: MonoBehaviour
         str = RemoveNewLineInString(str);
         str = RemoveCarriageReturnInString(str);
         return str;
+    }
+
+    public static string RemoveAccents(string text)
+    {
+        StringBuilder sbReturn = new StringBuilder();
+        var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+        foreach (char letter in arrayText)
+        {
+            if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                sbReturn.Append(letter);
+        }
+        return sbReturn.ToString();
     }
 
     public static IEnumerator RebuildLayout(RectTransform rootRectTransform, Action callback)

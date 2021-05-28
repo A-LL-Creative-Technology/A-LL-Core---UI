@@ -25,3 +25,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactor the cache in Core Cache and App Cache. See the integration example for CCIF in A-LL Core Integration.
 - Changed loader spritesheet color (needs to be tinted)
 - Cleaned prefab popups
+- Added support for URLs with accents. The Core removes the accents as it crashed on iOS/Mac OS.
