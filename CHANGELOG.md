@@ -26,3 +26,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed loader spritesheet color (needs to be tinted)
 - Cleaned prefab popups
 - Added support for URLs with accents. The Core removes the accents as it crashed on iOS/Mac OS.
+- Changed the eyeIcon logic (no backward compatilibility!)

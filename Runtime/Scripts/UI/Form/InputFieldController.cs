@@ -19,9 +19,11 @@ public class InputFieldController : MonoBehaviour
     [Header("Password Parameters")]
     public bool isPassword;
     [ConditionalHide("isPassword", true)] public bool canPasswordBeEmptyForSubmission; // usefull for "update profile" pages
-    [ConditionalHide("isPassword", true)] [SerializeField] private RawImage eyeIcon;
+    [ConditionalHide("isPassword", true)] [SerializeField] private GameObject eyeButton;
     [ConditionalHide("isPassword", true)] [SerializeField] private Texture2D openedEye;
     [ConditionalHide("isPassword", true)] [SerializeField] private Texture2D closedEye;
+
+    private RawImage eyeButtonRawImage;
 
     private GameObject inputField;
     private GameObject label;
@@ -49,8 +51,11 @@ public class InputFieldController : MonoBehaviour
         label = transform.Find("Label").gameObject;
         labelTMP = label.GetComponent<TMP_Text>();
 
+
         if (isPassword)
         {
+
+            eyeButtonRawImage = eyeButton.transform.Find("Eye Toggle").gameObject.GetComponent<RawImage>();
 
             togglePasswordButton = transform.Find("Hit Zone - Eye").GetComponent<Button>();
 
@@ -113,6 +118,7 @@ public class InputFieldController : MonoBehaviour
             {
 
                 inputField.SetActive(true);
+                eyeButton?.SetActive(true);
 
                 inputFieldTMP.ActivateInputField();
 
@@ -226,6 +232,7 @@ public class InputFieldController : MonoBehaviour
         {
 
             inputField.SetActive(false);
+            eyeButton?.SetActive(false);
 
             MoveDownLabel(() => {
 
@@ -292,7 +299,7 @@ public class InputFieldController : MonoBehaviour
     private void OnTogglePasswordVisibility()
     {
         inputFieldTMP.contentType = inputFieldTMP.contentType == TMP_InputField.ContentType.Standard ? TMP_InputField.ContentType.Password : TMP_InputField.ContentType.Standard;
-        eyeIcon.texture = eyeIcon.texture == openedEye ? closedEye : openedEye;
+        eyeButtonRawImage.texture = eyeButtonRawImage.texture == openedEye ? closedEye : openedEye;
 
         // HACK - TO BE FIXED !!!
         // we force refresh of the password field (bug in TMP_InputField)
