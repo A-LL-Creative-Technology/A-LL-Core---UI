@@ -118,7 +118,8 @@ public class InputFieldController : MonoBehaviour
             {
 
                 inputField.SetActive(true);
-                eyeButton?.SetActive(true);
+                if (isPassword)
+                    eyeButton.SetActive(true);
 
                 inputFieldTMP.ActivateInputField();
 
@@ -232,7 +233,8 @@ public class InputFieldController : MonoBehaviour
         {
 
             inputField.SetActive(false);
-            eyeButton?.SetActive(false);
+            if (isPassword)
+                eyeButton.SetActive(false);
 
             MoveDownLabel(() => {
 
