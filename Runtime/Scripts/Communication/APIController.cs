@@ -29,7 +29,7 @@ public class APIController : MonoBehaviour
     // Parameters
     readonly static private bool ENABLE_DEBUG = false;
 
-    public string serverURL = "https://api.ccif-hikf.ch";          //address of the API to call
+    public string serverURL;          //address of the API to call
 
 #pragma warning restore 0649
 
