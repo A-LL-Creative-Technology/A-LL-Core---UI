@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,10 +17,21 @@ public class ALLCoreConfig : MonoBehaviour
 
     public bool activateSafeArea;
 
+    public static event EventHandler OnALLCoreReady;
+    public bool isALLCoreReady = false;
+
 #pragma warning restore 0649
 
     private void Awake()
     {
         instance = this;
+    }
+
+    public void ALLCoreReady()
+    {
+        isALLCoreReady = true;
+
+        if (OnALLCoreReady != null)
+            OnALLCoreReady(this, EventArgs.Empty);
     }
 }

@@ -26,8 +26,6 @@ public class NavigationController : MonoBehaviour
 
     readonly private float ANIMATION_RESET_SCROLL_TOP_DURATION = 0.4f;
 
-    public static event EventHandler OnALLCoreReady;
-
     public delegate void OnSinglePageContentLoaded(object sender, EventArgs e);
     public static OnSinglePageContentLoaded singlePageContentLoadedDelegate;
 
@@ -172,8 +170,7 @@ public class NavigationController : MonoBehaviour
         firstCacheLoad = false;
 
         // A-LL CORE IS READY, we fire an event to tell the app controllers that they can start
-        if (OnALLCoreReady != null)
-            OnALLCoreReady(this, EventArgs.Empty);
+        ALLCoreConfig.GetInstance().ALLCoreReady();
 
         // start the app loader
         OnGlobalAppLoaderClose();
@@ -224,7 +221,7 @@ public class NavigationController : MonoBehaviour
         navigationBarTitle = headerTitle.GetComponent<TextMeshProUGUI>();
 
         // trigger the cache load (but it will wait anyway for isNavigationInitializationInProgress
-        CacheController.GetInstance().LoadAllCaches();
+        CacheController.GetInitializationInstance().LoadAllCaches();
 
         isNavigationInitializationInProgress = false;
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -74,90 +75,113 @@ public class APIController : MonoBehaviour
         errorCallback?.Invoke(requestException);
     }
 
+    private IEnumerator EnsureALLCoreIsReady(Action callback)
+    {
+        while (!ALLCoreConfig.GetInstance().isALLCoreReady)
+            yield return null;
+
+        callback.Invoke();
+    }
+
     //GET a SINGLE element of type R
     public void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
-        //Send the request
-        RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL))
-           .Then(res =>
-           {
-               successCallback?.Invoke(res);
-           })
-           .Catch(err =>
-           {
-               HandleError((RequestException)err, endpoint, errorCallback);
-           });
+        StartCoroutine(EnsureALLCoreIsReady(() =>
+        {
+            //Send the request
+            RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL))
+               .Then(res =>
+               {
+                   successCallback?.Invoke(res);
+               })
+               .Catch(err =>
+               {
+                   HandleError((RequestException)err, endpoint, errorCallback);
+               });
+
+        }));
     }
 
     //POST a request with no particular types
     public void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
-        RestClient.Post(BuildRequest(endpoint, parameters, customServerURL))
-        .Then(res =>
-        {
-            successCallback?.Invoke(res);
-        })
-        .Catch(err =>
-        {
-            HandleError((RequestException)err, endpoint, errorCallback);
 
-        });
+        StartCoroutine(EnsureALLCoreIsReady(() =>
+        {
+            RestClient.Post(BuildRequest(endpoint, parameters, customServerURL))
+                .Then(res =>
+                {
+                    successCallback?.Invoke(res);
+                })
+                .Catch(err =>
+                {
+                    HandleError((RequestException)err, endpoint, errorCallback);
+                });
+        }));
     }
 
     //POST a request with an object of type S to the servers and expects an element of type R from the server
     public void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
-        RestClient.Post<R>(BuildRequest(endpoint, parameters, customServerURL))
-        .Then(res =>
+        StartCoroutine(EnsureALLCoreIsReady(() =>
         {
-            callback?.Invoke(res);
-        })
-        .Catch(err =>
-        {
-            HandleError((RequestException)err, endpoint, errorCallback);
-        });
+            RestClient.Post<R>(BuildRequest(endpoint, parameters, customServerURL))
+                .Then(res =>
+                {
+                    callback?.Invoke(res);
+                })
+                .Catch(err =>
+                {
+                    HandleError((RequestException)err, endpoint, errorCallback);
+                });
+        }));
     }
 
     //POST a file to the server
     public void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
     {
-        RestClient.Post<R>(BuildRequest(requestObject, endpoint, parameters, files, customServerURL))
-        .Then(res =>
+        StartCoroutine(EnsureALLCoreIsReady(() =>
         {
-            callback?.Invoke(res);
-        })
-        .Catch(err =>
-        {
-            HandleError((RequestException)err, endpoint, errorCallback);
-        });
+            RestClient.Post<R>(BuildRequest(requestObject, endpoint, parameters, files, customServerURL))
+                .Then(res =>
+                {
+                    callback?.Invoke(res);
+                })
+                .Catch(err =>
+                {
+                    HandleError((RequestException)err, endpoint, errorCallback);
+                });
+        }));
     }
 
     public void GetImage(string imageUri, Action<Texture2D> callback, Action<RequestException> errorCallback = null)
     {
-
-        RestClient.Get(new RequestHelper
+        StartCoroutine(EnsureALLCoreIsReady(() =>
         {
-            Uri = imageUri, // url is insecure as Kentico staging is not in https (an exception for that domain has been added to InfoPlistUpdater.cs in the Editor folder of Unity)
-            DownloadHandler = new DownloadHandlerTexture(),
-        }).Then(res =>
-        {
-            Texture2D texture = ((DownloadHandlerTexture)res.Request.downloadHandler).texture;
-            callback?.Invoke(texture);
-        }).Catch(err =>
-        {
-            RequestException requestException = (RequestException)err;
-
-            // if no network, we do not display the error but simply call the errorCallback
-            if (requestException.IsNetworkError)
+            RestClient.Get(new RequestHelper
             {
-                errorCallback?.Invoke(requestException);
-            }
-            else
+                Uri = imageUri, // url is insecure as Kentico staging is not in https (an exception for that domain has been added to InfoPlistUpdater.cs in the Editor folder of Unity)
+                DownloadHandler = new DownloadHandlerTexture(),
+            }).Then(res =>
             {
-                HandleError(requestException, imageUri, errorCallback);
-            }
+                Texture2D texture = ((DownloadHandlerTexture)res.Request.downloadHandler).texture;
+                callback?.Invoke(texture);
+            }).Catch(err =>
+            {
+                RequestException requestException = (RequestException)err;
 
-        });
+                // if no network, we do not display the error but simply call the errorCallback
+                if (requestException.IsNetworkError)
+                {
+                    errorCallback?.Invoke(requestException);
+                }
+                else
+                {
+                    HandleError(requestException, imageUri, errorCallback);
+                }
+
+            });
+        }));
     }
 
     //Build request header and body
@@ -217,8 +241,6 @@ public class APIController : MonoBehaviour
     //Generates a form data for file upload.
     private List<IMultipartFormSection> GenerateFormData<B>(B body, List<File> files)
     {
-
-
         //Generate Dictionnary from body
         Dictionary<string, object> bodyDictionary = body.GetType()
             .GetFields(BindingFlags.Instance | BindingFlags.Public)

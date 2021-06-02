@@ -8,10 +8,16 @@ using Proyecto26;
 public class CacheController : MonoBehaviour
 {
     private static CacheController instance;
+    private static CacheController initializationInstance; // used only for initialization purpose
 
     public static CacheController GetInstance()
     {
         return instance;
+    }
+
+    public static CacheController GetInitializationInstance()
+    {
+        return initializationInstance;
     }
 
     public static event EventHandler OnCacheLoaded;
@@ -41,7 +47,8 @@ public class CacheController : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        // WE DO NOT INITIALIZE THE CACHE PUBLIC INSTANCE HERE AS WE WANT TO MAKE SURE THE CACHE IS PROPERLY LOADED BEFORE USED
+        initializationInstance = this;
 
         // define root cache location
         InitDirectories();
@@ -55,7 +62,7 @@ public class CacheController : MonoBehaviour
         appCacheLocation = Path.Combine(rootCacheLocation, "App");
 
         string scenesCacheLocation = Path.Combine(rootCacheLocation, "Scenes");
-        string sceneCacheLocation = Path.Combine(scenesCacheLocation, GetInstance().gameObject.scene.name);
+        string sceneCacheLocation = Path.Combine(scenesCacheLocation, GetInitializationInstance().gameObject.scene.name);
 
         standardSceneCacheLocation = Path.Combine(sceneCacheLocation, "Standard");
         permanentSceneCacheLocation = Path.Combine(sceneCacheLocation, "Permanent");
@@ -93,7 +100,7 @@ public class CacheController : MonoBehaviour
         // retrigger loading of elements
         LoadNormalCaches();
 
-        GetInstance().StartCoroutine(GetInstance().CacheIsLoaded());
+        GetInitializationInstance().StartCoroutine(GetInitializationInstance().CacheIsLoaded());
 
         GlobalController.LogMe("Normal caches successfully loaded from location: " + Application.persistentDataPath);
     }
@@ -115,11 +122,13 @@ public class CacheController : MonoBehaviour
         while (NavigationController.GetInstance().isNavigationInitializationInProgress)
             yield return null;
 
+        instance = this;
+
         // fires the event to notify that cache has been loaded
-        if (OnCacheLoaded != null) { 
+        if (OnCacheLoaded != null)
+        {
             OnCacheLoaded(this, EventArgs.Empty);
         }
-
 
         isCacheLoaded = true;
 
@@ -127,24 +136,26 @@ public class CacheController : MonoBehaviour
 
     private static void LoadAppCaches()
     {
-        LoadConfigFromDisk(GetInstance().appConfig);
+        LoadConfigFromDisk(GetInitializationInstance().appConfig);
 
         // fires the event to notify that cache can be loaded
-        if (OnAppCacheToBeLoaded != null) { 
-            OnAppCacheToBeLoaded(GetInstance(), EventArgs.Empty);
+        if (OnAppCacheToBeLoaded != null)
+        {
+            OnAppCacheToBeLoaded(GetInitializationInstance(), EventArgs.Empty);
         }
 
     }
 
     private static void LoadPermanentCaches()
     {
-        LoadConfigFromDisk(GetInstance().userConfig, () => {
-            GetInstance().userConfig.Save(BaseConfig.SaveType.NoEvent); // if no cache found, we create a default config, so that state of the app always starts as if guest mode
+        LoadConfigFromDisk(GetInitializationInstance().userConfig, () => {
+            GetInitializationInstance().userConfig.Save(BaseConfig.SaveType.NoEvent); // if no cache found, we create a default config, so that state of the app always starts as if guest mode
         });
 
         // fires the event to notify that cache can be loaded
-        if (OnPermanentCacheToBeLoaded != null) { 
-            OnPermanentCacheToBeLoaded(GetInstance(), EventArgs.Empty);
+        if (OnPermanentCacheToBeLoaded != null)
+        {
+            OnPermanentCacheToBeLoaded(GetInitializationInstance(), EventArgs.Empty);
         }
 
     }
@@ -152,8 +163,9 @@ public class CacheController : MonoBehaviour
     private static void LoadNormalCaches()
     {
         // fires the event to notify that cache can be loaded
-        if (OnNormalCacheToBeLoaded != null) { 
-            OnNormalCacheToBeLoaded(GetInstance(), EventArgs.Empty);
+        if (OnNormalCacheToBeLoaded != null)
+        {
+            OnNormalCacheToBeLoaded(GetInitializationInstance(), EventArgs.Empty);
         }
 
     }
