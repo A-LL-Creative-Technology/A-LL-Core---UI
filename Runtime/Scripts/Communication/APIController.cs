@@ -84,12 +84,12 @@ public class APIController : MonoBehaviour
     }
 
     //GET a SINGLE element of type R
-    public void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
+    public void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null)
     {
         StartCoroutine(EnsureALLCoreIsReady(() =>
         {
             //Send the request
-            RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL))
+            RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL, customAPIToken))
                .Then(res =>
                {
                    successCallback?.Invoke(res);
@@ -103,12 +103,12 @@ public class APIController : MonoBehaviour
     }
 
     //POST a request with no particular types
-    public void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null)
+    public void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null)
     {
 
         StartCoroutine(EnsureALLCoreIsReady(() =>
         {
-            RestClient.Post(BuildRequest(endpoint, parameters, customServerURL))
+            RestClient.Post(BuildRequest(endpoint, parameters, customServerURL, customAPIToken))
                 .Then(res =>
                 {
                     successCallback?.Invoke(res);
@@ -121,11 +121,11 @@ public class APIController : MonoBehaviour
     }
 
     //POST a request with an object of type S to the servers and expects an element of type R from the server
-    public void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
+    public void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null)
     {
         StartCoroutine(EnsureALLCoreIsReady(() =>
         {
-            RestClient.Post<R>(BuildRequest(endpoint, parameters, customServerURL))
+            RestClient.Post<R>(BuildRequest(endpoint, parameters, customServerURL, customAPIToken))
                 .Then(res =>
                 {
                     callback?.Invoke(res);
@@ -138,11 +138,11 @@ public class APIController : MonoBehaviour
     }
 
     //POST a file to the server
-    public void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null)
+    public void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null)
     {
         StartCoroutine(EnsureALLCoreIsReady(() =>
         {
-            RestClient.Post<R>(BuildRequest(requestObject, endpoint, parameters, files, customServerURL))
+            RestClient.Post<R>(BuildRequest(requestObject, endpoint, parameters, files, customServerURL, customAPIToken))
                 .Then(res =>
                 {
                     callback?.Invoke(res);
@@ -185,9 +185,9 @@ public class APIController : MonoBehaviour
     }
 
     //Build request header and body
-    private RequestHelper BuildRequest(string endpoint, Dictionary<string, string> parameters, string customeServerURL = null)
+    private RequestHelper BuildRequest(string endpoint, Dictionary<string, string> parameters, string customeServerURL = null, string customAPIToken = null)
     {
-        AddHeaders();
+        AddHeaders(customAPIToken);
 
         // add localization to header
         if (CacheController.GetInstance().appConfig.lang != "")
@@ -213,27 +213,38 @@ public class APIController : MonoBehaviour
 
     }
 
-    private RequestHelper BuildRequest<B>(B body, string endpoint, Dictionary<string, string> parameters, List<File> files, string customServerURL = null)
+    private RequestHelper BuildRequest<B>(B body, string endpoint, Dictionary<string, string> parameters, List<File> files, string customServerURL = null, string customAPIToken = null)
     {
-        RequestHelper request = BuildRequest(endpoint, parameters, customServerURL);
+        RequestHelper request = BuildRequest(endpoint, parameters, customServerURL, customAPIToken);
         request.FormSections = GenerateFormData(body, files);
         return request;
     }
 
     //Add Custom headers to the request
-    private void AddHeaders()
+    private void AddHeaders(string customAPIToken = null)
     {
         RestClient.DefaultRequestHeaders["X-Requested-With"] = "XMLHttpRequest";
-        AddAuthorizationHeader();
+        AddAuthorizationHeader(customAPIToken);
     }
 
     //Add access_token and token_type to the Authorization header.
-    private void AddAuthorizationHeader()
+    private void AddAuthorizationHeader(string customAPIToken = null)
     {
-        if (String.IsNullOrEmpty(CacheController.GetInstance().userConfig.api_token))
-            return;
+        string apiToken = CacheController.GetInstance().userConfig.api_token;
 
-        RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + CacheController.GetInstance().userConfig.api_token;
+        if (String.IsNullOrEmpty(apiToken))
+        {
+            if (String.IsNullOrEmpty(customAPIToken))
+            {
+                return;
+            }
+            else
+            {
+                apiToken = customAPIToken;
+            }
+        }
+
+        RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + apiToken;
     }
 
 

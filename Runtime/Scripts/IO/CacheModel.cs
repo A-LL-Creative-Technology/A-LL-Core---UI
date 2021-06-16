@@ -120,7 +120,7 @@ public class CacheModel
         public UserConfig()
         {
             filePath = "UserConfig.json";
-            cacheType = CacheType.Permanent;
+            cacheType = CacheType.App;
         }
     }
 

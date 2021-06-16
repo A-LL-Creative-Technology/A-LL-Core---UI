@@ -138,6 +138,10 @@ public class CacheController : MonoBehaviour
     {
         LoadConfigFromDisk(GetInitializationInstance().appConfig);
 
+        LoadConfigFromDisk(GetInitializationInstance().userConfig, () => {
+            GetInitializationInstance().userConfig.Save(BaseConfig.SaveType.NoEvent); // if no cache found, we create a default config, so that state of the app always starts as if guest mode
+        });
+
         // fires the event to notify that cache can be loaded
         if (OnAppCacheToBeLoaded != null)
         {
@@ -148,10 +152,6 @@ public class CacheController : MonoBehaviour
 
     private static void LoadPermanentCaches()
     {
-        LoadConfigFromDisk(GetInitializationInstance().userConfig, () => {
-            GetInitializationInstance().userConfig.Save(BaseConfig.SaveType.NoEvent); // if no cache found, we create a default config, so that state of the app always starts as if guest mode
-        });
-
         // fires the event to notify that cache can be loaded
         if (OnPermanentCacheToBeLoaded != null)
         {
