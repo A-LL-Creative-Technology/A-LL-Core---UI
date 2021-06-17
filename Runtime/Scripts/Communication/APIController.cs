@@ -230,19 +230,10 @@ public class APIController : MonoBehaviour
     //Add access_token and token_type to the Authorization header.
     private void AddAuthorizationHeader(string customAPIToken = null)
     {
-        string apiToken = CacheController.GetInstance().userConfig.api_token;
+        string apiToken = (String.IsNullOrEmpty(customAPIToken)) ? CacheController.GetInstance().userConfig.api_token : customAPIToken;
 
         if (String.IsNullOrEmpty(apiToken))
-        {
-            if (String.IsNullOrEmpty(customAPIToken))
-            {
-                return;
-            }
-            else
-            {
-                apiToken = customAPIToken;
-            }
-        }
+            return;
 
         RestClient.DefaultRequestHeaders["Authorization"] = "Bearer " + apiToken;
     }
