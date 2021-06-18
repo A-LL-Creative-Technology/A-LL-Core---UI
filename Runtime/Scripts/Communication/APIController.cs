@@ -39,7 +39,7 @@ public class APIController : MonoBehaviour
         instance = this;
     }
 
-    private void HandleError(RequestException requestException, string endpoint, Action<RequestException> errorCallback = null)
+    private void HandleError(RequestException requestException, string endpoint, Action<RequestException> errorCallback = null, bool showAPIErrorNotification = true)
     {
         GlobalController.LogMe("Error in the API call: " + endpoint + " - " + requestException.Message + " - " + requestException.Response);
 
@@ -56,19 +56,27 @@ public class APIController : MonoBehaviour
 
         if (data != null && data.HasKey("errors"))
         {
-            //Get the first error
-            NavigationController.GetInstance().OnNotificationOpen(false, -1, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["errors"][0][0]);
-
+            if (showAPIErrorNotification)
+            {
+                //Get the first error
+                NavigationController.GetInstance().OnNotificationOpen(false, -1, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["errors"][0][0]);
+            }
         }
         else if (data.HasKey("message"))
         {
-            //Fallback on the message
-            NavigationController.GetInstance().OnNotificationOpen(false, -1, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["message"]);
+            if (showAPIErrorNotification)
+            {
+                //Fallback on the message
+                NavigationController.GetInstance().OnNotificationOpen(false, -1, "Erreur de connexion", NavigationController.GetInstance().notificationStringPrefix + data["message"]);
+            }
         }
         else
         {
-            //Fallback
-            NavigationController.GetInstance().OnNotificationOpen(false, -1, "Erreur de connexion", "CODE_General_Connection_Error");
+            if (showAPIErrorNotification)
+            {
+                //Fallback
+                NavigationController.GetInstance().OnNotificationOpen(false, -1, "Erreur de connexion", "CODE_General_Connection_Error");
+            }
         }
 
 
@@ -84,7 +92,7 @@ public class APIController : MonoBehaviour
     }
 
     //GET a SINGLE element of type R
-    public void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null)
+    public void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true)
     {
         StartCoroutine(EnsureALLCoreIsReady(() =>
         {
@@ -96,14 +104,14 @@ public class APIController : MonoBehaviour
                })
                .Catch(err =>
                {
-                   HandleError((RequestException)err, endpoint, errorCallback);
+                   HandleError((RequestException)err, endpoint, errorCallback, showAPIErrorNotification);
                });
 
         }));
     }
 
     //POST a request with no particular types
-    public void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null)
+    public void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true)
     {
 
         StartCoroutine(EnsureALLCoreIsReady(() =>
@@ -115,13 +123,13 @@ public class APIController : MonoBehaviour
                 })
                 .Catch(err =>
                 {
-                    HandleError((RequestException)err, endpoint, errorCallback);
+                    HandleError((RequestException)err, endpoint, errorCallback, showAPIErrorNotification);
                 });
         }));
     }
 
     //POST a request with an object of type S to the servers and expects an element of type R from the server
-    public void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null)
+    public void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true)
     {
         StartCoroutine(EnsureALLCoreIsReady(() =>
         {
@@ -132,13 +140,13 @@ public class APIController : MonoBehaviour
                 })
                 .Catch(err =>
                 {
-                    HandleError((RequestException)err, endpoint, errorCallback);
+                    HandleError((RequestException)err, endpoint, errorCallback, showAPIErrorNotification);
                 });
         }));
     }
 
     //POST a file to the server
-    public void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null)
+    public void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true)
     {
         StartCoroutine(EnsureALLCoreIsReady(() =>
         {
@@ -149,12 +157,12 @@ public class APIController : MonoBehaviour
                 })
                 .Catch(err =>
                 {
-                    HandleError((RequestException)err, endpoint, errorCallback);
+                    HandleError((RequestException)err, endpoint, errorCallback, showAPIErrorNotification);
                 });
         }));
     }
 
-    public void GetImage(string imageUri, Action<Texture2D> callback, Action<RequestException> errorCallback = null)
+    public void GetImage(string imageUri, Action<Texture2D> callback, Action<RequestException> errorCallback = null, bool showAPIErrorNotification = true)
     {
         StartCoroutine(EnsureALLCoreIsReady(() =>
         {
@@ -177,7 +185,7 @@ public class APIController : MonoBehaviour
                 }
                 else
                 {
-                    HandleError(requestException, imageUri, errorCallback);
+                    HandleError(requestException, imageUri, errorCallback, showAPIErrorNotification);
                 }
 
             });

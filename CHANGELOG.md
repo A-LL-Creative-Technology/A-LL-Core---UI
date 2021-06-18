@@ -29,3 +29,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the eyeIcon logic (no backward compatilibility!)
 - Added a safeguard to send API requests only when the Core is ready
 - Added an option for custom API Token and Expiration Date in APIController and UserController
+- Added feature to remove automatic error notification in APIController
