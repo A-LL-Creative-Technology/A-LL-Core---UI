@@ -163,6 +163,66 @@ public class GlobalController: MonoBehaviour
         return sbReturn.ToString();
     }
 
+    // check phone number format:
+    // 1) If it starts with +, we leave it as is
+    // 2) If it starts with 00, we convert the 00 to +
+    // 3) If it start with 0, we convert the 0 to +41 or the selected country code
+    public static string ConvertPhoneNumberToInternationalFormat(string phone, string countryCode = "CH")
+    {
+        if (phone.Length < 2)
+            return phone;
+
+        phone = phone.Replace(" ", String.Empty); //Remove spaces
+
+        // extract first characters
+        string firstChar = phone.Substring(0, 1);
+        string secondChar = phone.Substring(1, 1);
+
+        // 1)
+        if (firstChar == "+")
+            return phone;
+
+        // 2)
+        if (firstChar == "0" && secondChar == "0")
+            return "+" + phone.Substring(2);
+
+        // 3)
+        if (firstChar == "0" && secondChar != "0")
+        {
+
+            string countryCodeNumber = "+41";
+
+            switch (countryCode)
+            {
+                case "FR":
+
+                    countryCodeNumber = "+33";
+                    break;
+
+                case "DE":
+
+                    countryCodeNumber = "+49";
+                    break;
+
+                case "IT":
+
+                    countryCodeNumber = "+39";
+                    break;
+
+                case "US":
+
+                    countryCodeNumber = "+1";
+                    break;
+
+            }
+
+            return countryCodeNumber + phone.Substring(1);
+        }
+
+
+        return phone;
+    }
+
     public static IEnumerator RebuildLayout(RectTransform rootRectTransform, Action callback)
     {
         LayoutRebuilder.ForceRebuildLayoutImmediate(rootRectTransform);

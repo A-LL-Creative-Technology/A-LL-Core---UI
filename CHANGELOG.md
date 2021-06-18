@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Splash screen prefabs
 - Added Editor scripts to manage scene views
 - Safe Area supports in over views (needs to use dedicated prefab) and updated in UIController for normal views
+- Added function to convert phone number to international format
 
 ### Changed
 
