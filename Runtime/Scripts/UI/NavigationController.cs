@@ -169,11 +169,12 @@ public class NavigationController : MonoBehaviour
 
         firstCacheLoad = false;
 
+        // close the app loader (before firing the event)
+        OnGlobalAppLoaderClose();
+
         // A-LL CORE IS READY, we fire an event to tell the app controllers that they can start
         ALLCoreConfig.GetInstance().ALLCoreReady();
 
-        // start the app loader
-        OnGlobalAppLoaderClose();
     }
 
     private IEnumerator InitNavigation()
