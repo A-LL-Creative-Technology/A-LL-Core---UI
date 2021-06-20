@@ -172,7 +172,10 @@ public class GlobalController: MonoBehaviour
         if (phone.Length < 2)
             return phone;
 
+
         phone = phone.Replace(" ", String.Empty); //Remove spaces
+
+        phone = phone.Substring(phone.IndexOf("+")); // Remove everything in front of "+"
 
         // extract first characters
         string firstChar = phone.Substring(0, 1);
