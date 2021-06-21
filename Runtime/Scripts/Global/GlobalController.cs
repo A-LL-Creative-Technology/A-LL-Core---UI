@@ -169,13 +169,16 @@ public class GlobalController: MonoBehaviour
     // 3) If it start with 0, we convert the 0 to +41 or the selected country code
     public static string ConvertPhoneNumberToInternationalFormat(string phone, string countryCode = "CH")
     {
+
         if (phone.Length < 2)
             return phone;
 
 
         phone = phone.Replace(" ", String.Empty); //Remove spaces
 
-        phone = phone.Substring(phone.IndexOf("+")); // Remove everything in front of "+"
+        int indexOfPlus = phone.IndexOf("+");
+        if(indexOfPlus != -1)
+            phone = phone.Substring(indexOfPlus); // Remove everything in front of "+"
 
         // extract first characters
         string firstChar = phone.Substring(0, 1);
