@@ -32,6 +32,7 @@ public class NavigationController : MonoBehaviour
     public GameObject currentView;
 
     public GameObject scrollView;
+    [SerializeField] private RectTransform scrollViewViewportRectTransform;
     public GameObject scrollViewContainer; // container for the Views Canvas
 
     public GameObject headerCanvas;
@@ -39,6 +40,15 @@ public class NavigationController : MonoBehaviour
     public GameObject footerCanvas;
     public GameObject overCanvas;
     public GameObject overlayCanvas;
+
+    [SerializeField] private RectTransform footerContainerBackgroundRectTransform;
+    [SerializeField] private RectTransform footerContainerRectTransform;
+
+    // save navigation heights
+    private Vector2 scrollViewViewportAnchorMin;
+    private float footerContainerHeight;
+    private float footerContainerInitialPositionY;
+    private float footerContainerBackgroundInitialPositionY;
 
     public GameObject headerBackButton;
     public GameObject headerTitle;
@@ -1012,9 +1022,9 @@ public class NavigationController : MonoBehaviour
 
         // back button
         if (isNewStack)
-            ShowBackButton();
+            ShowStackNavigation();
         else if (isClosingStack)
-            HideBackButton();
+            HideStackNavigation();
         else
             ResetNavigationBooleans();
 
@@ -1027,9 +1037,20 @@ public class NavigationController : MonoBehaviour
         isClosingStack = false;
     }
 
-    private void HideBackButton()
+    private void HideStackNavigation()
     {
-        // we do the animation
+        // reset the bottom navigation
+        scrollViewViewportRectTransform.anchorMin = scrollViewViewportAnchorMin;
+
+        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y + footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+            footerContainerRectTransform.localPosition = new Vector3(footerContainerRectTransform.localPosition.x, footerContainerInitialPositionY, footerContainerRectTransform.localPosition.z);
+        });
+        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y + footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+            footerContainerBackgroundRectTransform.localPosition = new Vector3(footerContainerBackgroundRectTransform.localPosition.x, footerContainerBackgroundInitialPositionY, footerContainerBackgroundRectTransform.localPosition.z);
+        });
+
+
+        // we do the animation for the back button
         LeanTween.moveX(headerBackButton, headerBackButton.transform.position.x - headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
         {
             headerBackButton.SetActive(false);
@@ -1041,11 +1062,21 @@ public class NavigationController : MonoBehaviour
         });
     }
 
-    private void ShowBackButton()
+    private void ShowStackNavigation()
     {
         headerBackButton.SetActive(true);
 
-        // we do the animation
+        // hide the navigation
+        scrollViewViewportAnchorMin = scrollViewViewportRectTransform.anchorMin;
+        footerContainerHeight = footerContainerRectTransform.rect.height;
+        footerContainerInitialPositionY = footerContainerRectTransform.localPosition.y;
+        footerContainerBackgroundInitialPositionY = footerContainerBackgroundRectTransform.localPosition.y;
+
+        scrollViewViewportRectTransform.anchorMin = Vector2.zero;
+        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y - footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
+        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y - footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
+
+        // we do the animation for the back button
         LeanTween.moveX(headerBackButton, headerBackButton.transform.position.x + headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo);
         LeanTween.moveX(headerTitle, headerTitle.transform.position.x + headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
         {

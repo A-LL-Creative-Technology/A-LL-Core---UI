@@ -18,7 +18,7 @@ public class ALLCoreConfig : MonoBehaviour
     public bool activateSafeArea;
 
     public static event EventHandler OnALLCoreReady;
-    public bool isALLCoreReady = false;
+    [NonSerialized] public bool isALLCoreReady = false;
 
 #pragma warning restore 0649
 
