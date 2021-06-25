@@ -3421,6 +3421,7 @@ MonoBehaviour:
   footerCanvas: {fileID: 4698008671602287844}
   overCanvas: {fileID: 1640373829513892396}
   overlayCanvas: {fileID: 1640373830515805088}
+  headerContainerBackgroundCanvasGroup: {fileID: 0}
   footerContainerBackgroundRectTransform: {fileID: 5865633609339888795}
   footerContainerRectTransform: {fileID: 4698008671962428755}
   headerBackButton: {fileID: 1640373829846722620}
@@ -3710,6 +3711,7 @@ GameObject:
   - component: {fileID: 553516434015152352}
   - component: {fileID: 4360956750855232161}
   - component: {fileID: 3005952354317869662}
+  - component: {fileID: 3154437252971797513}
   m_Layer: 0
   m_Name: Header Safe Area Background
   m_TagString: Untagged
@@ -3783,6 +3785,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   safeAreaType: 0
+--- !u!225 &3154437252971797513
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6526143056793756871}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &7885781030017162466
 GameObject:
   m_ObjectHideFlags: 0

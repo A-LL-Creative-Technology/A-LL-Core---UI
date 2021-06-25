@@ -41,6 +41,8 @@ public class NavigationController : MonoBehaviour
     public GameObject overCanvas;
     public GameObject overlayCanvas;
 
+    [SerializeField] private CanvasGroup headerContainerBackgroundCanvasGroup;
+
     [SerializeField] private RectTransform footerContainerBackgroundRectTransform;
     [SerializeField] private RectTransform footerContainerRectTransform;
 
@@ -716,6 +718,16 @@ public class NavigationController : MonoBehaviour
 
         scrollViewRect.StopMovement();
 
+        // check whether we need to make the header transparent
+        if (currentView.GetComponent<SinglePageController>().hasTransparentHeader)
+        {
+            scrollViewViewportRectTransform.anchorMax = Vector2.one;
+
+            headerContainerBackgroundCanvasGroup.alpha = 0;
+
+
+        }
+
         // we prepare the child page for the animation
         currentView.GetComponent<LayoutElement>().ignoreLayout = false;
 
@@ -1037,6 +1049,31 @@ public class NavigationController : MonoBehaviour
         isClosingStack = false;
     }
 
+
+
+    private void ShowStackNavigation()
+    {
+
+        // hide the navigation
+        scrollViewViewportAnchorMin = scrollViewViewportRectTransform.anchorMin;
+        footerContainerHeight = footerContainerRectTransform.rect.height;
+        footerContainerInitialPositionY = footerContainerRectTransform.localPosition.y;
+        footerContainerBackgroundInitialPositionY = footerContainerBackgroundRectTransform.localPosition.y;
+
+        scrollViewViewportRectTransform.anchorMin = Vector2.zero;
+        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y - footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
+        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y - footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
+
+        // we do the animation for the back button
+        headerBackButton.SetActive(true);
+
+        LeanTween.moveX(headerBackButton, headerBackButton.transform.position.x + headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo);
+        LeanTween.moveX(headerTitle, headerTitle.transform.position.x + headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
+        {
+            ResetNavigationBooleans();
+        });
+    }
+
     private void HideStackNavigation()
     {
         // reset the bottom navigation
@@ -1057,28 +1094,6 @@ public class NavigationController : MonoBehaviour
         });
 
         LeanTween.moveX(headerTitle, headerTitle.transform.position.x - headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
-        {
-            ResetNavigationBooleans();
-        });
-    }
-
-    private void ShowStackNavigation()
-    {
-        headerBackButton.SetActive(true);
-
-        // hide the navigation
-        scrollViewViewportAnchorMin = scrollViewViewportRectTransform.anchorMin;
-        footerContainerHeight = footerContainerRectTransform.rect.height;
-        footerContainerInitialPositionY = footerContainerRectTransform.localPosition.y;
-        footerContainerBackgroundInitialPositionY = footerContainerBackgroundRectTransform.localPosition.y;
-
-        scrollViewViewportRectTransform.anchorMin = Vector2.zero;
-        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y - footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
-        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y - footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
-
-        // we do the animation for the back button
-        LeanTween.moveX(headerBackButton, headerBackButton.transform.position.x + headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo);
-        LeanTween.moveX(headerTitle, headerTitle.transform.position.x + headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
         {
             ResetNavigationBooleans();
         });
@@ -1134,41 +1149,6 @@ public class NavigationController : MonoBehaviour
         }
 
     }
-
-    // adjust the over view height to minimum fill the screen
-    //private IEnumerator AdjustOverViewHeight(GameObject viewToAdjust)
-    //{
-    //    float screenHeight = overCanvasRectTransform.rect.height;
-
-    //    // make sure the computation is ready
-    //    float viewToAdjustHeight = viewToAdjust.GetComponent<RectTransform>().rect.height;
-    //    while (viewToAdjustHeight == 0)
-    //    {
-    //        viewToAdjustHeight = viewToAdjust.GetComponent<RectTransform>().rect.height;
-    //        yield return null;
-    //    }
-
-    //    float heightDiff = screenHeight - viewToAdjustHeight;
-
-    //    if (heightDiff > 0 && viewToAdjustHeight > 0)
-    //    {
-    //        bool isSpacerFound = false;
-
-    //        foreach (Transform currentChild in viewToAdjust.transform)
-    //        {
-    //            if (currentChild.name == "Spacer")
-    //            {
-    //                currentChild.GetComponent<LayoutElement>().minHeight = heightDiff;
-
-    //                isSpacerFound = true;
-    //                break;
-    //            }
-    //        }
-
-    //        if (!isSpacerFound)
-    //            GlobalController.LogMe("No spacer found on over view: " + viewToAdjust.name);
-    //    }
-    //}
 
     public class NavigationConfig
     {
