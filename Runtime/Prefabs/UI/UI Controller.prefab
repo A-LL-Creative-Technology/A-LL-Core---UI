@@ -3414,12 +3414,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentView: {fileID: 0}
   scrollView: {fileID: 4000784615623863150}
+  scrollViewViewportRectTransform: {fileID: 4000784615239566218}
   scrollViewContainer: {fileID: 4000784615645387366}
   headerCanvas: {fileID: 1640373830636075007}
   viewsCanvas: {fileID: 4000784614911239518}
   footerCanvas: {fileID: 4698008671602287844}
   overCanvas: {fileID: 1640373829513892396}
   overlayCanvas: {fileID: 1640373830515805088}
+  footerContainerBackgroundRectTransform: {fileID: 5865633609339888795}
+  footerContainerRectTransform: {fileID: 4698008671962428755}
   headerBackButton: {fileID: 1640373829846722620}
   headerTitle: {fileID: 1640373831100285384}
   eventSystem: {fileID: 0}
@@ -4007,6 +4010,12 @@ PrefabInstance:
 --- !u!1 &4000784615645387366 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5968140714308027486, guid: b91f27c8aa73948f6b235c1de7388c39,
+    type: 3}
+  m_PrefabInstance: {fileID: 7302230772042456632}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &4000784615239566218 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5968140713902710194, guid: b91f27c8aa73948f6b235c1de7388c39,
     type: 3}
   m_PrefabInstance: {fileID: 7302230772042456632}
   m_PrefabAsset: {fileID: 0}
