@@ -32,3 +32,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added an option for custom API Token and Expiration Date in APIController and UserController
 - Added feature to remove automatic error notification in APIController
 - Hide bottom navigation in single pages
+- Made the option for the transparent transparent 

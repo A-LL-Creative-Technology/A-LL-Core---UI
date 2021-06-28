@@ -46,11 +46,13 @@ public class NavigationController : MonoBehaviour
     [SerializeField] private RectTransform footerContainerBackgroundRectTransform;
     [SerializeField] private RectTransform footerContainerRectTransform;
 
-    // save navigation heights
+    // save navigation initial values
     private Vector2 scrollViewViewportAnchorMin;
     private float footerContainerHeight;
     private float footerContainerInitialPositionY;
     private float footerContainerBackgroundInitialPositionY;
+    private float headerContainerBackgroundCanvasGroupAlpha;
+    private Vector2 scrollViewViewportAnchorMax;
 
     public GameObject headerBackButton;
     public GameObject headerTitle;
@@ -725,12 +727,19 @@ public class NavigationController : MonoBehaviour
         // check whether we need to make the header transparent
         if (currentView.GetComponent<SinglePageController>().hasTransparentHeader)
         {
+            scrollViewViewportAnchorMax = scrollViewViewportRectTransform.anchorMax;
             scrollViewViewportRectTransform.anchorMax = Vector2.one;
 
+            headerContainerBackgroundCanvasGroupAlpha = headerContainerBackgroundCanvasGroup.alpha;
             headerContainerBackgroundCanvasGroup.alpha = 0;
 
             opaqueHeaderContainer.SetActive(false);
             transparentHeaderContainer.SetActive(true);
+        }
+        else
+        {
+            opaqueHeaderContainer.SetActive(true);
+            transparentHeaderContainer.SetActive(false);
         }
 
         // we prepare the child page for the animation
@@ -828,7 +837,35 @@ public class NavigationController : MonoBehaviour
         // we change the scroll
         scrollViewContainer.transform.localPosition = new Vector3(scrollViewContainer.transform.localPosition.x, viewsStack[viewsStack.Count - 2].scrollBarValue, scrollViewContainer.transform.localPosition.z);
 
-        // we do the animation
+        // reset header (because of possible transparency)
+        if (oldView.GetComponent<SinglePageController>().hasTransparentHeader)
+        {
+            LeanTween.value(1, scrollViewViewportAnchorMax.y, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnUpdate((float value) =>
+            {
+                scrollViewViewportRectTransform.anchorMax = new Vector2(1, value);
+            }).setOnComplete(() =>
+            {
+
+                ContinuePopFromStack();
+            });
+        }
+        else
+        {
+            ContinuePopFromStack();
+        }
+        
+
+        
+    }
+
+    private void ContinuePopFromStack()
+    {
+        scrollViewViewportRectTransform.anchorMax = scrollViewViewportAnchorMax;
+        headerContainerBackgroundCanvasGroup.alpha = headerContainerBackgroundCanvasGroupAlpha;
+        opaqueHeaderContainer.SetActive(true);
+        transparentHeaderContainer.SetActive(false);
+
+        // we do the animation for the pop
         float screenWidth = viewsCanvasRectTransform.rect.width; // !!!! sometimes Screen.width does not give same value as full screen views canvas width. Weird!! So don't trust Screen.width from Unity
         LeanTween.moveLocalX(oldView, screenWidth, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
         {
