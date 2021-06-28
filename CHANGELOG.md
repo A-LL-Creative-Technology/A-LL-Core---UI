@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed loader spritesheet color (needs to be tinted)
 - Cleaned prefab popups
 - Added support for URLs with accents. The Core removes the accents as it crashed on iOS/Mac OS.
-- Changed the eyeIcon logic (no backward compatilibility!)
+- Changed the eyeIcon logic (no backward compatibility!)
 - Added a safeguard to send API requests only when the Core is ready
 - Added an option for custom API Token and Expiration Date in APIController and UserController
 - Added feature to remove automatic error notification in APIController
