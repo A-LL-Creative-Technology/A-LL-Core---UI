@@ -48,7 +48,7 @@ public class NavigationController : MonoBehaviour
 
     // save navigation initial values
     private Vector2 scrollViewViewportAnchorMin;
-    private float footerContainerHeight;
+    private float footerContainerBackgroundHeight;
     private float footerContainerInitialPositionY;
     private float footerContainerBackgroundInitialPositionY;
     private float headerContainerBackgroundCanvasGroupAlpha;
@@ -853,9 +853,9 @@ public class NavigationController : MonoBehaviour
         {
             ContinuePopFromStack();
         }
-        
 
-        
+
+
     }
 
     private void ContinuePopFromStack()
@@ -1098,13 +1098,13 @@ public class NavigationController : MonoBehaviour
 
         // hide the navigation
         scrollViewViewportAnchorMin = scrollViewViewportRectTransform.anchorMin;
-        footerContainerHeight = footerContainerRectTransform.rect.height;
+        footerContainerBackgroundHeight = footerContainerBackgroundRectTransform.rect.height;
         footerContainerInitialPositionY = footerContainerRectTransform.localPosition.y;
         footerContainerBackgroundInitialPositionY = footerContainerBackgroundRectTransform.localPosition.y;
 
         scrollViewViewportRectTransform.anchorMin = Vector2.zero;
-        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y - footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
-        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y - footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
+        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y - footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
+        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y - footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
 
         // we do the animation for the back button
         headerBackButton.SetActive(true);
@@ -1121,10 +1121,10 @@ public class NavigationController : MonoBehaviour
         // reset the bottom navigation
         scrollViewViewportRectTransform.anchorMin = scrollViewViewportAnchorMin;
 
-        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y + footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y + footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
             footerContainerRectTransform.localPosition = new Vector3(footerContainerRectTransform.localPosition.x, footerContainerInitialPositionY, footerContainerRectTransform.localPosition.z);
         });
-        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y + footerContainerHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y + footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
             footerContainerBackgroundRectTransform.localPosition = new Vector3(footerContainerBackgroundRectTransform.localPosition.x, footerContainerBackgroundInitialPositionY, footerContainerBackgroundRectTransform.localPosition.z);
         });
 
