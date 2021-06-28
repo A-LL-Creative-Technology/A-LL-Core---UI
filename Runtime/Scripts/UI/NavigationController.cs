@@ -730,7 +730,7 @@ public class NavigationController : MonoBehaviour
             headerContainerBackgroundCanvasGroup.alpha = 0;
 
             opaqueHeaderContainer.SetActive(false);
-            opaqueHeaderContainer.SetActive(true);
+            transparentHeaderContainer.SetActive(true);
         }
 
         // we prepare the child page for the animation
