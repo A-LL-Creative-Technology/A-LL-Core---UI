@@ -3469,8 +3469,8 @@ MonoBehaviour:
   notificationTitle: {fileID: 2181338691397807177}
   notificationBody: {fileID: 2120737642430383282}
   notificationCTA: {fileID: 9040313116808702370}
-  opaqueHeaderContainer: {fileID: 0}
-  transparentHeaderContainer: {fileID: 0}
+  opaqueHeaderContainer: {fileID: 7643450132628247571}
+  transparentHeaderContainer: {fileID: 2045964772875727970}
   globalAppLoaderContainer: {fileID: 5312494617820295872}
   globalSceneLoaderContainer: {fileID: 1640373830469307464}
   creaTechContainer: {fileID: 729317299695557103}
