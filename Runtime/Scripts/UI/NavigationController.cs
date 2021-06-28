@@ -78,6 +78,10 @@ public class NavigationController : MonoBehaviour
     private float notificationContainerInitialYPosition;
     private bool isNotificationInProgress = false;
 
+    [SerializeField] private GameObject opaqueHeaderContainer;
+    [SerializeField] private GameObject transparentHeaderContainer;
+
+
     [SerializeField] private GameObject globalAppLoaderContainer;
     [SerializeField] private GameObject globalSceneLoaderContainer;
 
@@ -725,7 +729,8 @@ public class NavigationController : MonoBehaviour
 
             headerContainerBackgroundCanvasGroup.alpha = 0;
 
-
+            opaqueHeaderContainer.SetActive(false);
+            opaqueHeaderContainer.SetActive(true);
         }
 
         // we prepare the child page for the animation
