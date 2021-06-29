@@ -41,7 +41,7 @@ public class NavigationController : MonoBehaviour
     public GameObject overCanvas;
     public GameObject overlayCanvas;
 
-    [SerializeField] private CanvasGroup headerContainerBackgroundCanvasGroup;
+    [SerializeField] private RectTransform headerContainerBackgroundRectTransform;
 
     [SerializeField] private RectTransform footerContainerBackgroundRectTransform;
     [SerializeField] private RectTransform footerContainerRectTransform;
@@ -51,7 +51,9 @@ public class NavigationController : MonoBehaviour
     private float footerContainerBackgroundHeight;
     private float footerContainerInitialPositionY;
     private float footerContainerBackgroundInitialPositionY;
-    private float headerContainerBackgroundCanvasGroupAlpha;
+    private float headerContainerBackgroundHeight;
+    private float opaqueContainerInitialPositionY;
+    private float headerContainerBackgroundInitialPositionY;
     private Vector2 scrollViewViewportAnchorMax;
 
     public GameObject headerBackButton;
@@ -724,24 +726,6 @@ public class NavigationController : MonoBehaviour
 
         scrollViewRect.StopMovement();
 
-        // check whether we need to make the header transparent
-        if (currentView.GetComponent<SinglePageController>().hasTransparentHeader)
-        {
-            scrollViewViewportAnchorMax = scrollViewViewportRectTransform.anchorMax;
-            scrollViewViewportRectTransform.anchorMax = Vector2.one;
-
-            headerContainerBackgroundCanvasGroupAlpha = headerContainerBackgroundCanvasGroup.alpha;
-            headerContainerBackgroundCanvasGroup.alpha = 0;
-
-            opaqueHeaderContainer.SetActive(false);
-            transparentHeaderContainer.SetActive(true);
-        }
-        else
-        {
-            opaqueHeaderContainer.SetActive(true);
-            transparentHeaderContainer.SetActive(false);
-        }
-
         // we prepare the child page for the animation
         currentView.GetComponent<LayoutElement>().ignoreLayout = false;
 
@@ -792,18 +776,61 @@ public class NavigationController : MonoBehaviour
             // hide the parent view
             oldView.SetActive(false);
 
-            scrollViewRect.enabled = true;
+            // check whether we need to make the header transparent
+            if (currentView.GetComponent<SinglePageController>().hasTransparentHeader)
+            {
+                // backup the initial values
+                scrollViewViewportAnchorMax = scrollViewViewportRectTransform.anchorMax;
+                headerContainerBackgroundHeight = headerContainerBackgroundRectTransform.rect.height;
+                headerContainerBackgroundInitialPositionY = headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y;
+                opaqueContainerInitialPositionY = opaqueHeaderContainer.transform.localPosition.y;
 
-            oldView = null;
-            nextView = null;
+                LeanTween.value(scrollViewViewportAnchorMax.y, 1, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnUpdate((float value) =>
+                {
+                    scrollViewViewportRectTransform.anchorMax = new Vector2(1, value);
+                }).setOnComplete(() => {
+                    scrollViewViewportRectTransform.anchorMax = Vector2.one;
+                });
 
-            isPushToStackInProgress = false;
+                LeanTween.moveLocalY(headerContainerBackgroundRectTransform.gameObject, headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y + headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
 
-            // end of the animation
-            NavigationCallback();
+                LeanTween.moveLocalY(opaqueHeaderContainer, opaqueHeaderContainer.transform.localPosition.y + headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+
+                    opaqueHeaderContainer.SetActive(false);
+                    transparentHeaderContainer.SetActive(true);
+
+                    FinishPushToStack();
+
+                });
+
+            }
+            else
+            {
+                opaqueHeaderContainer.SetActive(true);
+                transparentHeaderContainer.SetActive(false);
+
+                FinishPushToStack();
+
+            }
+
+
         });
     }
 
+
+    private void FinishPushToStack()
+    {
+
+        scrollViewRect.enabled = true;
+
+        oldView = null;
+        nextView = null;
+
+        isPushToStackInProgress = false;
+
+        // end of the animation
+        NavigationCallback();
+    }
 
 
     private void PopFromStack()
@@ -840,6 +867,21 @@ public class NavigationController : MonoBehaviour
         // reset header (because of possible transparency)
         if (oldView.GetComponent<SinglePageController>().hasTransparentHeader)
         {
+            opaqueHeaderContainer.SetActive(true);
+            transparentHeaderContainer.SetActive(false);
+
+            LeanTween.moveLocalY(headerContainerBackgroundRectTransform.gameObject, headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y - headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
+            {
+                // to avoid drift
+                headerContainerBackgroundRectTransform.gameObject.transform.localPosition = new Vector2(headerContainerBackgroundRectTransform.gameObject.transform.localPosition.x, headerContainerBackgroundInitialPositionY);
+            });
+
+
+            LeanTween.moveLocalY(opaqueHeaderContainer, opaqueHeaderContainer.transform.localPosition.y - headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+                // to avoid drift
+                opaqueHeaderContainer.transform.localPosition = new Vector2(opaqueHeaderContainer.transform.localPosition.x, opaqueContainerInitialPositionY);
+            });
+
             LeanTween.value(1, scrollViewViewportAnchorMax.y, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnUpdate((float value) =>
             {
                 scrollViewViewportRectTransform.anchorMax = new Vector2(1, value);
@@ -848,6 +890,7 @@ public class NavigationController : MonoBehaviour
 
                 ContinuePopFromStack();
             });
+
         }
         else
         {
@@ -861,9 +904,6 @@ public class NavigationController : MonoBehaviour
     private void ContinuePopFromStack()
     {
         scrollViewViewportRectTransform.anchorMax = scrollViewViewportAnchorMax;
-        headerContainerBackgroundCanvasGroup.alpha = headerContainerBackgroundCanvasGroupAlpha;
-        opaqueHeaderContainer.SetActive(true);
-        transparentHeaderContainer.SetActive(false);
 
         // we do the animation for the pop
         float screenWidth = viewsCanvasRectTransform.rect.width; // !!!! sometimes Screen.width does not give same value as full screen views canvas width. Weird!! So don't trust Screen.width from Unity
@@ -1109,8 +1149,8 @@ public class NavigationController : MonoBehaviour
         // we do the animation for the back button
         headerBackButton.SetActive(true);
 
-        LeanTween.moveX(headerBackButton, headerBackButton.transform.position.x + headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo);
-        LeanTween.moveX(headerTitle, headerTitle.transform.position.x + headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
+        LeanTween.moveX(headerBackButton, headerBackButton.transform.position.x + headerStackAmount, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
+        LeanTween.moveX(headerTitle, headerTitle.transform.position.x + headerStackAmount, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
         {
             ResetNavigationBooleans();
         });
@@ -1119,23 +1159,24 @@ public class NavigationController : MonoBehaviour
     private void HideStackNavigation()
     {
         // reset the bottom navigation
-        scrollViewViewportRectTransform.anchorMin = scrollViewViewportAnchorMin;
-
         LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y + footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
             footerContainerRectTransform.localPosition = new Vector3(footerContainerRectTransform.localPosition.x, footerContainerInitialPositionY, footerContainerRectTransform.localPosition.z);
         });
         LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y + footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
             footerContainerBackgroundRectTransform.localPosition = new Vector3(footerContainerBackgroundRectTransform.localPosition.x, footerContainerBackgroundInitialPositionY, footerContainerBackgroundRectTransform.localPosition.z);
+
+            scrollViewViewportRectTransform.anchorMin = scrollViewViewportAnchorMin;
+
         });
 
 
         // we do the animation for the back button
-        LeanTween.moveX(headerBackButton, headerBackButton.transform.position.x - headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
+        LeanTween.moveX(headerBackButton, headerBackButton.transform.position.x - headerStackAmount, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
         {
             headerBackButton.SetActive(false);
         });
 
-        LeanTween.moveX(headerTitle, headerTitle.transform.position.x - headerStackAmount, 0.4f).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
+        LeanTween.moveX(headerTitle, headerTitle.transform.position.x - headerStackAmount, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
         {
             ResetNavigationBooleans();
         });
