@@ -33,3 +33,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added feature to remove automatic error notification in APIController
 - Hide bottom navigation in single pages
 - Made the option for the transparent transparent 
+- Updated URL format function to make sure urls start with "http"
