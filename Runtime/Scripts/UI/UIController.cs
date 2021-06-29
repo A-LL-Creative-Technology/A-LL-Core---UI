@@ -168,7 +168,7 @@ public class UIController : MonoBehaviour
 
     public void OnOpenLink(string url)
     {
-        string encodedURL = GlobalController.RemoveAccents(url);
+        string encodedURL = GlobalController.ConvertToStandardFormat(url);
 
         GlobalController.LogMe(encodedURL);
 

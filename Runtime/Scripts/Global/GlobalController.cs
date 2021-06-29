@@ -151,8 +151,14 @@ public class GlobalController: MonoBehaviour
         return str;
     }
 
-    public static string RemoveAccents(string text)
+
+    public static string ConvertToStandardFormat(string text)
     {
+        // Add http://
+        if (!text.StartsWith("http"))
+            text = "http://" + text;
+
+        // Remove Accent
         StringBuilder sbReturn = new StringBuilder();
         var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
         foreach (char letter in arrayText)
