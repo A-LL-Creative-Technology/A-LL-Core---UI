@@ -877,7 +877,8 @@ public class NavigationController : MonoBehaviour
             });
 
 
-            LeanTween.moveLocalY(opaqueHeaderContainer, opaqueHeaderContainer.transform.localPosition.y - headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+            LeanTween.moveLocalY(opaqueHeaderContainer, opaqueHeaderContainer.transform.localPosition.y - headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
+            {
                 // to avoid drift
                 opaqueHeaderContainer.transform.localPosition = new Vector2(opaqueHeaderContainer.transform.localPosition.x, opaqueContainerInitialPositionY);
             });
@@ -887,6 +888,7 @@ public class NavigationController : MonoBehaviour
                 scrollViewViewportRectTransform.anchorMax = new Vector2(1, value);
             }).setOnComplete(() =>
             {
+                scrollViewViewportRectTransform.anchorMax = scrollViewViewportAnchorMax;
 
                 ContinuePopFromStack();
             });
@@ -903,7 +905,6 @@ public class NavigationController : MonoBehaviour
 
     private void ContinuePopFromStack()
     {
-        scrollViewViewportRectTransform.anchorMax = scrollViewViewportAnchorMax;
 
         // we do the animation for the pop
         float screenWidth = viewsCanvasRectTransform.rect.width; // !!!! sometimes Screen.width does not give same value as full screen views canvas width. Weird!! So don't trust Screen.width from Unity
@@ -1097,15 +1098,6 @@ public class NavigationController : MonoBehaviour
 
     private void NavigationCallback()
     {
-        // make UI adjustment
-        UpdateUI();
-
-        // reactivate touch
-        eventSystem.enabled = true; // deactivate to prevent multiple touch while navigating
-    }
-
-    private void UpdateUI()
-    {
         // check whether the nextView is a view associated with a menu button
         if (UIMenuController.GetInstance().menuButtons.TryGetValue(currentView.name, out GameObject menuButton))
         {
@@ -1129,6 +1121,9 @@ public class NavigationController : MonoBehaviour
         isNavigationInProgress = false;
         isNewStack = false;
         isClosingStack = false;
+
+        // reactivate touch
+        eventSystem.enabled = true; // deactivate to prevent multiple touch while navigating
     }
 
 
