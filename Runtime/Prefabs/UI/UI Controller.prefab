@@ -1082,7 +1082,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c914f962f79439b8400646d6568384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animations: []
+  animations:
+  - isAnimateOnStart: 0
+    delay: 0
+    gameObjectToAnimate: {fileID: 0}
+    animationType: 1
+    easeType: 0
+    duration: 0.1
+    vector2From: {x: 1, y: 1}
+    vector2To: {x: 1.1, y: 1.1}
+    floatFrom: 0
+    floatTo: 0
+    chainedAnimationsIds: 01000000
+    customCallbacks:
+      m_PersistentCalls:
+        m_Calls: []
+  - isAnimateOnStart: 0
+    delay: 0
+    gameObjectToAnimate: {fileID: 0}
+    animationType: 1
+    easeType: 0
+    duration: 0.2
+    vector2From: {x: 1.1, y: 1.1}
+    vector2To: {x: 1, y: 1}
+    floatFrom: 0
+    floatTo: 0
+    chainedAnimationsIds: 
+    customCallbacks:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &1640373829889196442
 GameObject:
   m_ObjectHideFlags: 0
@@ -3400,7 +3428,6 @@ MonoBehaviour:
   footerCanvas: {fileID: 4698008671602287844}
   overCanvas: {fileID: 1640373829513892396}
   overlayCanvas: {fileID: 1640373830515805088}
-  headerContainerBackground: {fileID: 0}
   headerContainerBackgroundRectTransform: {fileID: 8143324444575399857}
   footerContainerBackgroundRectTransform: {fileID: 5865633609339888795}
   footerContainerRectTransform: {fileID: 4698008671962428755}

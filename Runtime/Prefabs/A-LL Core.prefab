@@ -226,6 +226,71 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4452133191197653183, guid: f9e83a9a815f74497b649eddbe2b1fe6,
         type: 3}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[0].animationType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[0].duration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[0].vector2From.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[0].vector2From.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[0].vector2To.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[0].vector2To.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[0].chainedAnimationsIds.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[1].animationType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[1].duration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[1].vector2From.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[1].vector2From.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[1].vector2To.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829846722608, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: animations.Array.data[1].vector2To.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1640373830239620221, guid: 415943762fa344ccc82e602f20e3208c,
         type: 3}
       propertyPath: m_RootOrder
