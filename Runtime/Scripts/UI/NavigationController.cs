@@ -242,6 +242,7 @@ public class NavigationController : MonoBehaviour
         navigationBarTitle = headerTitle.GetComponent<TextMeshProUGUI>();
 
         // trigger the cache load (but it will wait anyway for isNavigationInitializationInProgress
+        CacheController.InitDirectories();
         CacheController.GetInitializationInstance().LoadAllCaches();
 
         isNavigationInitializationInProgress = false;

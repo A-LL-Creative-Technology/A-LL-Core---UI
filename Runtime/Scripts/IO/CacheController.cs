@@ -50,12 +50,9 @@ public class CacheController : MonoBehaviour
         // WE DO NOT INITIALIZE THE CACHE PUBLIC INSTANCE HERE AS WE WANT TO MAKE SURE THE CACHE IS PROPERLY LOADED BEFORE USED
         initializationInstance = this;
 
-         // define root cache location
-        InitDirectories();
-
     }
 
-    private static void InitDirectories()
+    public static void InitDirectories()
     {
         string rootCacheLocation = Path.Combine(Application.persistentDataPath, "Cache");
 
