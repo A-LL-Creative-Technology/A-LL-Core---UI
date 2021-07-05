@@ -32,7 +32,7 @@ public class CacheController : MonoBehaviour
     // 3. Add the type as a child of Cache
     public AppConfig appConfig = new AppConfig();
 
-    public UserConfig userConfig = new UserConfig();
+    public APIConfig apiConfig = new APIConfig();
 
     public static string appCacheLocation;
 
@@ -50,7 +50,7 @@ public class CacheController : MonoBehaviour
         // WE DO NOT INITIALIZE THE CACHE PUBLIC INSTANCE HERE AS WE WANT TO MAKE SURE THE CACHE IS PROPERLY LOADED BEFORE USED
         initializationInstance = this;
 
-        // define root cache location
+         // define root cache location
         InitDirectories();
 
     }
@@ -138,8 +138,8 @@ public class CacheController : MonoBehaviour
     {
         LoadConfigFromDisk(GetInitializationInstance().appConfig);
 
-        LoadConfigFromDisk(GetInitializationInstance().userConfig, () => {
-            GetInitializationInstance().userConfig.Save(BaseConfig.SaveType.NoEvent); // if no cache found, we create a default config, so that state of the app always starts as if guest mode
+        LoadConfigFromDisk(GetInitializationInstance().apiConfig, () => {
+            GetInitializationInstance().apiConfig.Save(BaseConfig.SaveType.NoEvent); // if no cache found, we create a default config, so that state of the app always starts as if guest mode
         });
 
         // fires the event to notify that cache can be loaded

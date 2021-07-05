@@ -106,20 +106,15 @@ public class CacheModel
     }
 
     [Serializable]
-    public class UserConfig : BaseConfig
+    public class APIConfig : BaseConfig
     {
         // Serialized fields for Json
-        public string name;
-        public string email;
-        public string activity;
-        public int privilege_level;
-        public bool isOnboardingAlreadySeen = false;
         public string api_token = null;
         public string api_token_expires_at = null;
 
-        public UserConfig()
+        public APIConfig()
         {
-            filePath = "UserConfig.json";
+            filePath = "APIConfig.json";
             cacheType = CacheType.App;
         }
     }

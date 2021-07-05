@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,6 +89,19 @@ public class APIController : MonoBehaviour
             yield return null;
 
         callback.Invoke();
+    }
+
+    //Test user connected
+    public static bool IsConnected(string customAPIToken = "", string customAPITokenExpiresAt = "")
+    {
+        bool hasLastUpdate = !String.IsNullOrEmpty(CacheController.GetInstance().apiConfig.last_update);
+
+        string apiToken = String.IsNullOrEmpty(customAPIToken) ? CacheController.GetInstance().apiConfig.api_token : customAPIToken;
+        string apiTokenExpiresAt = String.IsNullOrEmpty(customAPITokenExpiresAt) ? CacheController.GetInstance().apiConfig.api_token_expires_at : customAPITokenExpiresAt;
+
+        bool hasValidToken = !String.IsNullOrEmpty(apiToken) && DateTime.Parse(apiTokenExpiresAt) > DateTime.Now;
+
+        return hasLastUpdate && hasValidToken;
     }
 
     //GET a SINGLE element of type R
@@ -238,7 +251,7 @@ public class APIController : MonoBehaviour
     //Add access_token and token_type to the Authorization header.
     private void AddAuthorizationHeader(string customAPIToken = null)
     {
-        string apiToken = (String.IsNullOrEmpty(customAPIToken)) ? CacheController.GetInstance().userConfig.api_token : customAPIToken;
+        string apiToken = (String.IsNullOrEmpty(customAPIToken)) ? CacheController.GetInstance().apiConfig.api_token : customAPIToken;
 
         if (String.IsNullOrEmpty(apiToken))
             return;

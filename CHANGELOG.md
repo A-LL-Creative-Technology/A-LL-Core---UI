@@ -34,3 +34,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hide bottom navigation in single pages
 - Made the option for the transparent transparent 
 - Updated URL format function to make sure urls start with "http"
+- Moved elements from UserController to APIController and refactored the cache (UserConfig => APIConfig)
