@@ -251,10 +251,11 @@ public class CacheController : MonoBehaviour
     public static void CreateDirectory(string directoryPath)
     {
 
-        if (Directory.Exists(Path.GetDirectoryName(directoryPath)))
-        {
-            Directory.CreateDirectory(directoryPath);
+        string parentDirectory = Path.GetDirectoryName(directoryPath);
 
+        if (Directory.Exists(parentDirectory))
+        {
+            Directory.CreateDirectory(directoryPath); // creates only if it does not already exist
         }
     }
 
