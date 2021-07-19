@@ -509,6 +509,11 @@ public class NavigationController : MonoBehaviour
     // to close the popup
     public void OnPopUpClose()
     {
+        DoPopUpClose(); // necessary to make the OnPopUpClose() callable from a button in the editor + DoPopUpClose with a callback called from the code
+    }
+
+    public void DoPopUpClose(Action successCallback = null)
+    {
         if (!currentActivePopUp)
             return;
 
@@ -518,6 +523,7 @@ public class NavigationController : MonoBehaviour
 
             currentActivePopUp = null;
 
+            successCallback?.Invoke();
         });
     }
 
