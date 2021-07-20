@@ -16,9 +16,10 @@ public class InputFieldController : MonoBehaviour
 
     private FormController formController;
 
+    public bool isOptionalField; // usefull for fields that are not required
+
     [Header("Password Parameters")]
     public bool isPassword;
-    [ConditionalHide("isPassword", true)] public bool canPasswordBeEmptyForSubmission; // usefull for "update profile" pages
     [ConditionalHide("isPassword", true)] [SerializeField] private GameObject eyeButton;
     [ConditionalHide("isPassword", true)] [SerializeField] private Texture2D openedEye;
     [ConditionalHide("isPassword", true)] [SerializeField] private Texture2D closedEye;

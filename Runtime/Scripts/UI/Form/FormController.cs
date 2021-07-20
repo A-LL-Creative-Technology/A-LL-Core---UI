@@ -32,12 +32,13 @@ public class FormController : MonoBehaviour
         validationButton.interactable = false;
     }
 
-    public void OnInputFieldValueChangedCheck() {
+    public void OnInputFieldValueChangedCheck()
+    {
 
         bool areAllEntriesValid = true;
         foreach (InputFieldController currentInputField in inputFields)
         {
-            if (!currentInputField.canPasswordBeEmptyForSubmission && currentInputField.inputFieldTMP.text == "")
+            if (!currentInputField.isOptionalField && currentInputField.inputFieldTMP.text == "")
                 areAllEntriesValid = false;
         }
 
