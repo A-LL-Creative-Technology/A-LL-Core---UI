@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 // ensure class initializer is called whenever scripts recompile
 [InitializeOnLoadAttribute]
@@ -13,8 +14,26 @@ public static class PlayModeStateChanged
     // register an event handler when the class is initialized
     static PlayModeStateChanged()
     {
-        EditorApplication.playModeStateChanged += ManageViews;
+        GlobalEditor.ClearLog();
 
+        if (HasALLCoreAsRoot())
+            EditorApplication.playModeStateChanged += ManageViews;
+
+    }
+
+    // detect if the A-LL Core is present
+    public static bool HasALLCoreAsRoot()
+    {
+        Scene activeScene = SceneManager.GetActiveScene();
+        GameObject[] roots = activeScene.GetRootGameObjects();
+
+        foreach (GameObject root in roots)
+        {
+            if (root.name == "A-LL Core")
+                return true;
+        }
+
+        return false;
     }
 
     private static void ManageViews(PlayModeStateChange state)
@@ -22,8 +41,6 @@ public static class PlayModeStateChanged
         // set all views to be active (otherwise not considered by Unity equally in the Awake - Start lifecycle)
         if (state == PlayModeStateChange.ExitingEditMode)
         {
-            GlobalEditor.ClearLog();
-
             PrepareViewsForPlay();
 
             Debug.Log("EDITOR SCRIPT: Prepared for Play Mode");
