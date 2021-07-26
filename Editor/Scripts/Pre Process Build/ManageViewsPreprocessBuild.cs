@@ -11,6 +11,9 @@ public class ManageViewsPreprocessBuild : IPreprocessBuildWithReport
     public int callbackOrder { get { return 0; } }
     public void OnPreprocessBuild(BuildReport report)
     {
+        if (!PlayModeStateChanged.HasALLCoreAsRoot())
+            return;
+
         PlayModeStateChanged.PrepareViewsForPlay();
     }
 }

@@ -16,8 +16,7 @@ public static class PlayModeStateChanged
     {
         GlobalEditor.ClearLog();
 
-        if (HasALLCoreAsRoot())
-            EditorApplication.playModeStateChanged += ManageViews;
+        EditorApplication.playModeStateChanged += ManageViews;
 
     }
 
@@ -38,6 +37,9 @@ public static class PlayModeStateChanged
 
     private static void ManageViews(PlayModeStateChange state)
     {
+        if (!HasALLCoreAsRoot())
+            return;
+
         // set all views to be active (otherwise not considered by Unity equally in the Awake - Start lifecycle)
         if (state == PlayModeStateChange.ExitingEditMode)
         {
