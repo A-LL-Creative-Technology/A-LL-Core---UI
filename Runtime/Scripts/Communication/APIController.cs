@@ -46,7 +46,7 @@ public class APIController : MonoBehaviour
         GlobalController.LogMe("Error in the API call: " + endpoint + " - " + requestException.Message + " - " + requestException.Response);
 
         nbRequestsInProgress--;
-        Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+        //Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
 
         // we verify if the error has a specific error code
         if (requestException.StatusCode == 401)
@@ -101,7 +101,7 @@ public class APIController : MonoBehaviour
 
         nbRequestsInProgress++;
 
-        Debug.Log("Simul ++ " + nbRequestsInProgress);
+        //Debug.Log("Simul ++ " + nbRequestsInProgress);
 
         callback.Invoke();
     }
@@ -124,14 +124,14 @@ public class APIController : MonoBehaviour
     {
         StartCoroutine(EnsureRequestCanBeSent(() =>
         {
-            Debug.Log("Get " + endpoint);
+            //Debug.Log("Get " + endpoint);
 
             //Send the request
             RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL, customAPIToken))
                .Then(res =>
                {
                    nbRequestsInProgress--;
-                   Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+                   //Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
 
 
                    successCallback?.Invoke(res);
@@ -150,14 +150,14 @@ public class APIController : MonoBehaviour
 
         StartCoroutine(EnsureRequestCanBeSent(() =>
         {
-            Debug.Log("Post " + endpoint);
+            //Debug.Log("Post " + endpoint);
 
 
             RestClient.Post(BuildRequest(endpoint, parameters, customServerURL, customAPIToken))
                 .Then(res =>
                 {
                     nbRequestsInProgress--;
-                    Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+                    //Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
 
                     successCallback?.Invoke(res);
                 })
@@ -173,14 +173,14 @@ public class APIController : MonoBehaviour
     {
         StartCoroutine(EnsureRequestCanBeSent(() =>
         {
-            Debug.Log("POST R " + endpoint);
+            //Debug.Log("POST R " + endpoint);
 
 
             RestClient.Post<R>(BuildRequest(endpoint, parameters, customServerURL, customAPIToken))
                 .Then(res =>
                 {
                     nbRequestsInProgress--;
-                    Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+                    //Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
 
                     callback?.Invoke(res);
                 })
@@ -196,14 +196,14 @@ public class APIController : MonoBehaviour
     {
         StartCoroutine(EnsureRequestCanBeSent(() =>
         {
-            Debug.Log("POST S R " + endpoint);
+            //Debug.Log("POST S R " + endpoint);
 
 
             RestClient.Post<R>(BuildRequest(requestObject, endpoint, parameters, files, customServerURL, customAPIToken))
                 .Then(res =>
                 {
                     nbRequestsInProgress--;
-                    Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+                    //Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
 
                     callback?.Invoke(res);
                 })
@@ -218,7 +218,7 @@ public class APIController : MonoBehaviour
     {
         StartCoroutine(EnsureRequestCanBeSent(() =>
         {
-            Debug.Log("Get Image" + imageUri);
+            //Debug.Log("Get Image" + imageUri);
 
 
             RestClient.Get(new RequestHelper
@@ -228,7 +228,7 @@ public class APIController : MonoBehaviour
             }).Then(res =>
             {
                 nbRequestsInProgress--;
-                Debug.Log("Simul -- " + nbRequestsInProgress + " " + imageUri);
+                //Debug.Log("Simul -- " + nbRequestsInProgress + " " + imageUri);
 
                 Texture2D texture = ((DownloadHandlerTexture)res.Request.downloadHandler).texture;
                 callback?.Invoke(texture);
@@ -240,7 +240,7 @@ public class APIController : MonoBehaviour
                 if (requestException.IsNetworkError)
                 {
                     nbRequestsInProgress--;
-                    Debug.Log("Simul -- " + nbRequestsInProgress + " " + imageUri);
+                    //Debug.Log("Simul -- " + nbRequestsInProgress + " " + imageUri);
 
                     errorCallback?.Invoke(requestException);
                 }
