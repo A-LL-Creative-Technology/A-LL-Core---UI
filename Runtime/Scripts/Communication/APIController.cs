@@ -32,6 +32,8 @@ public class APIController : MonoBehaviour
 
     public string serverURL;          //address of the API to call
 
+    public int nbRequestsInProgress = 0;
+
 #pragma warning restore 0649
 
     private void Awake()
@@ -42,6 +44,9 @@ public class APIController : MonoBehaviour
     private void HandleError(RequestException requestException, string endpoint, Action<RequestException> errorCallback = null, bool showAPIErrorNotification = true)
     {
         GlobalController.LogMe("Error in the API call: " + endpoint + " - " + requestException.Message + " - " + requestException.Response);
+
+        nbRequestsInProgress--;
+        Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
 
         // we verify if the error has a specific error code
         if (requestException.StatusCode == 401)
@@ -83,10 +88,20 @@ public class APIController : MonoBehaviour
         errorCallback?.Invoke(requestException);
     }
 
-    private IEnumerator EnsureALLCoreIsReady(Action callback)
+    private IEnumerator EnsureRequestCanBeSent(Action callback, bool shallWaitForPendingRequests = false)
     {
         while (!ALLCoreConfig.GetInstance().isALLCoreReady)
             yield return null;
+
+        while (shallWaitForPendingRequests && nbRequestsInProgress > 0)
+        {
+            //Debug.Log("Wait");
+            yield return null;
+        }
+
+        nbRequestsInProgress++;
+
+        Debug.Log("Simul ++ " + nbRequestsInProgress);
 
         callback.Invoke();
     }
@@ -105,14 +120,20 @@ public class APIController : MonoBehaviour
     }
 
     //GET a SINGLE element of type R
-    public void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true)
+    public void Get<R>(string endpoint, Dictionary<string, string> parameters, Action<R> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true, bool shallWaitForPendingRequests = false)
     {
-        StartCoroutine(EnsureALLCoreIsReady(() =>
+        StartCoroutine(EnsureRequestCanBeSent(() =>
         {
+            Debug.Log("Get " + endpoint);
+
             //Send the request
             RestClient.Get<R>(BuildRequest(endpoint, parameters, customServerURL, customAPIToken))
                .Then(res =>
                {
+                   nbRequestsInProgress--;
+                   Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+
+
                    successCallback?.Invoke(res);
                })
                .Catch(err =>
@@ -120,71 +141,95 @@ public class APIController : MonoBehaviour
                    HandleError((RequestException)err, endpoint, errorCallback, showAPIErrorNotification);
                });
 
-        }));
+        }, shallWaitForPendingRequests));
     }
 
     //POST a request with no particular types
-    public void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true)
+    public void Post(string endpoint, Dictionary<string, string> parameters, Action<ResponseHelper> successCallback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true, bool shallWaitForPendingRequests = false)
     {
 
-        StartCoroutine(EnsureALLCoreIsReady(() =>
+        StartCoroutine(EnsureRequestCanBeSent(() =>
         {
+            Debug.Log("Post " + endpoint);
+
+
             RestClient.Post(BuildRequest(endpoint, parameters, customServerURL, customAPIToken))
                 .Then(res =>
                 {
+                    nbRequestsInProgress--;
+                    Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+
                     successCallback?.Invoke(res);
                 })
                 .Catch(err =>
                 {
                     HandleError((RequestException)err, endpoint, errorCallback, showAPIErrorNotification);
                 });
-        }));
+        }, shallWaitForPendingRequests));
     }
 
     //POST a request with an object of type S to the servers and expects an element of type R from the server
-    public void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true)
+    public void Post<R>(string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true, bool shallWaitForPendingRequests = false)
     {
-        StartCoroutine(EnsureALLCoreIsReady(() =>
+        StartCoroutine(EnsureRequestCanBeSent(() =>
         {
+            Debug.Log("POST R " + endpoint);
+
+
             RestClient.Post<R>(BuildRequest(endpoint, parameters, customServerURL, customAPIToken))
                 .Then(res =>
                 {
+                    nbRequestsInProgress--;
+                    Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+
                     callback?.Invoke(res);
                 })
                 .Catch(err =>
                 {
                     HandleError((RequestException)err, endpoint, errorCallback, showAPIErrorNotification);
                 });
-        }));
+        }, shallWaitForPendingRequests));
     }
 
     //POST a file to the server
-    public void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true)
+    public void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, List<File> files, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true, bool shallWaitForPendingRequests = false)
     {
-        StartCoroutine(EnsureALLCoreIsReady(() =>
+        StartCoroutine(EnsureRequestCanBeSent(() =>
         {
+            Debug.Log("POST S R " + endpoint);
+
+
             RestClient.Post<R>(BuildRequest(requestObject, endpoint, parameters, files, customServerURL, customAPIToken))
                 .Then(res =>
                 {
+                    nbRequestsInProgress--;
+                    Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+
                     callback?.Invoke(res);
                 })
                 .Catch(err =>
                 {
                     HandleError((RequestException)err, endpoint, errorCallback, showAPIErrorNotification);
                 });
-        }));
+        }, shallWaitForPendingRequests));
     }
 
-    public void GetImage(string imageUri, Action<Texture2D> callback, Action<RequestException> errorCallback = null, bool showAPIErrorNotification = true)
+    public void GetImage(string imageUri, Action<Texture2D> callback, Action<RequestException> errorCallback = null, bool showAPIErrorNotification = true, bool shallWaitForPendingRequests = false)
     {
-        StartCoroutine(EnsureALLCoreIsReady(() =>
+        StartCoroutine(EnsureRequestCanBeSent(() =>
         {
+            Debug.Log("Get Image" + imageUri);
+
+
             RestClient.Get(new RequestHelper
             {
                 Uri = imageUri, // url is insecure as Kentico staging is not in https (an exception for that domain has been added to InfoPlistUpdater.cs in the Editor folder of Unity)
                 DownloadHandler = new DownloadHandlerTexture(),
             }).Then(res =>
             {
+                nbRequestsInProgress--;
+                Debug.Log("Simul -- " + nbRequestsInProgress + " " + imageUri);
+
                 Texture2D texture = ((DownloadHandlerTexture)res.Request.downloadHandler).texture;
                 callback?.Invoke(texture);
             }).Catch(err =>
@@ -194,6 +239,9 @@ public class APIController : MonoBehaviour
                 // if no network, we do not display the error but simply call the errorCallback
                 if (requestException.IsNetworkError)
                 {
+                    nbRequestsInProgress--;
+                    Debug.Log("Simul -- " + nbRequestsInProgress + " " + imageUri);
+
                     errorCallback?.Invoke(requestException);
                 }
                 else
@@ -202,7 +250,7 @@ public class APIController : MonoBehaviour
                 }
 
             });
-        }));
+        }, shallWaitForPendingRequests));
     }
 
     //Build request header and body
