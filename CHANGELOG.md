@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - post process script for changing the localization of the app on the App Store (cf. iOSAppStoreLocalization.cs)
 - added callback function to OnPopUpClose()
 - added optional field option in Input Field
+- added features for async API calls in APIController
 
 ## [1.0.0] - 03.05.2021 - 12.07.2021
 
