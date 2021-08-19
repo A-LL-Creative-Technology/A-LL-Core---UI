@@ -16,8 +16,6 @@
   },
   "type": "library",
   "dependencies": {
-    "com.google.firebase.analytics": "6.15.2",
-    "com.google.firebase.messaging": "6.15.2",
     "com.unity.inputsystem": "1.0.0-preview.7",
     "com.unity.localization": "0.9.0-preview",
     "com.unity.addressables": "1.16.6",
