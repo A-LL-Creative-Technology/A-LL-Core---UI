@@ -25,7 +25,7 @@ public class SafeAreaController : MonoBehaviour
 
     private void Start()
     {
-        if (!ALLCoreConfig.GetInstance().activateSafeArea)
+        if (ALLCoreConfig.GetInstance() != null && !ALLCoreConfig.GetInstance().activateSafeArea) // to make it possible to use SafeAreaController script even on scenes where A-LL Core is not loaded
             return;
 
         safeArea = Screen.safeArea;
