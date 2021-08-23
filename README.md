@@ -33,7 +33,7 @@ To use this package in a unity project :
         - Native Gallery for Android & iOS
         - Procedural UI Image
         - Nice Vibrations | Haptic Feedback for Mobile & Gamepads
-            1. Rename file "Newtonsoft.Json.dll" to "Dupplicate - Newtonsoft.Json.dll" in "ThirdParty/Newtonsoft"
+            1. Remove platform "Editor" from inspector in the Include Platforms of the assembly file "Newtonsoft.Json.dll" in "ThirdParty/Newtonsoft"
         - Lean Touch
             1. Open the file "Lean/Touch/Extras/LeanScreenDepth.cs" and comment line 221 "Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);"
         - Rest Client for Unity 
