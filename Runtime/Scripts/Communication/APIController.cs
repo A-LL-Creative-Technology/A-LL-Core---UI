@@ -32,6 +32,7 @@ public class APIController : MonoBehaviour
 
     public string serverURL;          //address of the API to call
 
+    [HideInInspector]
     public int nbRequestsInProgress = 0;
 
 #pragma warning restore 0649
