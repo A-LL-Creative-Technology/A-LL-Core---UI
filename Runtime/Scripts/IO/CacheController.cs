@@ -30,10 +30,13 @@ public class CacheController : MonoBehaviour
     // 1. Add field static variable in CacheController
     // 2. Add the loading in LoadAllCaches()
     // 3. Add the type as a child of Cache
+    [HideInInspector]
     public AppConfig appConfig = new AppConfig();
 
+    [HideInInspector]
     public APIConfig apiConfig = new APIConfig();
 
+    [HideInInspector]
     public static string appCacheLocation;
 
     private static string standardSceneCacheLocation;
