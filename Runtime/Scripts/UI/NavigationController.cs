@@ -787,28 +787,7 @@ public class NavigationController : MonoBehaviour
             if (currentView.GetComponent<SinglePageController>().hasTransparentHeader)
             {
                 // backup the initial values
-                scrollViewViewportAnchorMax = scrollViewViewportRectTransform.anchorMax;
-                headerContainerBackgroundHeight = headerContainerBackgroundRectTransform.rect.height;
-                headerContainerBackgroundInitialPositionY = headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y;
-                opaqueContainerInitialPositionY = opaqueHeaderContainer.transform.localPosition.y;
-
-                LeanTween.value(scrollViewViewportAnchorMax.y, 1, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnUpdate((float value) =>
-                {
-                    scrollViewViewportRectTransform.anchorMax = new Vector2(1, value);
-                }).setOnComplete(() => {
-                    scrollViewViewportRectTransform.anchorMax = Vector2.one;
-                });
-
-                LeanTween.moveLocalY(headerContainerBackgroundRectTransform.gameObject, headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y + headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
-
-                LeanTween.moveLocalY(opaqueHeaderContainer, opaqueHeaderContainer.transform.localPosition.y + headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
-
-                    opaqueHeaderContainer.SetActive(false);
-                    transparentHeaderContainer.SetActive(true);
-
-                    FinishPushToStack();
-
-                });
+                HideHeader(ANIMATION_STACK_DURATION, true);
 
             }
             else
@@ -874,31 +853,7 @@ public class NavigationController : MonoBehaviour
         // reset header (because of possible transparency)
         if (oldView.GetComponent<SinglePageController>().hasTransparentHeader)
         {
-            opaqueHeaderContainer.SetActive(true);
-            transparentHeaderContainer.SetActive(false);
-
-            LeanTween.moveLocalY(headerContainerBackgroundRectTransform.gameObject, headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y - headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
-            {
-                // to avoid drift
-                headerContainerBackgroundRectTransform.gameObject.transform.localPosition = new Vector2(headerContainerBackgroundRectTransform.gameObject.transform.localPosition.x, headerContainerBackgroundInitialPositionY);
-            });
-
-
-            LeanTween.moveLocalY(opaqueHeaderContainer, opaqueHeaderContainer.transform.localPosition.y - headerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
-            {
-                // to avoid drift
-                opaqueHeaderContainer.transform.localPosition = new Vector2(opaqueHeaderContainer.transform.localPosition.x, opaqueContainerInitialPositionY);
-            });
-
-            LeanTween.value(1, scrollViewViewportAnchorMax.y, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnUpdate((float value) =>
-            {
-                scrollViewViewportRectTransform.anchorMax = new Vector2(1, value);
-            }).setOnComplete(() =>
-            {
-                scrollViewViewportRectTransform.anchorMax = scrollViewViewportAnchorMax;
-
-                ContinuePopFromStack();
-            });
+            ShowHeader(ANIMATION_STACK_DURATION, true);
 
         }
         else
@@ -1139,14 +1094,7 @@ public class NavigationController : MonoBehaviour
     {
 
         // hide the navigation
-        scrollViewViewportAnchorMin = scrollViewViewportRectTransform.anchorMin;
-        footerContainerBackgroundHeight = footerContainerBackgroundRectTransform.rect.height;
-        footerContainerInitialPositionY = footerContainerRectTransform.localPosition.y;
-        footerContainerBackgroundInitialPositionY = footerContainerBackgroundRectTransform.localPosition.y;
-
-        scrollViewViewportRectTransform.anchorMin = Vector2.zero;
-        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y - footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
-        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y - footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo);
+        HideFooter(ANIMATION_STACK_DURATION);
 
         // we do the animation for the back button
         headerBackButton.SetActive(true);
@@ -1161,15 +1109,7 @@ public class NavigationController : MonoBehaviour
     private void HideStackNavigation()
     {
         // reset the bottom navigation
-        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y + footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
-            footerContainerRectTransform.localPosition = new Vector3(footerContainerRectTransform.localPosition.x, footerContainerInitialPositionY, footerContainerRectTransform.localPosition.z);
-        });
-        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y + footerContainerBackgroundHeight, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
-            footerContainerBackgroundRectTransform.localPosition = new Vector3(footerContainerBackgroundRectTransform.localPosition.x, footerContainerBackgroundInitialPositionY, footerContainerBackgroundRectTransform.localPosition.z);
-
-            scrollViewViewportRectTransform.anchorMin = scrollViewViewportAnchorMin;
-
-        });
+        ShowFooter(ANIMATION_STACK_DURATION);
 
 
         // we do the animation for the back button
@@ -1245,6 +1185,90 @@ public class NavigationController : MonoBehaviour
             this.view = view;
             this.scrollBarValue = scrollValue;
         }
+    }
+
+    public void ShowHeader(float duration = 0, bool shallContinuePopFromStack = false)
+    {
+        opaqueHeaderContainer.SetActive(true);
+        transparentHeaderContainer.SetActive(false);
+
+        LeanTween.moveLocalY(headerContainerBackgroundRectTransform.gameObject, headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y - headerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
+        {
+            // to avoid drift
+            headerContainerBackgroundRectTransform.gameObject.transform.localPosition = new Vector2(headerContainerBackgroundRectTransform.gameObject.transform.localPosition.x, headerContainerBackgroundInitialPositionY);
+        });
+
+
+        LeanTween.moveLocalY(opaqueHeaderContainer, opaqueHeaderContainer.transform.localPosition.y - headerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
+        {
+            // to avoid drift
+            opaqueHeaderContainer.transform.localPosition = new Vector2(opaqueHeaderContainer.transform.localPosition.x, opaqueContainerInitialPositionY);
+        });
+
+        LeanTween.value(1, scrollViewViewportAnchorMax.y, ANIMATION_STACK_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnUpdate((float value) =>
+        {
+            scrollViewViewportRectTransform.anchorMax = new Vector2(1, value);
+        }).setOnComplete(() =>
+        {
+            scrollViewViewportRectTransform.anchorMax = scrollViewViewportAnchorMax;
+
+            if (shallContinuePopFromStack)
+                ContinuePopFromStack();
+        });
+    }
+
+    public void HideHeader(float duration = 0, bool shallFinishPushToStack = false)
+    {
+        // backup the initial values
+        scrollViewViewportAnchorMax = scrollViewViewportRectTransform.anchorMax;
+        headerContainerBackgroundHeight = headerContainerBackgroundRectTransform.rect.height;
+        headerContainerBackgroundInitialPositionY = headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y;
+        opaqueContainerInitialPositionY = opaqueHeaderContainer.transform.localPosition.y;
+
+        LeanTween.value(scrollViewViewportAnchorMax.y, 1, duration).setEase(LeanTweenType.easeInOutExpo).setOnUpdate((float value) =>
+        {
+            scrollViewViewportRectTransform.anchorMax = new Vector2(1, value);
+        }).setOnComplete(() => {
+            scrollViewViewportRectTransform.anchorMax = Vector2.one;
+        });
+
+        LeanTween.moveLocalY(headerContainerBackgroundRectTransform.gameObject, headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y + headerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo);
+
+        LeanTween.moveLocalY(opaqueHeaderContainer, opaqueHeaderContainer.transform.localPosition.y + headerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+
+            opaqueHeaderContainer.SetActive(false);
+            transparentHeaderContainer.SetActive(true);
+
+            if (shallFinishPushToStack)
+                FinishPushToStack();
+
+        });
+    }
+
+    public void ShowFooter(float duration = 0)
+    {
+        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y + footerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+            footerContainerRectTransform.localPosition = new Vector3(footerContainerRectTransform.localPosition.x, footerContainerInitialPositionY, footerContainerRectTransform.localPosition.z);
+        });
+        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y + footerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+            footerContainerBackgroundRectTransform.localPosition = new Vector3(footerContainerBackgroundRectTransform.localPosition.x, footerContainerBackgroundInitialPositionY, footerContainerBackgroundRectTransform.localPosition.z);
+
+            scrollViewViewportRectTransform.anchorMin = scrollViewViewportAnchorMin;
+
+        });
+    }
+
+    public void HideFooter(float duration = 0)
+    {
+        scrollViewViewportAnchorMin = scrollViewViewportRectTransform.anchorMin;
+        footerContainerBackgroundHeight = footerContainerBackgroundRectTransform.rect.height;
+        footerContainerInitialPositionY = footerContainerRectTransform.localPosition.y;
+        footerContainerBackgroundInitialPositionY = footerContainerBackgroundRectTransform.localPosition.y;
+
+        scrollViewViewportRectTransform.anchorMin = Vector2.zero;
+        LeanTween.moveLocalY(footerContainerRectTransform.gameObject, footerContainerRectTransform.localPosition.y - footerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo);
+        LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y - footerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo);
+
     }
 
 
