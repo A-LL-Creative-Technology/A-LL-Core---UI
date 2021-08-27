@@ -493,7 +493,7 @@ public class NavigationController : MonoBehaviour
     }
 
     // to display the popup
-    public void OnPopUpOpen(GameObject popUp)
+    public void OnPopUpOpen(GameObject popUp, bool shallAnimate = true)
     {
 
         currentActivePopUp = popUp;
@@ -501,30 +501,46 @@ public class NavigationController : MonoBehaviour
         popUpContainer.SetActive(true);
 
         currentActivePopUp.SetActive(true);
-        currentActivePopUp.transform.localScale = Vector3.zero;
-        LeanTween.scale(currentActivePopUp, Vector3.one, ANIMATION_POP_UP_DURATION).setEaseOutBack();
+        if (shallAnimate)
+        {
+            currentActivePopUp.transform.localScale = Vector3.zero;
+            LeanTween.scale(currentActivePopUp, Vector3.one, ANIMATION_POP_UP_DURATION).setEaseOutBack();
+        }
+
 
     }
 
     // to close the popup
-    public void OnPopUpClose()
+    public void OnPopUpClose(bool shallAnimate = true)
     {
-        DoPopUpClose(); // necessary to make the OnPopUpClose() callable from a button in the editor + DoPopUpClose with a callback called from the code
+        DoPopUpClose(null, shallAnimate); // necessary to make the OnPopUpClose() callable from a button in the editor + DoPopUpClose with a callback called from the code
     }
 
-    public void DoPopUpClose(Action successCallback = null)
+    public void DoPopUpClose(Action successCallback = null, bool shallAnimate = true)
     {
         if (!currentActivePopUp)
             return;
 
-        LeanTween.scale(currentActivePopUp, Vector3.zero, ANIMATION_POP_UP_DURATION).setEaseInBack().setOnComplete(() => {
+        if (shallAnimate)
+        {
+            LeanTween.scale(currentActivePopUp, Vector3.zero, ANIMATION_POP_UP_DURATION).setEaseInBack().setOnComplete(() => {
 
-            popUpContainer.SetActive(false);
+                SetPopupInactive(successCallback);
+            });
+        }
+        else
+        {
+            SetPopupInactive(successCallback);
+        }
 
-            currentActivePopUp = null;
+    }
+    private void SetPopupInactive(Action successCallback = null)
+    {
+        popUpContainer.SetActive(false);
 
-            successCallback?.Invoke();
-        });
+        currentActivePopUp = null;
+
+        successCallback?.Invoke();
     }
 
     private IEnumerator QueueNotification(bool isSuccess, float secondsBeforeAutoHide, string title, string body, string localizationTable, string cta, NotificationActionLink ctaLink)
