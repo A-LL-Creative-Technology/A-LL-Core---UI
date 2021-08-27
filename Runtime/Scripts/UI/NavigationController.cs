@@ -491,6 +491,11 @@ public class NavigationController : MonoBehaviour
         StartCoroutine(QueueToNavigate(() => Navigate("-1")));
     }
 
+    public void OnPopUpOpen(GameObject popUp)
+    {
+        OnPopUpOpen(popUp, true);
+    }
+
     // to display the popup
     public void OnPopUpOpen(GameObject popUp, bool shallAnimate = true)
     {
