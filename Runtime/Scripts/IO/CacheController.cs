@@ -130,12 +130,19 @@ public class CacheController : MonoBehaviour
 
         instance = this;
 
-        nbSubscribersCacheLoaded = OnCacheLoaded.GetInvocationList().Length;
 
         // fires the event to notify that cache has been loaded
         FiresCacheLoaded();
 
-        StartCoroutine(WatchForLateCacheLoadedSubscribers());
+        if (OnCacheLoaded != null)
+        {
+            nbSubscribersCacheLoaded = OnCacheLoaded.GetInvocationList().Length;
+            StartCoroutine(WatchForLateCacheLoadedSubscribers());
+        }
+        else
+        {
+            NavigationController.GetInstance().CacheLoadedSuccessfully();
+        }
 
         isCacheLoaded = true;
 
@@ -149,7 +156,7 @@ public class CacheController : MonoBehaviour
 
         bool hasLateSubscriberArrived = false;
 
-        while (startTime + WAIT_TIME_FOR_LATE_SUBSCRIBERS > Time.time && Input.touchCount == 0)
+        while (startTime + WAIT_TIME_FOR_LATE_SUBSCRIBERS > Time.time)
         {
             if (OnCacheLoaded.GetInvocationList().Length > nbSubscribersCacheLoaded)
             {
@@ -166,6 +173,8 @@ public class CacheController : MonoBehaviour
         {
             FiresCacheLoaded();
         }
+
+        NavigationController.GetInstance().CacheLoadedSuccessfully();
 
     }
 

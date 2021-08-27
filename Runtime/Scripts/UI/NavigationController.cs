@@ -158,7 +158,6 @@ public class NavigationController : MonoBehaviour
 
     private void Start()
     {
-        CacheController.OnCacheLoaded += OnCacheLoadedCallback;
         singlePageContentLoadedDelegate += OnSinglePageContentLoadedContinuePushToStackCallback;
 
         StartCoroutine(InitNavigation());
@@ -166,7 +165,6 @@ public class NavigationController : MonoBehaviour
 
     private void OnDestroy()
     {
-        CacheController.OnCacheLoaded -= OnCacheLoadedCallback;
         singlePageContentLoadedDelegate -= OnSinglePageContentLoadedContinuePushToStackCallback;
     }
 
@@ -181,7 +179,8 @@ public class NavigationController : MonoBehaviour
 #endif
     }
 
-    private void OnCacheLoadedCallback(object sender, EventArgs e)
+    // called at the very end of cache loading logic (after waiting for late subscribers
+    public void CacheLoadedSuccessfully()
     {
 
         if (!firstCacheLoad)
