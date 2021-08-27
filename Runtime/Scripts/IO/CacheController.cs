@@ -19,6 +19,8 @@ public class CacheController : MonoBehaviour
     {
         return initializationInstance;
     }
+#pragma warning disable 0649
+    readonly private float WAIT_TIME_FOR_LATE_SUBSCRIBERS = 1f; // in seconds
 
     public static event EventHandler OnCacheLoaded;
     public static event EventHandler OnInitDirectories;
@@ -47,6 +49,10 @@ public class CacheController : MonoBehaviour
 
 
     public static bool isCacheLoaded = false;
+
+    private int nbSubscribersCacheLoaded;
+
+#pragma warning restore 0649
 
     private void Awake()
     {
@@ -124,14 +130,52 @@ public class CacheController : MonoBehaviour
 
         instance = this;
 
+        nbSubscribersCacheLoaded = OnCacheLoaded.GetInvocationList().Length;
+
+        // fires the event to notify that cache has been loaded
+        FiresCacheLoaded();
+
+        StartCoroutine(WatchForLateCacheLoadedSubscribers());
+
+        isCacheLoaded = true;
+
+    }
+
+    // to avoid having a late subscriber while the OnCacheLoaded event has already fired during initialization
+    private IEnumerator WatchForLateCacheLoadedSubscribers()
+    {
+
+        float startTime = Time.time;
+
+        bool hasLateSubscriberArrived = false;
+
+        while (startTime + WAIT_TIME_FOR_LATE_SUBSCRIBERS > Time.time && Input.touchCount == 0)
+        {
+            if (OnCacheLoaded.GetInvocationList().Length > nbSubscribersCacheLoaded)
+            {
+                nbSubscribersCacheLoaded = OnCacheLoaded.GetInvocationList().Length;
+
+                hasLateSubscriberArrived = true;
+            }
+
+            yield return null;
+        }
+
+        // verify if late subscriber has arrived
+        if (hasLateSubscriberArrived)
+        {
+            FiresCacheLoaded();
+        }
+
+    }
+
+    private void FiresCacheLoaded()
+    {
         // fires the event to notify that cache has been loaded
         if (OnCacheLoaded != null)
         {
             OnCacheLoaded(this, EventArgs.Empty);
         }
-
-        isCacheLoaded = true;
-
     }
 
     private static void LoadAppCaches()
