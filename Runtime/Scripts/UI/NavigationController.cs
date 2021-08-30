@@ -68,7 +68,6 @@ public class NavigationController : MonoBehaviour
 
     [SerializeField] private GameObject popUpContainer;
     private GameObject currentActivePopUp = null;
-    [SerializeField] GameObject popUpGeneral;
 
     [HideInInspector] public string notificationStringPrefix = "string:"; // prefix "string:" to be added at the beginning of the variable to use Localization as a string and not key
 
@@ -697,14 +696,6 @@ public class NavigationController : MonoBehaviour
     {
         // toggle global loader
         creaTechContainer.SetActive(false);
-    }
-
-    public GameObject BuildPopUpGeneral(string title, string description)
-    {
-        popUpGeneral.transform.Find("Text 2").GetComponent<TextMeshProUGUI>().text = title;
-        popUpGeneral.transform.Find("Text 3").GetComponent<TextMeshProUGUI>().text = description;
-
-        return popUpGeneral;
     }
 
     private void ExtractNextView(string nextViewStr)
