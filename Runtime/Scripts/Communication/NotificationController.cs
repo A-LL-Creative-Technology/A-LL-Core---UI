@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 #if UNITY_IOS
 using Unity.Notifications.iOS;
@@ -41,7 +42,7 @@ public class NotificationController : MonoBehaviour
 
     private void Start()
     {
-        
+
         // for push notification
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
             var dependencyStatus = task.Result;
@@ -65,7 +66,7 @@ public class NotificationController : MonoBehaviour
                   "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 // Firebase Unity SDK is not safe to use here.
             }
-        });       
+        });
     }
 
     private void OnDestroy()
@@ -111,15 +112,31 @@ public class NotificationController : MonoBehaviour
 
     public void OnPushNotificationReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs pushNotificationMessage)
     {
-        //if notification has been opened
-        if (pushNotificationMessage.Message.NotificationOpened)
-        {
-            // we then extract the data from the notification
-            if (pushNotificationMessage.Message.Data.Count > 0 && notificationReceivedDelegate != null)
-                notificationReceivedDelegate(pushNotificationMessage);
-        }
+
+        // wait for the A-LL Core to be ready before processing the notification (it will cause a crash otherwise)
+        StartCoroutine(WaitForALLCoreReady(() => {
+
+            //if notification has been opened
+            if (pushNotificationMessage.Message.NotificationOpened)
+            {
+                // we then extract the data from the notification
+                if (pushNotificationMessage.Message.Data.Count > 0 && notificationReceivedDelegate != null)
+                    notificationReceivedDelegate(pushNotificationMessage);
+            }
+
+        }));
+
+
     }
 
-    
+
+    private IEnumerator WaitForALLCoreReady(Action callback)
+    {
+        while (!ALLCoreConfig.isALLCoreReady)
+            yield return null;
+
+        callback?.Invoke();
+    }
+
 
 }
