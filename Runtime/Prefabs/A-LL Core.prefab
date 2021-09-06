@@ -212,6 +212,31 @@ PrefabInstance:
       propertyPath: animations.Array.data[0].chainedAnimationsIds.Array.data[0]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1640373829985184806, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829985184806, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2144617733053832839}
+    - target: {fileID: 1640373829985184806, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPopUpClose
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829985184806, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: NavigationController, A-LL.Core.Runtime.asmdef
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640373829985184806, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1640373830239620221, guid: 415943762fa344ccc82e602f20e3208c,
         type: 3}
       propertyPath: m_RootOrder
@@ -320,6 +345,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2746694921649062706}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2144617733053832839 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4313619469955915189, guid: 415943762fa344ccc82e602f20e3208c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2746694921649062706}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe8f00024ba54800a7171e3e1ac8f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8975600334148855797 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6526143056793756871, guid: 415943762fa344ccc82e602f20e3208c,

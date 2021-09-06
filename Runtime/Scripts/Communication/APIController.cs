@@ -91,7 +91,7 @@ public class APIController : MonoBehaviour
 
     private IEnumerator EnsureRequestCanBeSent(Action callback, bool shallWaitForPendingRequests = false)
     {
-        while (!ALLCoreConfig.GetInstance().isALLCoreReady)
+        while (!ALLCoreConfig.isALLCoreReady)
             yield return null;
 
         while (shallWaitForPendingRequests && nbRequestsInProgress > 0)
