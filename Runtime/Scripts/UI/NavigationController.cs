@@ -68,9 +68,9 @@ public class NavigationController : MonoBehaviour
 
     [SerializeField] private GameObject popUpContainer;
     private GameObject currentActivePopUp = null;
-    [SerializeField] GameObject popUpGeneral;
 
     [HideInInspector] public string notificationStringPrefix = "string:"; // prefix "string:" to be added at the beginning of the variable to use Localization as a string and not key
+    private string websiteURL = "https://a-ll.tech/#/en";
 
     [SerializeField] private GameObject notificationContainer;
     [SerializeField] private RawImage notificationBackground;
@@ -447,6 +447,10 @@ public class NavigationController : MonoBehaviour
         }
     }
 
+    public void OnWebsiteOpen(){
+        Application.OpenURL(websiteURL);
+    }
+
     public void OnDisplayOpen(string routingStr)
     {
         currentNavigationMode = NavigationMode.DisplayOpen;
@@ -697,14 +701,6 @@ public class NavigationController : MonoBehaviour
     {
         // toggle global loader
         creaTechContainer.SetActive(false);
-    }
-
-    public GameObject BuildPopUpGeneral(string title, string description)
-    {
-        popUpGeneral.transform.Find("Text 2").GetComponent<TextMeshProUGUI>().text = title;
-        popUpGeneral.transform.Find("Text 3").GetComponent<TextMeshProUGUI>().text = description;
-
-        return popUpGeneral;
     }
 
     private void ExtractNextView(string nextViewStr)
@@ -1152,7 +1148,7 @@ public class NavigationController : MonoBehaviour
         for (int i = 0; i < sceneCount; i++)
         {
             string currentSceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
-
+            Debug.Log("Scene found: " + currentSceneName);
             if (currentSceneName == sceneName)
                 return true;
         }
