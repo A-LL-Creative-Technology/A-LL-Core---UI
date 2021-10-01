@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 439115233601833998}
   - component: {fileID: 475722136264697291}
   m_Layer: 0
-  m_Name: Over Page
+  m_Name: FullScreen Page
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
