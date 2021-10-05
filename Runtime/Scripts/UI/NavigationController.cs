@@ -29,6 +29,8 @@ public class NavigationController : MonoBehaviour
     public delegate void OnSinglePageContentLoaded(object sender, EventArgs e);
     public static OnSinglePageContentLoaded singlePageContentLoadedDelegate;
 
+    public GameObject viewToSlide;
+
     public GameObject currentView;
 
     public GameObject scrollView;
@@ -109,8 +111,8 @@ public class NavigationController : MonoBehaviour
     private TextMeshProUGUI navigationBarTitle;
 
     // for Over mode
-    private GameObject currentViewBackupOver;
-    private List<NavigationConfig> viewsStackBackupOver;
+    public GameObject currentViewBackupOver;
+    public List<NavigationConfig> viewsStackBackupOver;
     ////
 
     private bool isNewStack = false;
@@ -326,7 +328,6 @@ public class NavigationController : MonoBehaviour
 
     public void Navigate(string routingStr)
     {
-
         //Log page in Analytics
         AnalyticsController.GetInstance()?.Log(AnalyticsController.LOGS.VISIT_PAGE, routingStr);
 
@@ -349,7 +350,6 @@ public class NavigationController : MonoBehaviour
                 break;
 
             case NavigationMode.StackOpen:
-
                 // push to the stack
                 PushToStack();
 
@@ -447,7 +447,8 @@ public class NavigationController : MonoBehaviour
         }
     }
 
-    public void OnWebsiteOpen(){
+    public void OnWebsiteOpen()
+    {
         Application.OpenURL(websiteURL);
     }
 
@@ -819,7 +820,6 @@ public class NavigationController : MonoBehaviour
         });
     }
 
-
     private void FinishPushToStack()
     {
 
@@ -833,7 +833,6 @@ public class NavigationController : MonoBehaviour
         // end of the animation
         NavigationCallback();
     }
-
 
     private void PopFromStack()
     {
@@ -1061,18 +1060,25 @@ public class NavigationController : MonoBehaviour
         // reset scroll to top
         ResetScrollBar();
 
-        oldView = currentView;
-        currentView = nextView;
+        //change page when no over page is active
+        if (currentViewBackupOver == null)
+        {
+            oldView = currentView;
+            currentView = nextView;
 
-        oldView.SetActive(false);
-        currentView.SetActive(true);
+            oldView.SetActive(false);
+            currentView.SetActive(true);
 
-        oldView = null;
-        nextView = null;
+            oldView = null;
+            nextView = null;
+        }
+        else
+        { //allow changing page when an over page is active
+            currentViewBackupOver = nextView;
+        }
 
         NavigationCallback();
     }
-
 
     private void NavigationCallback()
     {
@@ -1286,7 +1292,4 @@ public class NavigationController : MonoBehaviour
         LeanTween.moveLocalY(footerContainerBackgroundRectTransform.gameObject, footerContainerBackgroundRectTransform.localPosition.y - footerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo);
 
     }
-
-
-
 }
