@@ -11,7 +11,7 @@ public class InputFieldController : MonoBehaviour
 #pragma warning disable 0649
 
     private readonly float INPUT_FIELD_ANIMATION_DURATION = 0.4f;
-    private readonly float INPUT_FIELD_LABEL_MOVEMENT_DISTANCE = 80f;
+    private readonly float INPUT_FIELD_LABEL_MOVEMENT_DISTANCE = 60f;
     private readonly float INPUT_FIELD_LABEL_MOVEMENT_SCALE = 0.7f;
 
     private FormController formController;
@@ -32,6 +32,8 @@ public class InputFieldController : MonoBehaviour
     [NonSerialized] public TMP_InputField inputFieldTMP;
 
     private Button togglePasswordButton;
+
+    private float keyboardParentInitialPosition;
 
 #pragma warning restore 0649
 
@@ -70,13 +72,18 @@ public class InputFieldController : MonoBehaviour
             GlobalController.LogMe("The input field or its label cannot be found in hierarchy.");
     }
 
+    private void Start()
+    {
+        keyboardParentInitialPosition = formController.keyboardParentView.transform.position.y; //Keep true initial positions of game object to move. Prevent drifting.
+    }
+
     private void OnEnable()
     {
 
         inputFieldTMP.onValueChanged.AddListener(OnValueChangedCheck);
         inputFieldTMP.onDeselect.AddListener(OnInputFieldHide);
 
-        label.GetComponent<Button>().onClick.AddListener(OnInputFieldTouched);
+        //label.GetComponent<Button>().onClick.AddListener(OnInputFieldTouched);
 
         if (isPassword)
             togglePasswordButton.onClick.AddListener(OnTogglePasswordVisibility);
@@ -87,7 +94,7 @@ public class InputFieldController : MonoBehaviour
         inputFieldTMP.onValueChanged.RemoveListener(OnValueChangedCheck);
         inputFieldTMP.onDeselect.RemoveListener(OnInputFieldHide);
 
-        label.GetComponent<Button>().onClick.RemoveListener(OnInputFieldTouched);
+        //label.GetComponent<Button>().onClick.RemoveListener(OnInputFieldTouched);
 
         if (isPassword)
             togglePasswordButton.onClick.RemoveListener(OnTogglePasswordVisibility);
@@ -96,7 +103,7 @@ public class InputFieldController : MonoBehaviour
         NavigationController.GetInstance().currentView.transform.localPosition = new Vector3(NavigationController.GetInstance().currentView.transform.localPosition.x, NavigationController.GetInstance().overViewsInitialYPosition, NavigationController.GetInstance().currentView.transform.localPosition.z);
     }
 
-    private void OnInputFieldTouched()
+    public void OnInputFieldTouched()
     {
         StartCoroutine(WaitForDoingTouch());
     }
@@ -154,19 +161,30 @@ public class InputFieldController : MonoBehaviour
         float inputFieldScreenRatio = 0.25f;
 
         // get parent of the input field which is a canvas
-        GameObject parentView = inputField.GetComponentInParent<Canvas>().gameObject;
+        GameObject parentView = formController.screenReference.gameObject;
+
+        //Get Top Screen Reference (with world positions)
+        Vector3[] screenReferenceCorners = new Vector3[4];
+        parentView.GetComponent<RectTransform>().GetWorldCorners(screenReferenceCorners);
+        float topScreenWorldPosition = screenReferenceCorners[1].y;
+
+
+        //Get InputField center world position
+        Vector3[] inputFieldCorners = new Vector3[4];
+        this.GetComponent<RectTransform>().GetWorldCorners(inputFieldCorners);
+        float inputfieldVerticalCenterWorldPosition = (inputFieldCorners[0].y + inputFieldCorners[1].y) / 2f;
+
+        //Get difference from top
+        float inputFieldPositionFromTop = topScreenWorldPosition - inputfieldVerticalCenterWorldPosition;
 
         // visible area height
         int visibleAreaHeight = Screen.height;
 
-        // compute y position of the input field with respect to parent (with respect to the pivot y: 1=top, 0.5=middle, etc)
-        float inputFieldPositionFromTopBeforePivotCorrection = -parentView.transform.InverseTransformPoint(inputField.transform.position).y;
-
-        // correction for the pivot
-        int inputFieldPositionFromTop = (int)(inputFieldPositionFromTopBeforePivotCorrection + (1 - parentView.GetComponent<RectTransform>().pivot.y) * visibleAreaHeight);
-
         // move the input field to its final location in the visible area
-        int inputFieldFinalPosition = (int)(inputFieldPositionFromTop - visibleAreaHeight * inputFieldScreenRatio);
+        float inputFieldFinalPositionY = visibleAreaHeight * (1f - inputFieldScreenRatio);
+
+        //distance to move GameObject
+        float distanceToMove = inputFieldFinalPositionY - inputfieldVerticalCenterWorldPosition;
 
         // if input field is in scroll view, we adjust the viewport
         bool isInScrollView = true;
@@ -194,21 +212,22 @@ public class InputFieldController : MonoBehaviour
             Transform scrollRectFaster = viewportTransform.parent;
             scrollRectFaster.GetComponent<ScrollRectFaster>().movementType = ScrollRectFaster.MovementType.Unrestricted;
 
-            if (inputFieldFinalPosition > 0)
+            if (inputFieldFinalPositionY > 0)
             {
-                ((RectTransform)viewportTransform).offsetMin = new Vector2(((RectTransform)viewportTransform).offsetMin.x, -inputFieldFinalPosition);
+                ((RectTransform)viewportTransform).offsetMin = new Vector2(((RectTransform)viewportTransform).offsetMin.x, -inputFieldFinalPositionY);
             }
             else
             {
-                ((RectTransform)viewportTransform).offsetMax = new Vector2(((RectTransform)viewportTransform).offsetMax.x, -inputFieldFinalPosition);
-                ((RectTransform)contentTransform).localPosition = new Vector3(((RectTransform)contentTransform).localPosition.x, ((RectTransform)contentTransform).localPosition.y + inputFieldFinalPosition, ((RectTransform)contentTransform).localPosition.z);
+                ((RectTransform)viewportTransform).offsetMax = new Vector2(((RectTransform)viewportTransform).offsetMax.x, -inputFieldFinalPositionY);
+                ((RectTransform)contentTransform).localPosition = new Vector3(((RectTransform)contentTransform).localPosition.x, ((RectTransform)contentTransform).localPosition.y + inputFieldFinalPositionY, ((RectTransform)contentTransform).localPosition.z);
             }
         }
 
 
-        LeanTween.moveLocalY(NavigationController.GetInstance().currentView, NavigationController.GetInstance().overViewsInitialYPosition + inputFieldFinalPosition, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+        LeanTween.moveY(formController.keyboardParentView, keyboardParentInitialPosition + distanceToMove, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
             FormController.GetInstance().isSelectionInProgress = false;
         });
+
     }
 
     private void OnInputFieldHide(string text)
@@ -263,7 +282,7 @@ public class InputFieldController : MonoBehaviour
     {
 
         // reset the scroll view
-        LeanTween.moveLocalY(NavigationController.GetInstance().currentView, NavigationController.GetInstance().overViewsInitialYPosition, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
+        LeanTween.moveY(formController.keyboardParentView, keyboardParentInitialPosition, INPUT_FIELD_ANIMATION_DURATION).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
 
             FormController.GetInstance().isDeselectionInProgress = false;
 

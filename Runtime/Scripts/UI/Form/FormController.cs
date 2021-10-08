@@ -20,6 +20,10 @@ public class FormController : MonoBehaviour
 
     [SerializeField] private Button validationButton;
 
+    [HideInInspector] public Canvas screenReference;
+    public GameObject keyboardParentView;
+
+
     [NonSerialized] public bool isSelectionInProgress = false;
     [NonSerialized] public bool isDeselectionInProgress = false;
 
@@ -30,6 +34,11 @@ public class FormController : MonoBehaviour
         instance = this;
 
         validationButton.interactable = false;
+    }
+
+    private void Start()
+    {
+        screenReference = NavigationController.GetInstance().viewsCanvas.GetComponent<Canvas>();
     }
 
     public void OnInputFieldValueChangedCheck()
