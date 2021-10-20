@@ -260,9 +260,9 @@ public class NavigationController : MonoBehaviour
         }
     }
 
-    private void InitViews(GameObject viewsContainer)
+    private void InitViews(List<Transform> viewsToInit)
     {
-        foreach (Transform currentView in viewsContainer.transform) // normal views
+        foreach (Transform currentView in viewsToInit) // normal views
         {
             // store the views in a dictionary
             viewsDict.Add(currentView.name, currentView.gameObject);
@@ -281,17 +281,25 @@ public class NavigationController : MonoBehaviour
         viewsCanvas.SetActive(true);
         footerCanvas.SetActive(true);
 
-        foreach (Transform currentNormalView in scrollViewContainer.transform) // normal views
+        List<Transform> viewsToInit = new List<Transform>();
+        foreach (Transform currentNormalView in scrollViewContainer.transform) // scroll views, which are children of the scrollViewContainer
         {
             // activate the views (to force layout calculation)
             currentNormalView.gameObject.SetActive(true);
             currentNormalView.GetComponent<LayoutElement>().ignoreLayout = false;
+            viewsToInit.Add(currentNormalView);
+        }
+
+        for (int i = 1; i < viewsCanvas.transform.childCount; i++) //fullscreen views, which are siblings of the scrollView GameObject
+        {                                                         //start at 1 to ignore scroll view
+            viewsCanvas.transform.GetChild(i).gameObject.SetActive(true);
+            viewsToInit.Add(viewsCanvas.transform.GetChild(i));
         }
 
         // wait for the next frame
         yield return null;
 
-        InitViews(scrollViewContainer);
+        InitViews(viewsToInit);
 
         headerCanvas.SetActive(false);
         viewsCanvas.SetActive(false);
@@ -311,16 +319,18 @@ public class NavigationController : MonoBehaviour
 
         overViewsInitialYPosition = overCanvas.transform.GetChild(0).localPosition.y;
 
+        List<Transform> viewsToInit = new List<Transform>();
         foreach (Transform currentOverView in overCanvas.transform) // over views
         {
             // activate the views (to force layout calculation)
             currentOverView.gameObject.SetActive(true);
+            viewsToInit.Add(currentOverView);
         }
 
         // wait for the next frame
         yield return null;
 
-        InitViews(overCanvas);
+        InitViews(viewsToInit);
 
         overCanvas.SetActive(false);
 
