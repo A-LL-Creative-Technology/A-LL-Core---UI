@@ -19,7 +19,7 @@ public class UIController : MonoBehaviour
     private readonly float LOADER_THRESHOLD_TO_INFINITE_SCROLL = 1000f;
 
     public Texture2D imagePlaceholder;
-    
+
     [SerializeField] private GameObject overCanvas;
 
     [SerializeField] private CanvasGroup updateLoaderCanvasGroup;
@@ -45,9 +45,11 @@ public class UIController : MonoBehaviour
         updateLoaderCanvasGroup.gameObject.SetActive(false);
 
         overCanvasRectTransform = overCanvas.GetComponent<RectTransform>();
-       
+
         // make sure loader is hidden
         updateLoaderCanvasGroup.alpha = 0;
+
+        InitLoader();
 
     }
 
@@ -55,6 +57,14 @@ public class UIController : MonoBehaviour
     {
         scrollViewContainerRectTransform = NavigationController.GetInstance().scrollViewContainer.GetComponent<RectTransform>();
 
+    }
+
+    public void InitLoader()
+    {
+        isLoadingUpdatesScroll = false; // to prevent from multiple loading
+        isInLoadingUpdatesScrollZone = false; // to prevent from multiple loading
+        isLoadingInfiniteScroll = false;
+        isInLoadingInfiniteScrollZone = false;
     }
 
     public void StartLoader(Action callbackUpdate, Action callbackInfiniteScroll)
@@ -71,7 +81,8 @@ public class UIController : MonoBehaviour
             {
                 //Debug.Log("Safe Zone");
                 updateLoaderCanvasGroup.gameObject.SetActive(false);
-            }else if (scrollLocalYPosition < 0.9f * LOADER_UPDATE_THRESHOLD_TO_FADE && scrollLocalYPosition >= LOADER_UPDATE_THRESHOLD) // entering updates
+            }
+            else if (scrollLocalYPosition < 0.9f * LOADER_UPDATE_THRESHOLD_TO_FADE && scrollLocalYPosition >= LOADER_UPDATE_THRESHOLD) // entering updates
             {
                 //Debug.Log("Entering Updates");
                 AroundUpdateScroll(scrollLocalYPosition, true);
@@ -140,7 +151,7 @@ public class UIController : MonoBehaviour
 
     private void ExitingBothScroll()
     {
-        
+
         isInLoadingUpdatesScrollZone = false;
         isInLoadingInfiniteScrollZone = false;
     }

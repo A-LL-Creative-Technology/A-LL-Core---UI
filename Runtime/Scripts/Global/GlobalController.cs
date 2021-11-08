@@ -87,7 +87,7 @@ public class GlobalController: MonoBehaviour
 
     public static string TruncateTitle(string str)
     {
-        if (str.Length < THRESHOLD_TRUNCATE_TITLE)
+        if (str.Length <= THRESHOLD_TRUNCATE_TITLE)
             return str;
 
         int i = THRESHOLD_TRUNCATE_TITLE;
