@@ -121,7 +121,7 @@ public class NavigationController : MonoBehaviour
     [NonSerialized] public bool isNavigationInitializationInProgress = false;
     private bool isNavigationInProgress = false;
 
-    private bool isPushToStackInProgress = false;
+    public bool isPushToStackInProgress = false;
 
     private bool firstCacheLoad = true; // to prevent reexecuting the cache callback for the navigation when it is not the initial launch of the app
 
