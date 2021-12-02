@@ -38,7 +38,7 @@ To use this package in a unity project :
             2. Link it to Assembly A-LL.Core.Runtime.asmdef
         - Online Maps
         - Advanced Input Field 2
-5. Copy/Paste files in "A-LL Core/Assets To Copy/A-LL/Config/Firebase/" and paste them to "Assets/A-LL/Config/Firebase/" and rename by removing the prefix "Sandbox - "
+5. Copy/Paste files in "A-LL Core/Assets To Copy/A-LL/Config/Firebase/" and paste them to "Assets/A-LL/Config/Firebase/" (create this path) and rename by removing the prefix "Sandbox - "
 6. Open Unity > Preferences > External Tools and tick the boxes for the items below.
     1. Registry packages
     2. Git packages
