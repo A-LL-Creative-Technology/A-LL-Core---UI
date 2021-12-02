@@ -32,7 +32,7 @@ To use this package in a unity project :
         - Native Gallery for Android & iOS
         - Procedural UI Image
         - Lean Touch
-            1. Open the file "Lean/Touch/Extras/LeanScreenDepth.cs" and comment line 221 "Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);"
+            1. Open the file "Lean/Touch/Extras/LeanScreenDepth.cs" and comment line 222 "Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);"
         - Rest Client for Unity 
             1. Additionnaly, create an Assembly Definition Reference named "Main Proyecto26" in "RestClient/Packages"
             2. Link it to Assembly A-LL.Core.Runtime.asmdef
