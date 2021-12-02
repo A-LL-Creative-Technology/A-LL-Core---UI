@@ -8,13 +8,6 @@ To use this package in a unity project :
 ```json
 "scopedRegistries": [
   {
-    "name": "Game Package Registry by Google",
-    "url": "https://unityregistry-pa.googleapis.com",
-    "scopes": [
-      "com.google"
-    ]
-  },
-  {
     "name": "npmjs",
     "url": "https://registry.npmjs.org/",
     "scopes": [
@@ -23,6 +16,7 @@ To use this package in a unity project :
   }
 ]
 ```
+1.1 Manually install Firebase (TO BE COMPLETED BY LOIC)
 2. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL https://laurent-all@bitbucket.org/a-lltech/a-ll-core.git.
 3. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL com.unity.localization.
 4. Add the following third-party packages from the Package Manager
