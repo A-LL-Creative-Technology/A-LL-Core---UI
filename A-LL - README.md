@@ -16,10 +16,14 @@ To use this package in a unity project :
   }
 ]
 ```
-1.1 Manually install Firebase (TO BE COMPLETED BY LOIC)
-2. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL https://laurent-all@bitbucket.org/a-lltech/a-ll-core.git.
-3. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL com.unity.localization.
-4. Add the following third-party packages from the Package Manager
+2. Manually install Firebase
+    1. Download the firebase sdk for unity : https://developers.google.com/unity/archive
+    2. In Unity editor, right-click on Assets then *Import Package* -> *Custom Package...*.
+    3. Select firebase_unity_sdk>dotnet4>FirebaseAnalytics.unitypackage and Open then import.
+    4. Repeat process for firebase_unity_sdk>dotnet4>FirebaseMessaging.unitypackage.
+3. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL https://laurent-all@bitbucket.org/a-lltech/a-ll-core.git.
+4. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL com.unity.localization.
+5. Add the following third-party packages from the Package Manager
     1. Connect using the lab@a-ll.tech account in Unity
     2. Select "My Assets" in the Package Manager to display paid Packages from the Asset Store
     3. Select and import all these packages
@@ -32,8 +36,8 @@ To use this package in a unity project :
             2. Link it to Assembly A-LL.Core.Runtime.asmdef
         - Online Maps
         - Advanced Input Field 2
-5. Copy/Paste files in "A-LL Core/Assets To Copy/A-LL/Config/Firebase/" and paste them to "Assets/A-LL/Config/Firebase/" (create this path) and rename by removing the prefix "Sandbox - "
-6. Open Unity > Preferences > External Tools and tick the boxes for the items below.
+6. Copy/Paste files in "A-LL Core/Assets To Copy/A-LL/Config/Firebase/" and paste them to "Assets/A-LL/Config/Firebase/" (create this path) and rename by removing the prefix "Sandbox - "
+7. Open Unity > Preferences > External Tools and tick the boxes for the items below.
     1. Registry packages
     2. Git packages
     3. Built-in packages
@@ -41,11 +45,11 @@ To use this package in a unity project :
     5. Packages from unknown sources
     6. Player projects
     Then click on "Regenerate project files" button right below. 
-7. Rename scene to **Main** and remove **Camera** and **Directional Ligh** in scene.
-8. Create **A-LL** folder at the root of **Assets** folder and **A-LL/Scenes**. 
-9. Move the scene **Main** into **A-LL/Scenes**.
-10. Update Project Settings for iOS + Android based on another recent working project.
-11. Add Localization package
+8. Rename scene to **Main** and remove **Camera** and **Directional Ligh** in scene.
+9. Create **A-LL** folder at the root of **Assets** folder and **A-LL/Scenes**. 
+10. Move the scene **Main** into **A-LL/Scenes**.
+11. Update Project Settings for iOS + Android based on another recent working project.
+12. Add Localization package
     Ref: To add the [Localization Unity Package](https://docs.unity3d.com/Packages/com.unity.localization@0.9/manual/Installation.html) :
     1. Go to **Edit > Project Settings > Localization** and click **Create**.
     2. Create **Main** asset file in **A-LL/Config/Localization**.
@@ -55,6 +59,6 @@ To use this package in a unity project :
     6. Open **Window > Asset Management > Localization Tables**.
     7. In the Asset Tables window, select the **New Table Collection** tab. Select which Locales you want to generate tables for, give the table the name "Main Table" and create the corresponding Asset Table Collection. Save it to **A-LL/Config/Localization**.
     8. In Unity, go to "Window -> Asset Management -> Adressables -> Groups" and then select "Build -> New Build -> Default Build Script" to build the Localization file
-12. Switch platform to iOS/Android in build setttings
-13. Create AppNavigationController.cs based on another recent projet and its corresponding currentView GameObject to start an initial page.
-14. Got to "File -> Build & Run" to to test the installation.
+13. Switch platform to iOS/Android in build setttings
+14. Create AppNavigationController.cs based on another recent projet and its corresponding currentView GameObject to start an initial page.
+15. Got to "File -> Build & Run" to to test the installation.
