@@ -17,10 +17,8 @@ To use this package in a unity project :
 ]
 ```
 2. Manually install Firebase
-    1. Download the firebase sdk for unity : https://developers.google.com/unity/archive
-    2. In Unity editor, right-click on Assets then *Import Package* -> *Custom Package...*.
-    3. Select firebase_unity_sdk>dotnet4>FirebaseAnalytics.unitypackage and Open then import.
-    4. Repeat process for firebase_unity_sdk>dotnet4>FirebaseMessaging.unitypackage.
+    1. Download the firebase SDKs “Firebase Cloud Messaging” and “Google Analytics for Firebase” for Unity : https://developers.google.com/unity/archive
+    2. In Unity editor, right-click on Assets then *Import Package* -> *Custom Package...* to import both packages.
 3. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL https://laurent-all@bitbucket.org/a-lltech/a-ll-core.git.
 4. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL com.unity.localization.
 5. Add the following third-party packages from the Package Manager
@@ -36,8 +34,11 @@ To use this package in a unity project :
             2. Link it to Assembly A-LL.Core.Runtime.asmdef
         - Online Maps
         - Advanced Input Field 2
-6. Copy/Paste files in "A-LL Core/Assets To Copy/A-LL/Config/Firebase/" and paste them to "Assets/A-LL/Config/Firebase/" (create this path) and rename by removing the prefix "Sandbox - "
-7. Open Unity > Preferences > External Tools and tick the boxes for the items below.
+6. Rename scene to **Main** and remove **Camera** and **Directional Ligh** in scene.
+7. Create **A-LL** folder at the root of **Assets** folder and **A-LL/Scenes**. 
+8. Move the scene **Main** into **A-LL/Scenes**.
+9. Copy/Paste files in "A-LL Core/Assets To Copy/A-LL/Config/Firebase/" and paste them to "Assets/A-LL/Config/Firebase/" (create this path) and rename by removing the prefix "Sandbox - "
+10. Open Unity > Preferences > External Tools and tick the boxes for the items below.
     1. Registry packages
     2. Git packages
     3. Built-in packages
@@ -45,9 +46,6 @@ To use this package in a unity project :
     5. Packages from unknown sources
     6. Player projects
     Then click on "Regenerate project files" button right below. 
-8. Rename scene to **Main** and remove **Camera** and **Directional Ligh** in scene.
-9. Create **A-LL** folder at the root of **Assets** folder and **A-LL/Scenes**. 
-10. Move the scene **Main** into **A-LL/Scenes**.
 11. Update Project Settings for iOS + Android based on another recent working project.
 12. Add Localization package
     Ref: To add the [Localization Unity Package](https://docs.unity3d.com/Packages/com.unity.localization@0.9/manual/Installation.html) :
