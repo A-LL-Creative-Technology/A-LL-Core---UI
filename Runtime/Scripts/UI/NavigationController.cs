@@ -518,6 +518,8 @@ public class NavigationController : MonoBehaviour
         currentActivePopUp = popUp;
 
         popUpContainer.SetActive(true);
+        popUpContainer.transform.GetChild(0).gameObject.SetActive(true); //activate Background
+
 
         currentActivePopUp.SetActive(true);
         if (shallAnimate)
@@ -555,6 +557,7 @@ public class NavigationController : MonoBehaviour
     }
     private void SetPopupInactive(Action successCallback = null)
     {
+        popUpContainer.transform.GetChild(0).gameObject.SetActive(false); //deactivate Background
         popUpContainer.SetActive(false);
 
         currentActivePopUp = null;
