@@ -93,6 +93,8 @@ public class NavigationController : MonoBehaviour
 
     [SerializeField] private GameObject creaTechContainer;
 
+    private int displayedCalled = 0;
+
     public enum NotificationActionLink
     {
         None,
@@ -280,7 +282,7 @@ public class NavigationController : MonoBehaviour
         headerCanvas.SetActive(true);
         viewsCanvas.SetActive(true);
         footerCanvas.SetActive(true);
-
+        
         List<Transform> viewsToInit = new List<Transform>();
         foreach (Transform currentNormalView in scrollViewContainer.transform) // scroll views, which are children of the scrollViewContainer
         {
@@ -289,8 +291,8 @@ public class NavigationController : MonoBehaviour
             currentNormalView.GetComponent<LayoutElement>().ignoreLayout = false;
             viewsToInit.Add(currentNormalView);
         }
-
-        for (int i = 1; i < viewsCanvas.transform.childCount; i++) //fullscreen views, which are siblings of the scrollView GameObject
+        
+        for(int i = 1; i < viewsCanvas.transform.childCount; i++) //fullscreen views, which are siblings of the scrollView GameObject
         {                                                         //start at 1 to ignore scroll view
             viewsCanvas.transform.GetChild(i).gameObject.SetActive(true);
             viewsToInit.Add(viewsCanvas.transform.GetChild(i));
@@ -515,11 +517,19 @@ public class NavigationController : MonoBehaviour
     public void OnPopUpOpen(GameObject popUp, bool shallAnimate = true)
     {
 
+        StartCoroutine(WaitForClosingPopup(popUp, shallAnimate));
+
+
+    }
+
+    private IEnumerator WaitForClosingPopup(GameObject popUp, bool shallAnimate = true)
+    {
+        yield return new WaitUntil(() => !currentActivePopUp); //Wait for any closing popup to finish closing
+
         currentActivePopUp = popUp;
 
         popUpContainer.SetActive(true);
-        popUpContainer.transform.GetChild(0).gameObject.SetActive(true); //activate Background
-
+        popUpContainer.transform.GetChild(0).gameObject.SetActive(true);
 
         currentActivePopUp.SetActive(true);
         if (shallAnimate)
@@ -527,8 +537,6 @@ public class NavigationController : MonoBehaviour
             currentActivePopUp.transform.localScale = Vector3.zero;
             LeanTween.scale(currentActivePopUp, Vector3.one, ANIMATION_POP_UP_DURATION).setEaseOutBack();
         }
-
-
     }
 
     // to close the popup
@@ -557,7 +565,8 @@ public class NavigationController : MonoBehaviour
     }
     private void SetPopupInactive(Action successCallback = null)
     {
-        popUpContainer.transform.GetChild(0).gameObject.SetActive(false); //deactivate Background
+        popUpContainer.transform.GetChild(0).gameObject.SetActive(false);
+        currentActivePopUp.SetActive(false);
         popUpContainer.SetActive(false);
 
         currentActivePopUp = null;
@@ -574,7 +583,7 @@ public class NavigationController : MonoBehaviour
     }
 
     // for title and body, use the prefix "string:" at the beginning of the variable to use the string as is without using it as a Localization key
-    public void OnNotificationOpen(bool isSuccess, float secondsBeforeAutoHide, string title = "", string body = "", string localizationTable = "Main", string cta = "", NotificationActionLink ctaLink = NotificationActionLink.None)
+    public void OnNotificationOpen(bool isSuccess, float secondsBeforeAutoHide, string title = "", string body = "", string localizationTable = "Main", string cta = "", NotificationActionLink ctaLink = NotificationActionLink.None, Color leftColor = default, Color rightColor = default)
     {
         if (isNotificationInProgress)
         {
@@ -593,13 +602,21 @@ public class NavigationController : MonoBehaviour
         // toggle notification
         notificationContainer.SetActive(true);
 
-        if (isSuccess)
+        //if colors were specified
+        if(rightColor != default && leftColor != default)
         {
-            notificationBackground.color = new Color(111 / 255f, 195 / 255f, 92 / 255f);
+            notificationBackground.color = Color.white;
+            notificationContainer.GetComponent<GradientEffect>().SetGradientColors(leftColor, rightColor);
         }
-        else
+        else if (isSuccess) //else success
         {
-            notificationBackground.color = new Color(254 / 255f, 104 / 255f, 78 / 255f);
+            notificationBackground.color = new Color(111 / 255f, 195 / 255f, 92 / 255f); //green rgb
+            notificationBackground.texture = null;
+        }
+        else //else failure
+        {
+            notificationBackground.color = new Color(254 / 255f, 104 / 255f, 78 / 255f); //red rgb
+            notificationBackground.texture = null;
         }
 
         if (secondsBeforeAutoHide > 0)
@@ -667,6 +684,7 @@ public class NavigationController : MonoBehaviour
 
         LeanTween.moveLocalY(notificationContainer, notificationContainerInitialYPosition, ANIMATION_NOTIFICATION_DURATION).setEaseInOutExpo();
     }
+
 
     public void OnNotificationClose()
     {
@@ -1067,6 +1085,8 @@ public class NavigationController : MonoBehaviour
 
     private void DisplayNextView()
     {
+        displayedCalled++;
+        Debug.Log("display next view :" + nextView.name);
         // reset views in stack
         ResetViewsStack();
 
@@ -1074,8 +1094,13 @@ public class NavigationController : MonoBehaviour
         ResetScrollBar();
 
         //change page when no over page is active
-        if (currentViewBackupOver == null)
+        if (currentViewBackupOver == null || nextView.transform.parent.tag == "Over Views Container")
         {
+            if (!currentViewBackupOver)
+                Debug.Log("No Backup");
+            if(nextView?.transform.parent.tag == "Over Views Container")
+                Debug.Log("Over");
+
             oldView = currentView;
             currentView = nextView;
 
@@ -1087,11 +1112,13 @@ public class NavigationController : MonoBehaviour
         }
         else
         { //allow changing page when an over page is active
+            Debug.Log("Over with backup");
             currentViewBackupOver = nextView;
         }
 
         NavigationCallback();
     }
+
 
     private void NavigationCallback()
     {
