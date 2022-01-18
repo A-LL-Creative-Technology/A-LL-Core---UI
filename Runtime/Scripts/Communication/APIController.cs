@@ -215,6 +215,27 @@ public class APIController : MonoBehaviour
         }, shallWaitForPendingRequests));
     }
 
+    //POST a JSON to the server
+    public void Post<S, R>(S requestObject, string endpoint, Dictionary<string, string> parameters, Action<R> callback, Action<RequestException> errorCallback = null, string customServerURL = null, string customAPIToken = null, bool showAPIErrorNotification = true, bool shallWaitForPendingRequests = false)
+    {
+        StartCoroutine(EnsureRequestCanBeSent(() =>
+        {
+
+            RestClient.Post<R>(BuildRequestJson(requestObject, endpoint, parameters, customServerURL, customAPIToken))
+                .Then(res =>
+                {
+                    nbRequestsInProgress--;
+                    //Debug.Log("Simul -- " + nbRequestsInProgress + " " + endpoint);
+
+                    callback?.Invoke(res);
+                })
+                .Catch(err =>
+                {
+                    HandleError((RequestException)err, endpoint, errorCallback, showAPIErrorNotification);
+                });
+        }, shallWaitForPendingRequests));
+    }
+
     public void GetImage(string imageUri, Action<Texture2D> callback, Action<RequestException> errorCallback = null, bool showAPIErrorNotification = true, bool shallWaitForPendingRequests = false)
     {
         StartCoroutine(EnsureRequestCanBeSent(() =>
@@ -287,6 +308,16 @@ public class APIController : MonoBehaviour
     {
         RequestHelper request = BuildRequest(endpoint, parameters, customServerURL, customAPIToken);
         request.FormSections = GenerateFormData(body, files);
+        request.Body = body;
+
+        return request;
+    }
+
+    private RequestHelper BuildRequestJson<B>(B body, string endpoint, Dictionary<string, string> parameters, string customServerURL = null, string customAPIToken = null)
+    {
+        RequestHelper request = BuildRequest(endpoint, parameters, customServerURL, customAPIToken);
+        request.Body = body;
+
         return request;
     }
 
