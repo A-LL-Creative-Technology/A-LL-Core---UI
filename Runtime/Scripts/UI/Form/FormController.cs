@@ -33,7 +33,8 @@ public class FormController : MonoBehaviour
     {
         instance = this;
 
-        validationButton.interactable = false;
+        if (validationButton != null)
+            validationButton.interactable = false;
     }
 
     private void Start()
@@ -51,7 +52,8 @@ public class FormController : MonoBehaviour
                 areAllEntriesValid = false;
         }
 
-        validationButton.interactable = areAllEntriesValid;
+        if (validationButton != null)
+            validationButton.interactable = areAllEntriesValid;
 
     }
 
