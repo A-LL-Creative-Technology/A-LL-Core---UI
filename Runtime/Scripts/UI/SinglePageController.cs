@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Proyecto26;
 using UnityEngine;
 
 public abstract class SinglePageController : MonoBehaviour

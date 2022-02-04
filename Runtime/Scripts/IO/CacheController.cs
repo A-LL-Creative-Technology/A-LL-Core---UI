@@ -3,7 +3,6 @@ using UnityEngine;
 using System;
 using static CacheModel;
 using System.Collections;
-using Proyecto26;
 
 public class CacheController : MonoBehaviour
 {
@@ -238,26 +237,10 @@ public class CacheController : MonoBehaviour
 
             callback?.Invoke(image);
         }
-        else if (imageURL != "") // there is an image on the server
-        {
-            // it is not yet in the cache, we call the API
-            APIController.GetInstance().GetImage(imageURL, (Texture2D texture) =>
-            {
-                File.WriteAllBytes(imagePath, texture.EncodeToPNG());
-
-                callback?.Invoke(texture);
-
-            }, (RequestException requestException) => {
-
-                // we return the placeholder if there is an error
-                callback?.Invoke(UIController.GetInstance().imagePlaceholder);
-            });
-
-        }
         else
         {
-            // we return the placeholder
-            callback?.Invoke(UIController.GetInstance().imagePlaceholder);
+            // no image found on disk.
+            callback?.Invoke(null);
         }
 
     }
