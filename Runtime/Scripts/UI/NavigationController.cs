@@ -524,8 +524,12 @@ public class NavigationController : MonoBehaviour
 
     private IEnumerator WaitForClosingPopup(GameObject popUp, bool shallAnimate = true)
     {
-        yield return new WaitUntil(() => !currentActivePopUp); //Wait for any closing popup to finish closing
-
+        if (currentActivePopUp) //we don't want to wait unless there's already a current active popup -> otherwise we wouldn't be able to
+                                //open 2 popups "at once" (=in the same frame)
+        {
+            yield return new WaitUntil(() => !currentActivePopUp); //Wait for any closing popup to finish closing
+        }
+        
         currentActivePopUp = popUp;
 
         popUpContainer.SetActive(true);
