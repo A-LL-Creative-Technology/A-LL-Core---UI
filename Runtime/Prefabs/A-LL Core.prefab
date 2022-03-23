@@ -342,6 +342,11 @@ PrefabInstance:
       propertyPath: eventSystem
       value: 
       objectReference: {fileID: 295857107854508533}
+    - target: {fileID: 6622103406631086901, guid: 415943762fa344ccc82e602f20e3208c,
+        type: 3}
+      propertyPath: safeAreaType
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 415943762fa344ccc82e602f20e3208c, type: 3}
 --- !u!4 &3521251084604146856 stripped
