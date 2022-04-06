@@ -1256,10 +1256,10 @@ public class NavigationController : MonoBehaviour
         }
     }
 
-    public void ShowHeader(float duration = 0, bool shallContinuePopFromStack = false)
+    public void ShowHeader(float duration = 0, bool shallContinuePopFromStack = false, bool isOpaque = true)
     {
-        opaqueHeaderContainer.SetActive(true);
-        transparentHeaderContainer.SetActive(false);
+        opaqueHeaderContainer.SetActive(isOpaque);
+        transparentHeaderContainer.SetActive(!isOpaque);
 
         LeanTween.moveLocalY(headerContainerBackgroundRectTransform.gameObject, headerContainerBackgroundRectTransform.gameObject.transform.localPosition.y - headerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() =>
         {
