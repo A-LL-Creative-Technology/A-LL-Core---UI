@@ -1093,7 +1093,7 @@ public class NavigationController : MonoBehaviour
     private void DisplayNextView()
     {
         displayedCalled++;
-        Debug.Log("display next view :" + nextView.name);
+
         // reset views in stack
         ResetViewsStack();
 
@@ -1103,11 +1103,6 @@ public class NavigationController : MonoBehaviour
         //change page when no over page is active
         if (currentViewBackupOver == null || nextView.transform.parent.tag == "Over Views Container")
         {
-            if (!currentViewBackupOver)
-                Debug.Log("No Backup");
-            if(nextView?.transform.parent.tag == "Over Views Container")
-                Debug.Log("Over");
-
             oldView = currentView;
             currentView = nextView;
 
@@ -1119,7 +1114,6 @@ public class NavigationController : MonoBehaviour
         }
         else
         { //allow changing page when an over page is active
-            Debug.Log("Over with backup");
             currentViewBackupOver = nextView;
         }
 
@@ -1201,7 +1195,7 @@ public class NavigationController : MonoBehaviour
         for (int i = 0; i < sceneCount; i++)
         {
             string currentSceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
-            Debug.Log("Scene found: " + currentSceneName);
+
             if (currentSceneName == sceneName)
                 return true;
         }
