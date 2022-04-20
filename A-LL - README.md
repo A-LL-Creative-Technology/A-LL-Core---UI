@@ -16,12 +16,10 @@ To use this package in a unity project :
   }
 ]
 ```
-2. Manually install Firebase
-    1. Download the firebase SDKs “Firebase Cloud Messaging” and “Google Analytics for Firebase” for Unity : https://developers.google.com/unity/archive
-    2. In Unity editor, right-click on Assets then *Import Package* -> *Custom Package...* to import both packages.
-3. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL https://laurent-all@bitbucket.org/a-lltech/a-ll-core.git.
-4. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL com.unity.localization.
-5. Add the following third-party packages from the Package Manager
+
+2. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL https://laurent-all@bitbucket.org/a-lltech/a-ll-core.git.
+3. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL com.unity.localization.
+4. Add the following third-party packages from the Package Manager
     1. Connect using the lab@a-ll.tech account in Unity
     2. Select "My Assets" in the Package Manager to display paid Packages from the Asset Store
     3. Select and import all these packages
@@ -29,17 +27,13 @@ To use this package in a unity project :
         - Procedural UI Image
         - Lean Touch
             1. Open the file "Lean/Touch/Extras/LeanScreenDepth.cs" and comment line 222 "Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);"
-        - Rest Client for Unity 
-            1. Additionnaly, create an Assembly Definition Reference named "Main Proyecto26" in "RestClient/Packages"
-            2. Link it to Assembly A-LL.Core.Runtime.asmdef
         - Online Maps
         - Advanced Input Field 2
         - Nice Vibrations by Lofelt | HD Haptic Feedback for Mobile and Gamepads
-6. Rename scene to **Main** and remove **Camera** and **Directional Ligh** in scene.
-7. Create **A-LL** folder at the root of **Assets** folder and **A-LL/Scenes**. 
-8. Move the scene **Main** into **A-LL/Scenes**.
-9. Copy/Paste files in "A-LL Core/Assets To Copy/A-LL/Config/Firebase/" and paste them to "Assets/A-LL/Config/Firebase/" (create this path) and rename by removing the prefix "Sandbox - "
-10. Open Unity > Preferences > External Tools and tick the boxes for the items below.
+5. Rename scene to **Main** and remove **Camera** and **Directional Ligh** in scene.
+6. Create **A-LL** folder at the root of **Assets** folder and **A-LL/Scenes**. 
+7. Move the scene **Main** into **A-LL/Scenes**.
+8. Open Unity > Preferences > External Tools and tick the boxes for the items below.
     1. Registry packages
     2. Git packages
     3. Built-in packages
@@ -47,12 +41,12 @@ To use this package in a unity project :
     5. Packages from unknown sources
     6. Player projects
     Then click on "Regenerate project files" button right below. 
-11. Update Project Settings for iOS + Android based on another recent working project or the below screenshots:
+9. Update Project Settings for iOS + Android based on another recent working project or the below screenshots:
     1. iOS
     https://drive.google.com/drive/folders/14ODdUNbfT1asG4tnpNG5yAevRvAZKrGQ?usp=sharing
     2. Android
     https://drive.google.com/drive/folders/1tF_sY-Bdap5m67DyTJhtdS3boWUpBB0E?usp=sharing
-12. Add Localization package
+10. Add Localization package
     Ref: To add the [Localization Unity Package](https://docs.unity3d.com/Packages/com.unity.localization@0.9/manual/Installation.html) :
     1. Go to **Edit > Project Settings > Localization** and click **Create**.
     2. Create **Main** asset file in **A-LL/Config/Localization**.
@@ -62,8 +56,8 @@ To use this package in a unity project :
     6. Open **Window > Asset Management > Localization Tables**.
     7. In the Asset Tables window, select the **New Table Collection** tab. Select which Locales you want to generate tables for, give the table the name "Main Table" and create the corresponding Asset Table Collection. Save it to **A-LL/Config/Localization**.
     8. In Unity, go to "Window -> Asset Management -> Adressables -> Groups" and then select "Build -> New Build -> Default Build Script" to build the Localization file
-13. Switch platform to iOS/Android in build setttings
-14. Create AppNavigationController.cs based on another recent projet (or follow the link below) and its corresponding currentView GameObject to start an initial page.
+11. Switch platform to iOS/Android in build setttings
+12. Create AppNavigationController.cs based on another recent projet (or follow the link below) and its corresponding currentView GameObject to start an initial page.
     1. AppNavigationController.cs
     https://drive.google.com/drive/folders/1sG32pHv0QT01bMdR1TDCsSritsAa7waY?usp=sharing
-15. Got to "File -> Build & Run" to to test the installation.
+13. Got to "File -> Build & Run" to to test the installation.
