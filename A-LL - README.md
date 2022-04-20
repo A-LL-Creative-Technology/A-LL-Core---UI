@@ -20,13 +20,13 @@ To use this package in a unity project :
 2. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL https://laurent-all@bitbucket.org/a-lltech/a-ll-core.git.
 3. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL com.unity.localization.
 4. Add the following third-party packages from the Package Manager
-    1. Connect using the lab@a-ll.tech account in Unity
+    1. Ask Laurent to give you access to the packages in Unity
     2. Select "My Assets" in the Package Manager to display paid Packages from the Asset Store
     3. Select and import all these packages
         - Native Gallery for Android & iOS
         - Procedural UI Image
         - Lean Touch
-            1. Open the file "Lean/Touch/Extras/LeanScreenDepth.cs" and comment line 222 "Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);"
+            1. Open the file "Plugins/CW/LeanTouch/Extras/Scripts/LeanScreenDepth.cs" and comment line 222 "Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);"
         - Online Maps
         - Advanced Input Field 2
         - Nice Vibrations by Lofelt | HD Haptic Feedback for Mobile and Gamepads
