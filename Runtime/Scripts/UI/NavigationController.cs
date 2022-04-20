@@ -341,7 +341,7 @@ public class NavigationController : MonoBehaviour
     public void Navigate(string routingStr)
     {
         //Log page in Analytics
-        AnalyticsController.GetInstance()?.Log(AnalyticsController.LOGS.VISIT_PAGE, routingStr);
+        //AnalyticsController.GetInstance()?.Log(AnalyticsController.LOGS.VISIT_PAGE, routingStr);
 
         // parse routing string
         string nextViewStr = ParseRoute(routingStr);
