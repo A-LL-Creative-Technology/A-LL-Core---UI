@@ -113,6 +113,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -121,12 +123,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -144,9 +146,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -852,6 +857,37 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      App Loader - SpriteSheet_17: 8227022214207916372
+      App Loader - SpriteSheet_28: 2881890848200528258
+      App Loader - SpriteSheet_1: 3353717389245407353
+      App Loader - SpriteSheet_7: 8289170143357182377
+      App Loader - SpriteSheet_22: 7732271653895977215
+      App Loader - SpriteSheet_19: 6758112740872730071
+      App Loader - SpriteSheet_18: 2637052206445945532
+      App Loader - SpriteSheet_15: 4571543674927075194
+      App Loader - SpriteSheet_4: 5906951903732770244
+      App Loader - SpriteSheet_24: -871636982522396209
+      App Loader - SpriteSheet_0: -2183871700283612158
+      App Loader - SpriteSheet_27: 127668104815959180
+      App Loader - SpriteSheet_6: -9188566846754076403
+      App Loader - SpriteSheet_11: -5005159705981135245
+      App Loader - SpriteSheet_23: 2270451597089816585
+      App Loader - SpriteSheet_12: 840481337406927699
+      App Loader - SpriteSheet_13: 7808684657548744408
+      App Loader - SpriteSheet_16: 1644075947716784048
+      App Loader - SpriteSheet_9: 7792324414420232817
+      App Loader - SpriteSheet_10: 4377384194342364940
+      App Loader - SpriteSheet_26: 3480834324852664266
+      App Loader - SpriteSheet_25: -3231727505304118840
+      App Loader - SpriteSheet_21: 7453050472848315081
+      App Loader - SpriteSheet_5: 4828397569786799320
+      App Loader - SpriteSheet_14: -278228499843828827
+      App Loader - SpriteSheet_20: 9190104073938582706
+      App Loader - SpriteSheet_29: -8495559606727888459
+      App Loader - SpriteSheet_2: 5900776207296487349
+      App Loader - SpriteSheet_3: -4856727049633825884
+      App Loader - SpriteSheet_8: -7811388945080961432
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

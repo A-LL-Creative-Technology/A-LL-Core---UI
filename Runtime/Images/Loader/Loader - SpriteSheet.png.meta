@@ -113,6 +113,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -121,12 +123,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -144,9 +146,12 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
@@ -840,6 +845,37 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Loader - SpriteSheet_12: 6154232024544077463
+      Loader - SpriteSheet_18: -1893915655793014566
+      Loader - SpriteSheet_3: 5342248613682527216
+      Loader - SpriteSheet_13: 7085686968711522577
+      Loader - SpriteSheet_20: 2050483428724663041
+      Loader - SpriteSheet_26: 7510299773103457743
+      Loader - SpriteSheet_8: 3436886700879023069
+      Loader - SpriteSheet_17: 7931379395041869942
+      Loader - SpriteSheet_7: -4857094213486928109
+      Loader - SpriteSheet_5: -1092915009005199310
+      Loader - SpriteSheet_19: 2802607837865637852
+      Loader - SpriteSheet_9: 7234489404566892556
+      Loader - SpriteSheet_21: -2151764280387046989
+      Loader - SpriteSheet_23: -7602008786436599355
+      Loader - SpriteSheet_16: -6443659846442609745
+      Loader - SpriteSheet_0: 4452133191197653183
+      Loader - SpriteSheet_11: -7314245675155256556
+      Loader - SpriteSheet_29: 1984825653279379665
+      Loader - SpriteSheet_24: -291478486710863303
+      Loader - SpriteSheet_27: 842017499276383884
+      Loader - SpriteSheet_2: 6380766029019584643
+      Loader - SpriteSheet_4: -1740594008552129021
+      Loader - SpriteSheet_10: -7705042297090678579
+      Loader - SpriteSheet_14: 8061501655199310161
+      Loader - SpriteSheet_15: 5467580423895219351
+      Loader - SpriteSheet_25: -944723266038068180
+      Loader - SpriteSheet_22: -627306014094772116
+      Loader - SpriteSheet_28: -5180461312901788775
+      Loader - SpriteSheet_1: -7053024567190037852
+      Loader - SpriteSheet_6: -3015264576716718622
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
