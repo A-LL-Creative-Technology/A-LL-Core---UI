@@ -1280,7 +1280,7 @@ public class NavigationController : MonoBehaviour
         });
     }
 
-    public void HideHeader(float duration = 0, bool shallFinishPushToStack = false, bool isOpaque = true)
+    public void HideHeader(float duration = 0, bool shallFinishPushToStack = false)
     {
         // backup the initial values
         scrollViewViewportAnchorMax = scrollViewViewportRectTransform.anchorMax;
@@ -1299,8 +1299,8 @@ public class NavigationController : MonoBehaviour
 
         LeanTween.moveLocalY(opaqueHeaderContainer, opaqueHeaderContainer.transform.localPosition.y + headerContainerBackgroundHeight, duration).setEase(LeanTweenType.easeInOutExpo).setOnComplete(() => {
 
-            opaqueHeaderContainer.SetActive(!isOpaque);
-            transparentHeaderContainer.SetActive(isOpaque);
+            opaqueHeaderContainer.SetActive(false);
+            transparentHeaderContainer.SetActive(true);
 
             if (shallFinishPushToStack)
                 FinishPushToStack();
