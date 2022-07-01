@@ -90,6 +90,8 @@ public class NavigationController : MonoBehaviour
 
     [SerializeField] private GameObject globalAppLoaderContainer;
     [SerializeField] private GameObject globalSceneLoaderContainer;
+    [SerializeField] private GameObject globalProgressLoaderContainer;
+    [SerializeField] private ProgressBarController progressLoader;
 
     [SerializeField] private GameObject creaTechContainer;
 
@@ -210,6 +212,9 @@ public class NavigationController : MonoBehaviour
 
         // disable global loader by default
         globalSceneLoaderContainer.SetActive(false);
+
+        //disable progress loader by default
+        globalProgressLoaderContainer.SetActive(false);
 
         // disable crea tech by default
         creaTechContainer.SetActive(false);
@@ -728,6 +733,23 @@ public class NavigationController : MonoBehaviour
     {
         // toggle global loader
         globalSceneLoaderContainer.SetActive(false);
+    }
+
+    public void OnGlobalProgressLoaderOpen()
+    {
+        // toggle global loader
+        globalProgressLoaderContainer.SetActive(true);
+    }
+
+    public void OnGlobalProgressLoaderClose()
+    {
+        // toggle global loader
+        globalProgressLoaderContainer.SetActive(false);
+    }
+
+    public void OnProgressLoaderUpdate(float progress)
+    {
+        progressLoader.SetFillAmount(progress);
     }
 
     public void OnCreaTechOpen()
