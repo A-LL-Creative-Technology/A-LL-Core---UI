@@ -4,32 +4,38 @@
 
 To use this package in a unity project :
 
-1. Edit the manifest.json file located at <your unity project>/Packages and add the following lines after the dependencies :
-```json
-"scopedRegistries": [
-  {
-    "name": "npmjs",
-    "url": "https://registry.npmjs.org/",
-    "scopes": [
-      "com.unity.uiextensions"
-    ]
-  }
-]
-```
+1. Install the [Unity-UI-Extensions](https://bitbucket.org/UnityUIExtensions/unity-ui-extensions/wiki/Home) package either in the UI (i) or by editing a file (ii):
+    1. In Unity, open the menu Edit > Project Settings... and select Package Manager in the window. In Scoped Registries, add an entry with Name: `npmjs`, URL: `https://registry.npmjs.org`, Scope(s): `com.unity.uiextensions` and click Save. Then open the menu Window > Project Settings, select Packages: My Registries in the dropdown menu, and install Unity UI Extensions.
+    2. Alternatively, edit the `manifest.json` file located at \<your unity project\>/Packages and add the following lines after the dependencies :
+      ```json
+        "scopedRegistries": [
+          {
+            "name": "npmjs",
+            "url": "https://registry.npmjs.org/",
+            "scopes": [
+              "com.unity.uiextensions"
+            ]
+          }
+        ],
+      ```
+      and add this dependency in the dependencies list: 
+      ```json
+        "dependencies": {
+          "com.unity.uiextensions": "2.2.4",
+      ```
 
-2. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL https://laurent-all@bitbucket.org/a-lltech/a-ll-core.git.
-3. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL com.unity.localization.
-4. Add the following third-party packages from the Package Manager
-    1. Ask Laurent to give you access to the packages in Unity
-    2. Select "My Assets" in the Package Manager to display paid Packages from the Asset Store
-    3. Select and import all these packages
-        - Native Gallery for Android & iOS
-        - Procedural UI Image
-        - Lean Touch
-            1. Open the file "Plugins/CW/LeanTouch/Extras/Scripts/LeanScreenDepth.cs" and comment line 222 "Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);"
-        - Online Maps
-        - Advanced Input Field 2
-        - Nice Vibrations by Lofelt | HD Haptic Feedback for Mobile and Gamepads
+2. In Unity, open Window > Package Manager and "Add Package from git url ..." and insert this URL `https://github.com/A-LL-Creative-Technology/A-LL-Core---UI.git`
+4. Add the following third-party packages from the Package Manager:
+    1. Add the free packages to your assets from the [Unity asset store](https://assetstore.unity.com/) and ask Laurent or Leo to give you access to the paid packages in Unity.
+    2. Select "My Assets" in the Package Manager to display free and paid Packages from the Asset Store.
+    3. Select and import all these packages:
+        - [Native Gallery for Android & iOS](https://assetstore.unity.com/packages/tools/integration/native-gallery-for-android-ios-112630) (Free)
+        - [Procedural UI Image](https://assetstore.unity.com/packages/tools/gui/procedural-ui-image-52200) (Paid)
+        - [Lean Touch](https://assetstore.unity.com/packages/tools/input-management/lean-touch-30111) (Free)
+            1. Open the file "Plugins/CW/LeanTouch/Extras/Scripts/LeanScreenDepth.cs" and comment line 222 `Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);` or change it to a `Debug.LogWarning`.
+        - [Online Maps](https://assetstore.unity.com/packages/tools/integration/online-maps-v3-138509) (Paid)
+        - [Advanced Input Field 2](https://assetstore.unity.com/packages/tools/gui/advanced-input-field-2-185464) (Free)
+        - Nice Vibrations by Lofelt | HD Haptic Feedback for Mobile and Gamepads (Paid and deprecated)
 5. Rename scene to **Main** and remove **Camera** and **Directional Ligh** in scene.
 6. Create **A-LL** folder at the root of **Assets** folder and **A-LL/Scenes**. 
 7. Move the scene **Main** into **A-LL/Scenes**.
