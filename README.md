@@ -35,6 +35,10 @@ To use this package in a unity project :
             1. Open the file "Plugins/CW/LeanTouch/Extras/Scripts/LeanScreenDepth.cs" and comment line 222 `Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", gameObject);` or change it to a `Debug.LogWarning`.
         - [Online Maps](https://assetstore.unity.com/packages/tools/integration/online-maps-v3-138509) (Paid)
         - [Advanced Input Field 2](https://assetstore.unity.com/packages/tools/gui/advanced-input-field-2-185464) (Free)
+            1. This plugin is not supported anymore and is now [opensource](https://github.com/development-fennecx/AdvancedInputField)
+            2. If Unity asks, use the New Input System
+            3. If you have it, install the patch file or modify the `AdvancedInputField` Assembly Definition Asset in `Assets/AdvancedInputFields` [by adding the VersionDefines](https://github.com/development-fennecx/AdvancedInputField/commit/48c8330ac6947d5b108fe095d67123a089e30db5)
+            4. In `Assets/AdvancedInputFields`, modify `AdvancedInputField` Assembly Definition Asset and add a reference to `Unity.InputSystem`
         - Nice Vibrations by Lofelt | HD Haptic Feedback for Mobile and Gamepads (Paid and deprecated)
 5. Rename scene to **Main** and remove **Camera** and **Directional Ligh** in scene.
 6. Create **A-LL** folder at the root of **Assets** folder and **A-LL/Scenes**. 
