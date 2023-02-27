@@ -56,8 +56,7 @@ To use this package in a unity project :
     https://drive.google.com/drive/folders/14ODdUNbfT1asG4tnpNG5yAevRvAZKrGQ?usp=sharing
     2. Android
     https://drive.google.com/drive/folders/1tF_sY-Bdap5m67DyTJhtdS3boWUpBB0E?usp=sharing
-10. Add Localization package
-    Ref: To add the [Localization Unity Package](https://docs.unity3d.com/Packages/com.unity.localization@0.9/manual/Installation.html) :
+10. Configure Localization package:
     1. Go to **Edit > Project Settings > Localization** and click **Create**.
     2. Create **Main** asset file in **A-LL/Config/Localization**.
     3. In **Edit > Project Settings > Localization**, click **Locale Generator**.
