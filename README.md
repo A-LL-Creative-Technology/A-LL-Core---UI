@@ -39,7 +39,7 @@ To use this package in a unity project :
             2. If Unity asks, use the New Input System
             3. If you have it, install the patch file or modify the `AdvancedInputField` Assembly Definition Asset in `Assets/AdvancedInputFields` [by adding the VersionDefines](https://github.com/development-fennecx/AdvancedInputField/commit/48c8330ac6947d5b108fe095d67123a089e30db5)
             4. In `Assets/AdvancedInputFields`, modify `AdvancedInputField` Assembly Definition Asset and add a reference to `Unity.InputSystem`
-        - Nice Vibrations by Lofelt | HD Haptic Feedback for Mobile and Gamepads (Paid and deprecated)
+        - [Nice Vibrations by Lofelt](https://github.com/Lofelt/NiceVibrations) v4.1.2 | HD Haptic Feedback for Mobile and Gamepads (MIT license)
 5. Rename scene to **Main** and remove **Camera** and **Directional Ligh** in scene.
 6. Create **A-LL** folder at the root of **Assets** folder and **A-LL/Scenes**. 
 7. Move the scene **Main** into **A-LL/Scenes**.

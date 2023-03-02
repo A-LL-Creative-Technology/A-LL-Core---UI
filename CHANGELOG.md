@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.2] - 2023-03-02
+
+### Added
+
+- N/A
+
+### Changed
+
+- Update localization dependencies
+- Update install instructions in README
+
+### Fixed
+
+- Revert NiceVibration from 3.9 to 4.1
+
 ## [1.0.1] - 19.07.2021 - [Unreleased]
 
 ### Added
