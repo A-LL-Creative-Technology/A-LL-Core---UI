@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
+using Lofelt.NiceVibrations;
 using UnityEngine;
-using MoreMountains.NiceVibrations;
 
 public class UIController : MonoBehaviour
 {
@@ -134,7 +134,7 @@ public class UIController : MonoBehaviour
         isLoadingUpdatesScroll = true;
         isInLoadingUpdatesScrollZone = true;
 
-        MMVibrationManager.Haptic(HapticTypes.LightImpact);
+        HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
 
         callbackUpdate?.Invoke();
     }
